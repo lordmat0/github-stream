@@ -25,7 +25,7 @@ public class GitHubAPI {
     private UriInfo context;
 
     /**
-     * Creates a new instance of GenericResource
+     * Creates a new instance of GitHubAPI
      */
     public GitHubAPI() {
         System.out.println("GitHubAPI created");
@@ -55,9 +55,6 @@ class A{
     public A(){
         
     }
-    
-    
-    
     @Override
     public String toString(){
         return content;
