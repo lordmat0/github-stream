@@ -1,2 +1,3 @@
-/home/mat/NetBeansProjects/GitHubStream/src/main/java/com/lordmat/githubstream/GitHubAPI.java
-/home/mat/NetBeansProjects/GitHubStream/src/main/java/com/lordmat/githubstream/ApplicationConfig.java
+/home/mat/NetBeansProjects/GitHubStream/src/main/java/com/lordmat/githubstream/web/Manager.java
+/home/mat/NetBeansProjects/GitHubStream/src/main/java/com/lordmat/githubstream/web/GitHubAPI.java
+/home/mat/NetBeansProjects/GitHubStream/src/main/java/com/lordmat/githubstream/web/ApplicationConfig.java

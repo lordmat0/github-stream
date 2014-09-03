@@ -1,4 +1,4 @@
-package com.lordmat.githubstream;
+package com.lordmat.githubstream.web;
 
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -23,6 +23,8 @@ public class GitHubAPI {
 
     @Context
     private UriInfo context;
+    
+
 
     /**
      * Creates a new instance of GitHubAPI
