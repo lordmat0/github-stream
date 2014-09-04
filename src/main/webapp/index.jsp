@@ -22,14 +22,6 @@
         %>
         </p>
         <p>
-        <%
-            
-            
-            out.write(GitHubAPI.results);
-            
-            %>
-        </p>
-        <p>
             
             <%
             
@@ -37,7 +29,7 @@
             
             out.write(GitHubAPI.jsonObject.toString());
             
-            out.write("<p>" + GitHubAPI.jsonObject.get("feeds_url") + "</p>");
+            //out.write("<p>" + GitHubAPI.jsonObject.get("feeds_url") + "</p>");
         %>
         </p>
         
