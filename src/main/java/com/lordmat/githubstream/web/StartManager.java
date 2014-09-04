@@ -6,6 +6,7 @@
 
 package com.lordmat.githubstream.web;
 
+import com.lordmat.githubstream.api.GitHubAPI;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -19,6 +20,7 @@ public class StartManager implements ServletContextListener {
     public void contextInitialized(ServletContextEvent event) {
         // Program starts here
         System.out.println("contextInitialized");
+        new GitHubAPI();
     }
 
     @Override

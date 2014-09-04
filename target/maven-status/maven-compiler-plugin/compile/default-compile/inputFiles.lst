@@ -1,3 +1,4 @@
-/home/mat/NetBeansProjects/GitHubStream/src/main/java/com/lordmat/githubstream/web/Manager.java
-/home/mat/NetBeansProjects/GitHubStream/src/main/java/com/lordmat/githubstream/web/GitHubAPI.java
+/home/mat/NetBeansProjects/GitHubStream/src/main/java/com/lordmat/githubstream/api/GitHubAPI.java
+/home/mat/NetBeansProjects/GitHubStream/src/main/java/com/lordmat/githubstream/web/StartManager.java
+/home/mat/NetBeansProjects/GitHubStream/src/main/java/com/lordmat/githubstream/web/GitHubAPIRest.java
 /home/mat/NetBeansProjects/GitHubStream/src/main/java/com/lordmat/githubstream/web/ApplicationConfig.java

@@ -19,6 +19,6 @@ public class ApplicationConfig extends Application {
     }
     
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(com.lordmat.githubstream.web.GitHubAPI.class);
+        resources.add(com.lordmat.githubstream.web.GitHubAPIRest.class);
     }
 }

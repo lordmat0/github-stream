@@ -25,6 +25,7 @@
     
     
     <dependencies>
+        
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
@@ -40,7 +41,14 @@
             <scope>test</scope>
             <version>2.12</version>
         </dependency>
-        
+       
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20140107</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>

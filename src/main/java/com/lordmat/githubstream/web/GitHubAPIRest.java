@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Path("githubapi")
 @Produces("application/json")
 @Consumes("application/json")
-public class GitHubAPI {
+public class GitHubAPIRest {
 
     @Context
     private UriInfo context;
@@ -29,7 +29,7 @@ public class GitHubAPI {
     /**
      * Creates a new instance of GitHubAPI
      */
-    public GitHubAPI() {
+    public GitHubAPIRest() {
         System.out.println("GitHubAPI created");
     }
 

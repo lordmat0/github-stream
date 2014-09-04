@@ -4,6 +4,9 @@
     Author     : mat
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
+<%@page import="com.lordmat.githubstream.api.GitHubAPI"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,20 +16,30 @@
     </head>
     <body>
         <h1>Hello World!</h1>
+        <p>Current date/time:
         <%
-            double num = Math.random();
-            if (num > 0.80) {
+        out.write(new SimpleDateFormat("HH:mm:ss").format(new Date()));    
         %>
-        <h2>You'll have a luck day!</h2><p>(<%= num%>)</p>
+        </p>
+        <p>
         <%
-        } else {
-        %>
-        <h2>Well, life goes on ... </h2><p>(<%= num%>)</p>
-        <%
-            }
             
-            String s = "asd";
-            out.write(s);
+            
+            out.write(GitHubAPI.results);
+            
+            %>
+        </p>
+        <p>
+            
+            <%
+            
+            out.write("<h1>JSON Array</h1>");
+            
+            out.write(GitHubAPI.jsonObject.toString());
+            
+            out.write("<p>" + GitHubAPI.jsonObject.get("feeds_url") + "</p>");
         %>
+        </p>
+        
     </body>
 </html>
