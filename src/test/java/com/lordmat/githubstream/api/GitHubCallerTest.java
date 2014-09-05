@@ -65,12 +65,8 @@ public class GitHubCallerTest {
         GitHubCaller instance = createInstance();
 
         JSONObject result = instance.getRateLimit();
-        
-        System.out.println(result.toString());
 
         JSONObject coreTests = result.getJSONObject("resources").getJSONObject("core");
-
-        System.out.println(coreTests);
 
         assertNotNull(coreTests.getInt("limit"));
         assertNotNull(coreTests.getInt("remaining"));
@@ -81,20 +77,30 @@ public class GitHubCallerTest {
     }
 
     @Test
-    public void testGetCommits() throws Exception {
+    public void testGetCommits() {
         System.out.println("testGetCommits");
         GitHubCaller instance = createInstance();
-        
+
         JSONArray result = instance.getCommits();
-        System.out.println(result);
 
         assertTrue(result.length() > 0);
         assertNotNull(result.getJSONObject(0).getJSONObject("commit").getString("message"));
     }
 
+    @Test
+    public void testGetUser() {
+        System.out.println("testGetUser");
+        GitHubCaller instance = createInstance();
+
+        GitHubUser gitHubUser = instance.getUser("lordmat0");
+
+        assertNotNull(gitHubUser);
+    }
+
     /**
-     * Creates an instance of github caller which is wrapped in a try catch
-     * with an extra message if it fails
+     * Creates an instance of github caller which is wrapped in a try catch with
+     * an extra message if it fails
+     *
      * @return new instance of GitHubCaller
      */
     private GitHubCaller createInstance() {

@@ -3,3 +3,4 @@
 /home/mat/NetBeansProjects/GitHubStream/src/main/java/com/lordmat/githubstream/web/GitHubAPIRest.java
 /home/mat/NetBeansProjects/GitHubStream/src/main/java/com/lordmat/githubstream/web/ApplicationConfig.java
 /home/mat/NetBeansProjects/GitHubStream/src/main/java/com/lordmat/githubstream/api/GitHubCaller.java
+/home/mat/NetBeansProjects/GitHubStream/src/main/java/com/lordmat/githubstream/api/GitHubUser.java
