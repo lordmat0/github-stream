@@ -17,7 +17,7 @@ import org.json.JSONObject;
  */
 public class GitHubCaller {
     
-    private String token;
+    private final String token;
     
     public GitHubCaller(){
         ResourceBundle bundle = ResourceBundle.getBundle("project"); 
