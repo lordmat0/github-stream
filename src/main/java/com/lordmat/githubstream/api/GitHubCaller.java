@@ -9,6 +9,7 @@ package com.lordmat.githubstream.api;
 import java.util.ResourceBundle;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -25,15 +26,19 @@ public class GitHubCaller {
     }
    
     public JSONObject getPaths(){
-        return new JSONObject(callGitHubAPI(""));
+        return new JSONObject(call(""));
     }
     
     public JSONObject getRateLimit(){
-        return new JSONObject(callGitHubAPI("rate_limit"));
+        return new JSONObject(call("rate_limit"));
+    }
+    
+    public JSONArray getCommits(){
+        return new JSONArray(call("repos/lordmat0/githubstream/commits"));
     }
     
     
-    private String callGitHubAPI(String path){
+    private String call(String path){
         return ClientBuilder.newClient().target("https://api.github.com/" + path)
                 //.queryParam("foo", "bar")
                 .request(MediaType.APPLICATION_JSON_TYPE)
