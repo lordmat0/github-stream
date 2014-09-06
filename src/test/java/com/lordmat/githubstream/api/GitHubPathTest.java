@@ -38,14 +38,38 @@ public class GitHubPathTest {
     }
 
     @Test
-    public void testConstPathStrings() {
-        System.out.println("constPathStrings");
-
+    public void testDefaultPath() {
+        System.out.println("testDefaultPath");
         assertTrue(GitHubPath.DEFAULT_PATH.length() > 0);
+    }
+
+    @Test
+    public void testRateLimit() {
+        System.out.println("testRateLimit");
         assertTrue(GitHubPath.RATE_LIMIT.length() > 0);
+    }
+
+    @Test
+    public void testRepoName() {
+        System.out.println("testRepoName");
         assertTrue(GitHubPath.REPO_NAME.length() > 0);
+    }
+
+    @Test
+    public void testRepoOwner() {
+        System.out.println("testRepoOwner");
         assertTrue(GitHubPath.REPO_OWNER.length() > 0);
+    }
+
+    @Test
+    public void testCommits() {
+        System.out.println("testCommits");
         assertTrue(GitHubPath.COMMITS.length() > 0);
+    }
+
+    @Test
+    public void testUserUrl() {
+        System.out.println("testUserUrl");
         assertTrue(GitHubPath.USER_URL.length() > 0);
     }
 
