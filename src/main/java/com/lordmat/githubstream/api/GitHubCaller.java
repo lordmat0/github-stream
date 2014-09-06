@@ -27,22 +27,48 @@ public class GitHubCaller {
         token = bundle.getString("authtoken");
     }
 
+    /**
+     * Test method will be deleted
+     *
+     * @return
+     */
     public JSONObject getPaths() {
         return new JSONObject(call(GitHubPath.DEFAULT_PATH));
     }
 
+    /**
+     * This includes details on how many responses are allowed to make and when
+     * that limit is reset
+     *
+     * @return a JSONObject from results from an API call to the githubAPI
+     */
     public JSONObject getRateLimit() {
         return new JSONObject(call(GitHubPath.RATE_LIMIT));
     }
 
+    /**
+     * Gets a list of commits between two dates.
+     *
+     * @param since The start date
+     * @param until The end date
+     * @return a JSONArray that contains details on commits which are retrieved
+     * from an API call to the githubAPI
+     */
     public JSONArray getCommits(String since, String until) {
-        Map<String, String> queryParam = new HashMap<String, String>();
+        Map<String, String> queryParam = new HashMap<>();
         queryParam.put("since", since);
         queryParam.put("until", until);
-        
+
         return new JSONArray(call(GitHubPath.COMMITS, queryParam));
     }
 
+    /**
+     * Get details of a github user
+     *
+     * @param userName
+     * @return a GitHubUser thats details are retrieved from an API call to the
+     * githubAPI.
+     */
     public GitHubUser getUser(String userName) {
         JSONObject user = new JSONObject(call(GitHubPath.user(userName)));
         return new GitHubUser(
@@ -52,10 +78,23 @@ public class GitHubCaller {
         );
     }
 
+    /**
+     * Makes a call to the githubAPI with variables passed in.
+     * 
+     * @param path The URL to call
+     * @return Results from the call
+     */
     private String call(String path) {
         return call(path, null);
     }
 
+    /**
+     * Makes a call to the githubAPI with variables passed in.
+     * 
+     * @param path The URL to call
+     * @param parameter Extra parameters used
+     * @return Results from the call
+     */
     private String call(String path, Map<String, String> parameter) {
         WebTarget webTarget = ClientBuilder.newClient().target(path);
 
