@@ -70,7 +70,7 @@ public class GitHubPathTest {
     @Test
     public void testUserUrl() {
         System.out.println("testUserUrl");
-        assertTrue(GitHubPath.USER_URL.length() > 0);
+        assertTrue(GitHubPath.user("").length() > 0);
     }
 
 }

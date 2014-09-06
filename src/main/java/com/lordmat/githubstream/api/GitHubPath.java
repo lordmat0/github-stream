@@ -21,16 +21,8 @@ public class GitHubPath {
     public static final String REPO_OWNER;
     public static final String COMMITS;
 
-    /**
-     * When using make sure you run:
-     * <p>
-     * <code>
-     * USER_URL.replace("{user}", "userName")
-     * </code>
-     * </p><p>
-     * Otherwise you wont be searching for the user.
-     */
-    public static final String USER_URL;
+
+    private static final String USER_URL;
 
     static {
         DEFAULT_PATH = "https://api.github.com/";
@@ -50,11 +42,20 @@ public class GitHubPath {
 
         COMMITS = jsonPaths.getString("repository_url")
                 .replace("{owner}", REPO_OWNER)
-                .replace("{repo}", REPO_NAME);
+                .replace("{repo}", REPO_NAME) + "/commits";
 
         USER_URL = jsonPaths.getString("user_url");
     }
 
+    /**
+     * 
+     * @param username the user name to find
+     * @return A path to the user to be called on
+     */
+    public static String user(String username){
+        return USER_URL.replace("{user}", username);
+    }
+    
     /**
      * Can't make instance of class
      */

@@ -5,8 +5,11 @@
  */
 package com.lordmat.githubstream.api;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,19 +28,23 @@ public class GitHubCaller {
     }
 
     public JSONObject getPaths() {
-        return new JSONObject(call(""));
+        return new JSONObject(call(GitHubPath.DEFAULT_PATH));
     }
 
     public JSONObject getRateLimit() {
-        return new JSONObject(call("rate_limit"));
+        return new JSONObject(call(GitHubPath.RATE_LIMIT));
     }
 
-    public JSONArray getCommits() {
-        return new JSONArray(call("repos/lordmat0/githubstream/commits"));
+    public JSONArray getCommits(String since, String until) {
+        Map<String, String> queryParam = new HashMap<String, String>();
+        queryParam.put("since", since);
+        queryParam.put("until", until);
+        
+        return new JSONArray(call(GitHubPath.COMMITS, queryParam));
     }
 
     public GitHubUser getUser(String userName) {
-        JSONObject user = new JSONObject(call("users/" + userName));
+        JSONObject user = new JSONObject(call(GitHubPath.user(userName)));
         return new GitHubUser(
                 user.getString("login"),
                 user.getString("url"),
@@ -46,11 +53,22 @@ public class GitHubCaller {
     }
 
     private String call(String path) {
-        return ClientBuilder.newClient().target("https://api.github.com/" + path)
-                //.queryParam("foo", "bar")
-                .request(MediaType.APPLICATION_JSON_TYPE)
+        return call(path, null);
+    }
+
+    private String call(String path, Map<String, String> parameter) {
+        WebTarget webTarget = ClientBuilder.newClient().target(path);
+
+        if (parameter != null) {
+            for (String key : parameter.keySet()) {
+                webTarget = webTarget.queryParam(key, parameter.get(key));
+            }
+        }
+
+        return webTarget.request(MediaType.APPLICATION_JSON_TYPE)
                 .header("Authorization", " token " + token)
                 .get(String.class);
+
     }
 
 }
