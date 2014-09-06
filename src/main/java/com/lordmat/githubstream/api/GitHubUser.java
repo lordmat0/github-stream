@@ -22,4 +22,6 @@ public class GitHubUser {
         this.avatarUrl = avatarUrl;
     }
 
+    
+    // TODO define an hashcode/equals method 
 }
