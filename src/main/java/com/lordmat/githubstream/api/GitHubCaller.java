@@ -5,9 +5,15 @@
  */
 package com.lordmat.githubstream.api;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
@@ -57,12 +63,43 @@ public class GitHubCaller {
      * @return a JSONArray that contains details on commits which are retrieved
      * from an API call to the githubAPI
      */
-    public JSONArray getCommits(String since, String until) {
+    public Map<Date, GitHubCommit> getCommits(String since, String until) {
         Map<String, String> queryParam = new HashMap<>();
         queryParam.put("since", since);
         queryParam.put("until", until);
 
-        return new JSONArray(call(Path.REPO_COMMITS, queryParam));
+        JSONArray commits = new JSONArray(call(Path.REPO_COMMITS, queryParam));
+
+        Map<Date, GitHubCommit> gitHubCommits = new LinkedHashMap<>();
+
+        //TODO put this in a util class
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        df.setTimeZone(tz);
+        
+        for (int i = commits.length() - 1; i != 0; i--) {
+            JSONObject commitDetails = commits.getJSONObject(i);
+            JSONObject commit = commitDetails.getJSONObject("commit");
+            JSONObject author = commit.getJSONObject("author");
+
+            String id = commitDetails.getString("sha");
+            String message = commit.getString("message");
+            String user = author.getString("name");
+            
+            Date date = null;
+            try{
+                date = df.parse(author.getString("date"));
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+            
+            //TODO work out a easy way to get files or remove it
+            GitHubCommit ghCommit = new GitHubCommit(id, date, message, null, user);
+
+            gitHubCommits.put(date, ghCommit);
+        }
+
+        return gitHubCommits;
     }
 
     /**
@@ -83,7 +120,7 @@ public class GitHubCaller {
 
     /**
      * Makes a call to the githubAPI with variables passed in.
-     * 
+     *
      * @param path The URL to call
      * @return Results from the call
      */
@@ -93,7 +130,7 @@ public class GitHubCaller {
 
     /**
      * Makes a call to the githubAPI with variables passed in.
-     * 
+     *
      * @param path The URL to call
      * @param parameter Extra parameters used
      * @return Results from the call
@@ -102,8 +139,8 @@ public class GitHubCaller {
         WebTarget webTarget = ClientBuilder.newClient().target(path);
 
         if (parameter != null) {
-            
-            for(Map.Entry<String, String> entry : parameter.entrySet()){
+
+            for (Map.Entry<String, String> entry : parameter.entrySet()) {
                 webTarget = webTarget.queryParam(entry.getKey(), entry.getValue());
             }
         }

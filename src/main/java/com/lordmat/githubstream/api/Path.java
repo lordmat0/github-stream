@@ -27,7 +27,7 @@ public class Path {
     public static final String RATE_LIMIT;
 
     /**
-     * Repoistory name used for finding information about commits
+     * Repository name used for finding information about commits
      */
     public static final String REPO_NAME;
 

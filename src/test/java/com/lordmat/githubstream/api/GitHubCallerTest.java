@@ -7,9 +7,10 @@ package com.lordmat.githubstream.api;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 import java.util.TimeZone;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -86,15 +87,22 @@ public class GitHubCallerTest {
         GitHubCaller instance = createInstance();
 
         TimeZone tz = TimeZone.getTimeZone("UTC");
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         df.setTimeZone(tz);
-        String since = df.format(new Date(2010, 1, 1));
+        
+        Calendar calender = Calendar.getInstance();
+        calender.set(Calendar.DATE, calender.getActualMinimum(Calendar.DATE));
+        
+        df.setCalendar(calender); 
+        String since = df.format(calender.getTime());
         String until = df.format(new Date());
 
-        JSONArray result = instance.getCommits(since, until);
+        Map<Date,GitHubCommit> result = instance.getCommits(since, until);
 
-        assertTrue(result.length() > 0);
-        assertNotNull(result.getJSONObject(0).getJSONObject("commit").getString("message"));
+        assertTrue(result.size() > 0);
+        
+        
+        assertNotNull(result.values().iterator().next().getDate());
     }
 
     @Test

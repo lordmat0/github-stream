@@ -20,9 +20,9 @@ public class GitHubCommit {
     private String message;
     private List<String> filesChanged;
     
-    private GitHubUser userCommited;
+    private String userCommited;
 
-    public GitHubCommit(String id, Date date, String message, List<String> filesChanged, GitHubUser userCommited) {
+    public GitHubCommit(String id, Date date, String message, List<String> filesChanged, String userCommited) {
         this.id = id;
         this.date = date;
         this.message = message;
@@ -30,6 +30,8 @@ public class GitHubCommit {
         this.userCommited = userCommited;
     }
     
-    
+    public Date getDate(){
+        return date;
+    }
     
 }
