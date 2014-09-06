@@ -15,11 +15,12 @@ import javax.servlet.ServletContextListener;
  */
 public class StartManager implements ServletContextListener {
 
+    public static GitHubAPI gitHubAPI;
     @Override
     public void contextInitialized(ServletContextEvent event) {
         // Program starts here
         System.out.println("contextInitialized");
-        new GitHubAPI();
+        gitHubAPI = new GitHubAPI();
     }
 
     @Override

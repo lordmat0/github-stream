@@ -4,9 +4,11 @@
     Author     : mat
 --%>
 
+<%@page import="com.lordmat.githubstream.web.StartManager"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>
 <%@page import="com.lordmat.githubstream.api.GitHubAPI"%>
+<%@page import="com.lordmat.githubstream.api.GitHubCommit"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -27,7 +29,11 @@
             
             out.write("<h1>JSON Array</h1>");
             
-            out.write(GitHubAPI.jsonObject.toString());
+            
+            for(GitHubCommit commit : StartManager.gitHubAPI.getCommits().values()){
+                out.write(commit.toString());
+                out.write("<p>");
+            }
             
             //out.write("<p>" + GitHubAPI.jsonObject.get("feeds_url") + "</p>");
         %>

@@ -33,5 +33,11 @@ public class GitHubCommit {
     public Date getDate(){
         return date;
     }
+
+    @Override
+    public String toString() {
+        return id + ", " + date.toString() + ", " + message + ", " + userCommited;
+    }
+    
     
 }
