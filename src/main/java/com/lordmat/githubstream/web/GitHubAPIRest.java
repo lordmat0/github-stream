@@ -1,8 +1,10 @@
 package com.lordmat.githubstream.web;
 
+import com.lordmat.githubstream.api.GitHubUser;
+import com.lordmat.githubstream.api.GitHubCommit;
+import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -23,8 +25,6 @@ public class GitHubAPIRest {
 
     @Context
     private UriInfo context;
-    
-
 
     /**
      * Creates a new instance of GitHubAPI
@@ -33,32 +33,38 @@ public class GitHubAPIRest {
         System.out.println("GitHubAPI created");
     }
 
-    @GET
-    public String defaultPath(){
-        return "default path";
-    }
-    
     /**
-     * PUT method for updating or creating an instance of GenericResource
-     * @param content representation for the resource
-     * @return an HTTP response with content of the updated or created resource.
+     * 
+     * @param users List of users to find information about
+     * @return A list of github users details requested
      */
-    @PUT
-    public void putJson(A content) {
-        System.out.println(content);
+    @Path("user/")
+    @GET
+    public List<GitHubUser> getUsers(String[] users) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
-}
 
-@XmlRootElement
-class A{
-    @XmlElement
-    private String content;
-    
-    public A(){
-        
+    /**
+     * 
+     * @param lasestCommitId The commit ID to check against 
+     * @return An empty list or commits that come after the lastestCommitId
+     * 
+     */
+    @Path("commit/new")
+    @GET
+    public List<GitHubCommit> getNewCommits(String lasestCommitId) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
-    @Override
-    public String toString(){
-        return content;
+
+    /**
+     * 
+     * @param earlistCommitId The commit ID to check against 
+     * @return An empty list or commits that come before the earlistCommitId
+     */
+    @Path("commit/old")
+    @GET
+    public List<GitHubCommit> getOldCommits(String earlistCommitId) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
+
 }

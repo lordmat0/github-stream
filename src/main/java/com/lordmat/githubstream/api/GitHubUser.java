@@ -9,7 +9,7 @@ package com.lordmat.githubstream.api;
  *
  * @author mat
  */
-//TODO Finish this class off
+//TODO Finish this class off including adding XML information
 public class GitHubUser {
 
     private String userName;
