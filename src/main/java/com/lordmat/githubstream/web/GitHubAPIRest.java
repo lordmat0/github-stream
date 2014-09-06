@@ -24,7 +24,7 @@ public class GitHubAPIRest {
     private UriInfo context;
 
     /**
-     * Creates a new instance of GitHubAPI
+     * Created everytime the webAPI is hit
      */
     public GitHubAPIRest() {
         System.out.println("GitHubAPI created");

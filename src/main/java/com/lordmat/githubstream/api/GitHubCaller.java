@@ -22,6 +22,9 @@ public class GitHubCaller {
 
     private final String token;
 
+    /**
+     * Default constructor, attempts to load from resource bundle "project"
+     */
     public GitHubCaller() {
         ResourceBundle bundle = ResourceBundle.getBundle("project");
         token = bundle.getString("authtoken");
@@ -33,7 +36,7 @@ public class GitHubCaller {
      * @return
      */
     public JSONObject getPaths() {
-        return new JSONObject(call(GitHubPath.DEFAULT_PATH));
+        return new JSONObject(call(Path.DEFAULT_PATH));
     }
 
     /**
@@ -43,7 +46,7 @@ public class GitHubCaller {
      * @return a JSONObject from results from an API call to the githubAPI
      */
     public JSONObject getRateLimit() {
-        return new JSONObject(call(GitHubPath.RATE_LIMIT));
+        return new JSONObject(call(Path.RATE_LIMIT));
     }
 
     /**
@@ -59,7 +62,7 @@ public class GitHubCaller {
         queryParam.put("since", since);
         queryParam.put("until", until);
 
-        return new JSONArray(call(GitHubPath.COMMITS, queryParam));
+        return new JSONArray(call(Path.REPO_COMMITS, queryParam));
     }
 
     /**
@@ -70,7 +73,7 @@ public class GitHubCaller {
      * githubAPI.
      */
     public GitHubUser getUser(String userName) {
-        JSONObject user = new JSONObject(call(GitHubPath.user(userName)));
+        JSONObject user = new JSONObject(call(Path.user(userName)));
         return new GitHubUser(
                 user.getString("login"),
                 user.getString("url"),
@@ -99,8 +102,9 @@ public class GitHubCaller {
         WebTarget webTarget = ClientBuilder.newClient().target(path);
 
         if (parameter != null) {
-            for (String key : parameter.keySet()) {
-                webTarget = webTarget.queryParam(key, parameter.get(key));
+            
+            for(Map.Entry<String, String> entry : parameter.entrySet()){
+                webTarget = webTarget.queryParam(entry.getKey(), entry.getValue());
             }
         }
 

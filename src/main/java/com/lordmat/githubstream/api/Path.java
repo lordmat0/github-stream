@@ -13,15 +13,37 @@ import org.json.JSONObject;
  *
  * @author mat
  */
-public class GitHubPath {
+public class Path {
 
+    /**
+     * Default path of github API
+     */
     public static final String DEFAULT_PATH;
+
+    /**
+     * Path of rate limit which returns data about how many calls can be
+     * performed and when it's reset
+     */
     public static final String RATE_LIMIT;
+
+    /**
+     * Repoistory name used for finding information about commits
+     */
     public static final String REPO_NAME;
+
+    /**
+     * Repository owner needed for finding information about commits
+     */
     public static final String REPO_OWNER;
-    public static final String COMMITS;
 
+    /**
+     * Path needed for querying commits information
+     */
+    public static final String REPO_COMMITS;
 
+    /**
+     * Path needed to get user information, use method user() instead
+     */
     private static final String USER_URL;
 
     static {
@@ -40,7 +62,7 @@ public class GitHubPath {
         REPO_NAME = "githubstream";
         REPO_OWNER = "lordmat0";
 
-        COMMITS = jsonPaths.getString("repository_url")
+        REPO_COMMITS = jsonPaths.getString("repository_url")
                 .replace("{owner}", REPO_OWNER)
                 .replace("{repo}", REPO_NAME) + "/commits";
 
@@ -48,17 +70,17 @@ public class GitHubPath {
     }
 
     /**
-     * 
+     *
      * @param username the user name to find
      * @return A path to the user to be called on
      */
-    public static String user(String username){
+    public static String user(String username) {
         return USER_URL.replace("{user}", username);
     }
-    
+
     /**
-     * Can't make instance of class
+     * Private constructor, can't make instance of class
      */
-    private GitHubPath() {
+    private Path() {
     }
 }
