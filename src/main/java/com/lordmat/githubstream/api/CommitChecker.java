@@ -19,8 +19,8 @@ import java.util.TimeZone;
  */
 public class CommitChecker extends Thread {
 
-    private GitHubCaller caller;
-    private NavigableMap<Date, GitHubCommit> gitHubCommits;
+    private final GitHubCaller caller;
+    private final NavigableMap<Date, GitHubCommit> gitHubCommits;
 
     public CommitChecker(NavigableMap<Date, GitHubCommit> gitHubCommits) {
         this.gitHubCommits = gitHubCommits;
@@ -29,40 +29,41 @@ public class CommitChecker extends Thread {
 
     @Override
     public void run() {
-        
-        TimeZone tz = TimeZone.getTimeZone("UTC");
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        df.setTimeZone(tz);
-        
-        String since = null;
-        Date lastDate = null;
-        if (gitHubCommits.isEmpty()) {
-            //TODO remove this as if since is null it will still return data
+        // TODO refactor date into its own class
+        while (true) {
+            TimeZone tz = TimeZone.getTimeZone("UTC");
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
             df.setTimeZone(tz);
 
+            String since = null;
+            if (!gitHubCommits.isEmpty()) {
+                Date lastDate = gitHubCommits.lastKey();
+
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(lastDate);
+
+                // Add one second otherwise github returns the commit that happened on that date
+                cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + 1);
+
+                lastDate = cal.getTime();
+                since = df.format(lastDate);
+            }
             Calendar calender = Calendar.getInstance();
-            calender.set(Calendar.DATE, calender.getActualMinimum(Calendar.DATE));
+            calender.set(Calendar.DATE, calender.getActualMaximum(Calendar.DATE));
 
-            df.setCalendar(calender);
+            String until = df.format(calender.getTime());
 
-            lastDate = calender.getTime();
-        } else {
-            lastDate = gitHubCommits.lastKey();
-            since = df.format(lastDate);
+            Map<Date, GitHubCommit> data = caller.getCommits(since, until);
+
+            gitHubCommits.putAll(data);
+
+            try {
+                sleep(60000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
         }
-        Calendar calender = Calendar.getInstance();
-        calender.set(Calendar.DATE, calender.getActualMaximum(Calendar.DATE));
 
-        String until = df.format(calender.getTime());
-
-        Map<Date, GitHubCommit> data = caller.getCommits(since, until);
-
-        for (Map.Entry<Date, GitHubCommit> entry : data.entrySet()) {
-            //System.out.println(entry.getValue());
-        }
-        
-        // TODO check if this is put int the right order
-        gitHubCommits.putAll(data);
     }
 
 }

@@ -35,6 +35,9 @@
                 out.write("<p>");
             }
             
+            out.write("<h2> Last Entry</h2><p>");
+            out.write(StartManager.gitHubAPI.getCommits().lastEntry().toString());
+          
             //out.write("<p>" + GitHubAPI.jsonObject.get("feeds_url") + "</p>");
         %>
         </p>
