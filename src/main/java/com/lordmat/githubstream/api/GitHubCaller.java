@@ -5,15 +5,12 @@
  */
 package com.lordmat.githubstream.api;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import com.lordmat.githubstream.util.GitDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.TimeZone;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
@@ -58,8 +55,8 @@ public class GitHubCaller {
     /**
      * Gets a list of commits between two dates.
      *
-     * @param since The start date
-     * @param until The end date
+     * @param since The start date, can be null (meaning that there is no restriction)
+     * @param until The end date, can be null (meaning that there is no restriction)
      * @return a JSONArray that contains details on commits which are retrieved
      * from an API call to the githubAPI
      */
@@ -72,11 +69,6 @@ public class GitHubCaller {
 
         Map<Date, GitHubCommit> gitHubCommits = new LinkedHashMap<>();
 
-        //TODO put this in a util class
-        TimeZone tz = TimeZone.getTimeZone("UTC");
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        df.setTimeZone(tz);
-        
         for (int i = commits.length() - 1; i != 0; i--) {
             JSONObject commitDetails = commits.getJSONObject(i);
             JSONObject commit = commitDetails.getJSONObject("commit");
@@ -87,11 +79,8 @@ public class GitHubCaller {
             String user = author.getString("name");
             
             Date date = null;
-            try{
-                date = df.parse(author.getString("date"));
-            }catch(Exception ex){
-                ex.printStackTrace();
-            }
+            
+            date = GitDateFormat.parse(author.getString("date"));
             
             //TODO work out a easy way to get files or remove it
             GitHubCommit ghCommit = new GitHubCommit(id, date, message, null, user);

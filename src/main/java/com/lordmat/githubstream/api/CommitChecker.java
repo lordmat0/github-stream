@@ -5,6 +5,7 @@
  */
 package com.lordmat.githubstream.api;
 
+import com.lordmat.githubstream.util.GitDateFormat;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -29,31 +30,20 @@ public class CommitChecker extends Thread {
 
     @Override
     public void run() {
-        // TODO refactor date into its own class
         while (true) {
-            TimeZone tz = TimeZone.getTimeZone("UTC");
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-            df.setTimeZone(tz);
-
             String since = null;
             if (!gitHubCommits.isEmpty()) {
-                Date lastDate = gitHubCommits.lastKey();
 
                 Calendar cal = Calendar.getInstance();
-                cal.setTime(lastDate);
+                cal.setTime(gitHubCommits.lastKey());
 
                 // Add one second otherwise github returns the commit that happened on that date
-                cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + 1);
+                cal.add(Calendar.SECOND, 1);
 
-                lastDate = cal.getTime();
-                since = df.format(lastDate);
+                since = GitDateFormat.format(cal.getTime());
             }
-            Calendar calender = Calendar.getInstance();
-            calender.set(Calendar.DATE, calender.getActualMaximum(Calendar.DATE));
 
-            String until = df.format(calender.getTime());
-
-            Map<Date, GitHubCommit> data = caller.getCommits(since, until);
+            Map<Date, GitHubCommit> data = caller.getCommits(since, null);
 
             gitHubCommits.putAll(data);
 

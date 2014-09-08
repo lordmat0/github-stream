@@ -5,6 +5,7 @@
  */
 package com.lordmat.githubstream.api;
 
+import com.lordmat.githubstream.util.GitDateFormat;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -85,17 +86,12 @@ public class GitHubCallerTest {
     public void testGetCommits() {
         System.out.println("testGetCommits");
         GitHubCaller instance = createInstance();
-
-        TimeZone tz = TimeZone.getTimeZone("UTC");
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        df.setTimeZone(tz);
         
         Calendar calender = Calendar.getInstance();
         calender.set(Calendar.DATE, calender.getActualMinimum(Calendar.DATE));
         
-        df.setCalendar(calender); 
-        String since = df.format(calender.getTime());
-        String until = df.format(new Date());
+        String since = GitDateFormat.format(calender.getTime());
+        String until = null;
 
         Map<Date,GitHubCommit> result = instance.getCommits(since, until);
 
