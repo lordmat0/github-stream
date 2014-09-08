@@ -92,11 +92,11 @@ public class GitHubCaller {
         }
 
         //Uncomment for fake commits
-        /*
+        
         gitHubCommits.put(
                 GitDateFormat.parse(GitDateFormat.format(new Date())),
                 new GitHubCommit("fake", new Date(), "fake", null, "fake"));
-        */
+        
         
         return gitHubCommits;
     }

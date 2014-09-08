@@ -45,7 +45,7 @@ public class CommitChecker extends Thread {
             gitHubCommits.putAll(data);
 
             try {
-                sleep(60000);
+                sleep(6000);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
