@@ -4,6 +4,7 @@
     Author     : mat
 --%>
 
+<%@page import="com.lordmat.githubstream.page.PageManager"%>
 <%@page import="com.lordmat.githubstream.web.StartManager"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>
@@ -20,20 +21,17 @@
         <h1>Hello World!</h1>
         <p>Current date/time:
         <%
-        out.write(new SimpleDateFormat("HH:mm:ss").format(new Date()));    
+        out.write(new SimpleDateFormat("HH:mm:ss:SSS yyyy-MM-dd").format(new Date()));    
         %>
         </p>
         <p>
             
             <%
             
-            out.write("<h1>JSON Array</h1>");
+            out.write("<h1>GitHubData Live</h1>");
             
+            out.write(PageManager.makePage());
             
-            for(GitHubCommit commit : StartManager.gitHubAPI.getCommits().values()){
-                out.write(commit.toString());
-                out.write("<p>");
-            }
             
             out.write("<h2> Last Entry</h2><p>");
             out.write(StartManager.gitHubAPI.getCommits().lastEntry().toString());
