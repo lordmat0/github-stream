@@ -8,7 +8,6 @@ package com.lordmat.githubstream.page;
 import com.lordmat.githubstream.api.GitHubCommit;
 import com.lordmat.githubstream.web.StartManager;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
@@ -21,11 +20,23 @@ import java.util.TreeMap;
  */
 public class PageManager {
 
+    /**
+     * The page, uses a StringBuilder for performance
+     */
     private final static StringBuilder page = new StringBuilder();
 
+    /**
+     * The CommitList, this automatically updates from the CommitChecker object
+     */
     private final static NavigableMap<Date, GitHubCommit> commitList = StartManager.gitHubAPI.getCommits();
     private static Date lastDate;
 
+    /**
+     * This method takes the current list of commits wraps them in HTML tags and
+     * classes and builds the page
+     *
+     * @return The list of commits formatted
+     */
     public static synchronized String makePage() {
 
         NavigableMap<Date, GitHubCommit> commitCapture = new TreeMap<>(commitList);
@@ -42,7 +53,7 @@ public class PageManager {
             }
         } else if (!lastDate.equals(commitCapture.lastEntry().getKey())) {
 
-            // Need to put it into a new string builder otherwise the order
+            // Need to put it into a new stringbuilder otherwise the order
             // would be wrong
             StringBuilder newCommits = new StringBuilder();
 
@@ -51,13 +62,14 @@ public class PageManager {
                     break;
                 }
 
-                // todo sanitize getValue(), change tags add html classes
+                // TODO sanitize getValue(), change tags add html classes
                 newCommits.append("<p>");
                 newCommits.append(entry.getValue());
                 newCommits.append("</p>");
 
             }
 
+            // Insert new commits before old ones
             page.insert(0, newCommits);
 
             lastDate = commitCapture.lastKey();

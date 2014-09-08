@@ -11,13 +11,12 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  *
  * @author mat
  */
+//TODO Finish this class
 public class GitHubAPI {
 
     private Map<String, GitHubUser> gitHubUsers;

@@ -12,9 +12,13 @@ import javax.ws.rs.Produces;
 
 /**
  * REST Web Service
+ * <p>
+ * Web clients can all these methods to get the lastest commits, past commits
+ * and to get user details
  *
  * @author mat
  */
+//TODO finish this class
 @Path("githubapi")
 @Produces("application/json")
 @Consumes("application/json")
@@ -31,7 +35,7 @@ public class GitHubAPIRest {
     }
 
     /**
-     * 
+     *
      * @param users List of users to find information about
      * @return A list of github users details requested
      */
@@ -42,10 +46,10 @@ public class GitHubAPIRest {
     }
 
     /**
-     * 
-     * @param lasestCommitId The commit ID to check against 
+     *
+     * @param lasestCommitId The commit ID to check against
      * @return An empty list or commits that come after the lastestCommitId
-     * 
+     *
      */
     @Path("commit/new")
     @GET
@@ -54,8 +58,8 @@ public class GitHubAPIRest {
     }
 
     /**
-     * 
-     * @param earlistCommitId The commit ID to check against 
+     *
+     * @param earlistCommitId The commit ID to check against
      * @return An empty list or commits that come before the earlistCommitId
      */
     @Path("commit/old")
