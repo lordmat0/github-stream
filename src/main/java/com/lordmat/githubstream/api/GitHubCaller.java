@@ -55,8 +55,10 @@ public class GitHubCaller {
     /**
      * Gets a list of commits between two dates.
      *
-     * @param since The start date, can be null (meaning that there is no restriction)
-     * @param until The end date, can be null (meaning that there is no restriction)
+     * @param since The start date, can be null (meaning that there is no
+     * restriction)
+     * @param until The end date, can be null (meaning that there is no
+     * restriction)
      * @return a JSONArray that contains details on commits which are retrieved
      * from an API call to the githubAPI
      */
@@ -69,7 +71,8 @@ public class GitHubCaller {
 
         Map<Date, GitHubCommit> gitHubCommits = new LinkedHashMap<>();
 
-        for (int i = commits.length() - 1; i != 0; i--) {
+        for (int i = commits.length() - 1; i >= 0; i--) {
+
             JSONObject commitDetails = commits.getJSONObject(i);
             JSONObject commit = commitDetails.getJSONObject("commit");
             JSONObject author = commit.getJSONObject("author");
@@ -77,17 +80,24 @@ public class GitHubCaller {
             String id = commitDetails.getString("sha");
             String message = commit.getString("message");
             String user = author.getString("name");
-            
+
             Date date = null;
-            
+
             date = GitDateFormat.parse(author.getString("date"));
-            
+
             //TODO work out a easy way to get files or remove it
             GitHubCommit ghCommit = new GitHubCommit(id, date, message, null, user);
 
             gitHubCommits.put(date, ghCommit);
         }
 
+        //Uncomment for fake commits
+        /*
+        gitHubCommits.put(
+                GitDateFormat.parse(GitDateFormat.format(new Date())),
+                new GitHubCommit("fake", new Date(), "fake", null, "fake"));
+        */
+        
         return gitHubCommits;
     }
 
