@@ -38,6 +38,39 @@ public class GitHubCommit {
     public String toString() {
         return id + ", " + date.toString() + ", " + message + ", " + userCommited;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public List<String> getFilesChanged() {
+        return filesChanged;
+    }
+
+    public void setFilesChanged(List<String> filesChanged) {
+        this.filesChanged = filesChanged;
+    }
+
+    public String getUserCommited() {
+        return userCommited;
+    }
+
+    public void setUserCommited(String userCommited) {
+        this.userCommited = userCommited;
+    }
+    
     
     
 }

@@ -12,8 +12,8 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  *
@@ -43,7 +43,7 @@ public class GitHubAPIRestTest {
     /**
      * Test of getUsers method, of class GitHubAPIRest.
      */
-    @Test
+    @Ignore
     public void testGetUsers() {
         System.out.println("getUsers");
 
@@ -58,7 +58,7 @@ public class GitHubAPIRestTest {
 
     }
 
-    @Test
+    @Ignore
     public void testSingleUser() {
         System.out.println("getUsers (test2)");
 
@@ -75,7 +75,7 @@ public class GitHubAPIRestTest {
     /**
      * Test of getNewCommits method, of class GitHubAPIRest.
      */
-    @Test
+    @Ignore
     public void testGetNewCommits() {
         System.out.println("getNewCommits");
 
@@ -92,7 +92,7 @@ public class GitHubAPIRestTest {
     /**
      * Test of getOldCommits method, of class GitHubAPIRest.
      */
-    @Test
+    @Ignore
     public void testGetOldCommits() {
         System.out.println("getOldCommits");
 

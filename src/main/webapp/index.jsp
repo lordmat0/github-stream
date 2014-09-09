@@ -1,15 +1,10 @@
 <%-- 
-    Document   : newjsp
-    Created on : 02-Sep-2014, 20:14:52
+    Document   : index
+    Created on : 09-Sep-2014, 23:31:18
     Author     : mat
 --%>
 
-<%@page import="com.lordmat.githubstream.page.PageManager"%>
-<%@page import="com.lordmat.githubstream.web.StartManager"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.Date"%>
-<%@page import="com.lordmat.githubstream.api.GitHubAPI"%>
-<%@page import="com.lordmat.githubstream.api.GitHubCommit"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -18,33 +13,24 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
-        <p>Page created at:
-            <%
-                out.write(new SimpleDateFormat("HH:mm:ss:SSS yyyy-MM-dd").format(new Date()));
-            %>
-        </p>
-        <div>
-            Time now: 
-            <div id="time" style="display: inline-block"></div> 
-            <script type="text/javascript">setInterval(function() {
-                    document.getElementById("time").innerHTML = new Date();
-                }, 1000)
-            </script>
-        </div>
-    <p>
+        <h1>Hello World! in custom index.jsp page</h1>
+        
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
 
-        <%
-            out.write("<h1>GitHubData Live</h1>");
-
-            out.write(PageManager.makePage());
-
-            out.write("<h2> Last Entry</h2><p>");
-            out.write(StartManager.gitHubAPI.getCommits().lastEntry().toString());
-
-        //out.write("<p>" + GitHubAPI.jsonObject.get("feeds_url") + "</p>");
-%>
-    </p>
-
-</body>
+                <th>Message</th>
+                <th>User</th>
+            </tr>
+            <c:forEach items="${commits}" var="commits">
+                <tr>
+                    <td>${commits.id}</td>
+                    <td><c:out value="${commits.date}" /></td>
+                    <td><c:out value="${commits.message}" /></td>
+                    <td><c:out value="${commits.userCommited}" /></td>
+                </tr>
+            </c:forEach>
+       </table>
+    </body>
 </html>
