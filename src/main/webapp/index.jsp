@@ -19,26 +19,32 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        <p>Current date/time:
-        <%
-        out.write(new SimpleDateFormat("HH:mm:ss:SSS yyyy-MM-dd").format(new Date()));    
-        %>
-        </p>
-        <p>
-            
+        <p>Page created at:
             <%
-            
+                out.write(new SimpleDateFormat("HH:mm:ss:SSS yyyy-MM-dd").format(new Date()));
+            %>
+        </p>
+        <div>
+            Time now: 
+            <div id="time" style="display: inline-block"></div> 
+            <script type="text/javascript">setInterval(function() {
+                    document.getElementById("time").innerHTML = new Date();
+                }, 1000)
+            </script>
+        </div>
+    <p>
+
+        <%
             out.write("<h1>GitHubData Live</h1>");
-            
+
             out.write(PageManager.makePage());
-            
-            
+
             out.write("<h2> Last Entry</h2><p>");
             out.write(StartManager.gitHubAPI.getCommits().lastEntry().toString());
-          
-            //out.write("<p>" + GitHubAPI.jsonObject.get("feeds_url") + "</p>");
-        %>
-        </p>
-        
-    </body>
+
+        //out.write("<p>" + GitHubAPI.jsonObject.get("feeds_url") + "</p>");
+%>
+    </p>
+
+</body>
 </html>

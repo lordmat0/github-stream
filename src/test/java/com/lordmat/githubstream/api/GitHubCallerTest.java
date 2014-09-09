@@ -6,12 +6,9 @@
 package com.lordmat.githubstream.api;
 
 import com.lordmat.githubstream.util.GitDateFormat;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
-import java.util.TimeZone;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.AfterClass;
