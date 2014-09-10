@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package com.lordmat.githubstream.web;
+package com.lordmat.githubstream;
 
-import com.lordmat.githubstream.api.GitHubAPI;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -15,12 +9,16 @@ import javax.servlet.ServletContextListener;
  */
 public class StartManager implements ServletContextListener {
 
-    public static GitHubAPI gitHubAPI;
+    private static GitHubData gitHubData;
     @Override
     public void contextInitialized(ServletContextEvent event) {
         // Program starts here
         System.out.println("contextInitialized");
-        gitHubAPI = new GitHubAPI();
+        gitHubData = new GitHubData();
+    }
+    
+    public static GitHubData getData(){
+        return gitHubData;
     }
 
     @Override

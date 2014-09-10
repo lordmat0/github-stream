@@ -6,7 +6,7 @@
 package com.lordmat.githubstream.page;
 
 import com.lordmat.githubstream.api.GitHubCommit;
-import com.lordmat.githubstream.web.StartManager;
+import com.lordmat.githubstream.StartManager;
 import java.util.Date;
 import java.util.NavigableMap;
 import java.util.TreeMap;
@@ -28,7 +28,7 @@ public class PageManager {
     /**
      * The CommitList, this automatically updates from the CommitChecker object
      */
-    private final static NavigableMap<Date, GitHubCommit> commitList = StartManager.gitHubAPI.getCommits();
+    private final static NavigableMap<Date, GitHubCommit> commitList = StartManager.getData().getCommits();
     private static Date lastDate;
 
     /**

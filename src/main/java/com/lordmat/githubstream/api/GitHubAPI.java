@@ -5,14 +5,13 @@
  */
 package com.lordmat.githubstream.api;
 
+import com.lordmat.githubstream.StartManager;
+import com.lordmat.githubstream.util.GitDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  *
@@ -21,23 +20,18 @@ import java.util.concurrent.ConcurrentSkipListMap;
 //TODO Finish this class
 public class GitHubAPI {
 
-    private final Map<String, GitHubUser> gitHubUsers;
-    private final NavigableMap<Date, GitHubCommit> gitHubCommits;
-
-    private final GitHubCaller call = new GitHubCaller();
+    NavigableMap<Date, GitHubCommit> gitHubCommits;
+    Map<String, GitHubUser> gitHubUsers;
 
     public GitHubAPI() {
-        gitHubUsers = new ConcurrentHashMap<>();
-        gitHubCommits = new ConcurrentSkipListMap<>();
-
-        new CommitChecker(gitHubCommits).start();
+        gitHubCommits = StartManager.getData().getCommits();
+        gitHubUsers = StartManager.getData().getUsers();
     }
 
-    // TODO change this to an iterator? maybe impossible due to concurrencly
-    public NavigableMap<Date, GitHubCommit> getCommits() {
-        return Collections.unmodifiableNavigableMap(gitHubCommits);
+    public List<GitHubCommit> checkForNewCommits(String date){
+        return checkForNewCommits(GitDateFormat.parse(date));
     }
-
+    
     public List<GitHubCommit> checkForNewCommits(Date date) {
         List<GitHubCommit> newCommits = new ArrayList<>();
 
@@ -62,13 +56,13 @@ public class GitHubAPI {
     }
 
     public List<GitHubUser> findUser(List<String> gitHubUserFind) {
-        List<GitHubUser> returnedUsers = new ArrayList<>(gitHubUserFind.size());
+        List<GitHubUser> returnedUsers = new ArrayList<>();
         for (String userName : gitHubUserFind) {
             
             GitHubUser user = gitHubUsers.get(userName);
             
             if(user == null){
-                user = call.getUser(userName);
+                user = StartManager.getData().getCaller().getUser(userName);
                 // Cache user
                 gitHubUsers.put(user.getUserName(), user);
             }
