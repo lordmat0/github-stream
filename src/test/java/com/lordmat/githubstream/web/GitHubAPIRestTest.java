@@ -7,6 +7,7 @@ package com.lordmat.githubstream.web;
 
 import com.lordmat.githubstream.api.GitHubCommit;
 import com.lordmat.githubstream.api.GitHubUser;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -48,7 +49,11 @@ public class GitHubAPIRestTest {
         System.out.println("getUsers");
 
         // TODO add more users to test
-        String[] users = new String[]{"lordmat0", "foo", "func"};
+        List<String> users = new ArrayList<>();
+        users.add("lordmat0");
+        //add more users
+        
+        
         GitHubAPIRest instance = new GitHubAPIRest();
 
         //List<GitHubUser> expResult = null;
@@ -62,7 +67,8 @@ public class GitHubAPIRestTest {
     public void testSingleUser() {
         System.out.println("getUsers (test2)");
 
-        String[] users = new String[]{"lordmat0",};
+        List<String> users = new ArrayList<>();
+        users.add("lordmat0");
         GitHubAPIRest instance = new GitHubAPIRest();
 
         List<GitHubUser> result = instance.getUsers(users);
