@@ -5,6 +5,8 @@
  */
 package com.lordmat.githubstream.api;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -19,56 +21,61 @@ import java.util.concurrent.ConcurrentSkipListMap;
 //TODO Finish this class
 public class GitHubAPI {
 
-    private Map<String, GitHubUser> gitHubUsers;
-    private NavigableMap<Date, GitHubCommit> gitHubCommits;
-    
-    private Date latestCommitDate;
-    private Date latestCheckDate;
-    
-    private Date earlistCommitDate;
-    private Date earlistCheckDate;
-    private GitHubCaller call = new GitHubCaller();
-    
+    private final Map<String, GitHubUser> gitHubUsers;
+    private final NavigableMap<Date, GitHubCommit> gitHubCommits;
+
+    private final GitHubCaller call = new GitHubCaller();
 
     public GitHubAPI() {
         gitHubUsers = new ConcurrentHashMap<>();
         gitHubCommits = new ConcurrentSkipListMap<>();
-        
+
         new CommitChecker(gitHubCommits).start();
     }
 
     // TODO change this to an iterator? maybe impossible due to concurrencly
-    public NavigableMap<Date, GitHubCommit> getCommits(){
-        return gitHubCommits;
+    public NavigableMap<Date, GitHubCommit> getCommits() {
+        return Collections.unmodifiableNavigableMap(gitHubCommits);
     }
-    
-    public List<GitHubCommit> checkForNewCommits(){
-        Date now = new Date();
-        // Add 60 seconds on current date
-        
-        // check to see if it's passed the lastestCheckDate
-        
-        // If true
-            // Do a call to github API with the latestCommited date as the from
-            
-            //New commits?
-                // if true add them to the list
-                // Get latest time and change lastestCommmitDate
-                // return only new commits
-        
-        throw new UnsupportedOperationException("Not supported yet.");
+
+    public List<GitHubCommit> checkForNewCommits(Date date) {
+        List<GitHubCommit> newCommits = new ArrayList<>();
+
+        if (gitHubCommits.lastKey().equals(date)) {
+            return newCommits; // no new commits
+        }
+
+        for (GitHubCommit commit : gitHubCommits.values()) {
+            if (commit.getDate().equals(date)) {
+                break;
+            }
+            newCommits.add(commit);
+        }
+
+        return newCommits;
     }
-    
-    public List<GitHubCommit> findOldCommits(Date date){
+
+    public List<GitHubCommit> findOldCommits(Date date) {
         // Maybe get total number of commits?
-        
-        
+
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
-    
-    public List<GitHubUser> findUser(List<String> gitHubUsers){
-        
-        throw new UnsupportedOperationException("Not supported yet.");
+
+    public List<GitHubUser> findUser(List<String> gitHubUserFind) {
+        List<GitHubUser> returnedUsers = new ArrayList<>(gitHubUserFind.size());
+        for (String userName : gitHubUserFind) {
+            
+            GitHubUser user = gitHubUsers.get(userName);
+            
+            if(user == null){
+                user = call.getUser(userName);
+                // Cache user
+                gitHubUsers.put(user.getUserName(), user);
+            }
+
+            returnedUsers.add(user);
+        }
+
+        return returnedUsers;
     }
 }

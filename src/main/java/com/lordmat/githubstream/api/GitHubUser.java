@@ -87,4 +87,30 @@ public class GitHubUser {
                 + ", avatarUrl=" + avatarUrl + '}';
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getAccountUrl() {
+        return accountUrl;
+    }
+
+    public void setAccountUrl(String accountUrl) {
+        this.accountUrl = accountUrl;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+    
+    
+
 }
