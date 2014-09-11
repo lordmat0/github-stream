@@ -46,65 +46,71 @@ public class GitHubAPIRestTest {
     public void tearDown() {
     }
 
+
     /**
      * Test of getUsers method, of class GitHubAPIRest.
      */
-    @Ignore
-    public void testGetUsers() {
-        System.out.println("getUsers");
+    @Test
+    public void testGetAllValidUsers() {
+        System.out.println("getUsers getValidUsers");
 
         // TODO add more users to test
         List<String> users = new ArrayList<>();
         users.add("lordmat0");
-        //add more users
-
+        users.add("shobute");
+        users.add("Mottie");
+        
         UserList userList = new UserList();
         userList.setUsers(users);
 
         GitHubAPIRest instance = new GitHubAPIRest();
-
+        
         //List<GitHubUser> expResult = null;
         List<GitHubUser> result = instance.getUsers(userList);
-
+        
         assertTrue(result.size() == 3);
+        assertNotNull(result.get(0));
+        assertNotNull(result.get(1));
+        assertNotNull(result.get(2));
     }
 
     /**
      * Test of getUsers method, of class GitHubAPIRest.
      */
-    @Ignore
+    @Test
     public void testGetAllWrongUsers() {
-        System.out.println("getUsers");
+        System.out.println("getUsers allWrongUsers");
 
         // TODO add more users to test
         List<String> users = new ArrayList<>();
-        users.add("lordmat0");
-        //add more wrong users
-        users.add("lordmat0");
-        users.add("lordmat0");
+
+        users.add("doesnt_exist_user_01");
+        users.add("doesnt_exist_user_02");
+        users.add("doesnt_exist_user_03");
 
         UserList userList = new UserList();
         userList.setUsers(users);
 
         GitHubAPIRest instance = new GitHubAPIRest();
 
-        //List<GitHubUser> expResult = null;
         List<GitHubUser> result = instance.getUsers(userList);
 
-        assertTrue(result.size() == 3);
+        // Should be empty because no users exist
+        assertTrue(result.isEmpty());
     }
 
     /**
      * Test of getUsers method, of class GitHubAPIRest.
      */
-    @Ignore
+    @Test
     public void testGetSomeWrongUsers() {
-        System.out.println("getUsers");
+        System.out.println("getUsers someWrongUsers");
 
         // TODO add more users to test
         List<String> users = new ArrayList<>();
         users.add("lordmat0");
-        //add more wrong users
+        users.add("doesnt_exist_user_02");
+        users.add("doesnt_exist_user_03");
 
         UserList userList = new UserList();
         userList.setUsers(users);
@@ -114,12 +120,13 @@ public class GitHubAPIRestTest {
         //List<GitHubUser> expResult = null;
         List<GitHubUser> result = instance.getUsers(userList);
 
-        assertTrue(result.size() == 3);
+        // Only one user should have been added since the others don't exist
+        assertTrue(result.size() == 1);
     }
 
     @Test
     public void testSingleUser() {
-        System.out.println("getUsers (test2)");
+        System.out.println("getUsers singleUser");
 
         List<String> users = new ArrayList<>();
         users.add("lordmat0");
@@ -131,20 +138,19 @@ public class GitHubAPIRestTest {
 
         List<GitHubUser> result = instance.getUsers(userList);
 
-        // TODO find lordmat0 user details
-        GitHubUser mat = new GitHubUser("lordmat0",                     // user name
-                "https://github.com/lordmat0",                          // account url
+        GitHubUser mat = new GitHubUser("lordmat0", // user name
+                "https://github.com/lordmat0", // account url
                 "https://avatars.githubusercontent.com/u/4976353?v=2"); // avatar url
 
         assertEquals(mat, result.get(0));
     }
 
-    @Ignore
+    @Test
     public void testSingleWrongUser() {
-        System.out.println("getUsers (test2)");
+        System.out.println("getUsers singleWrongUser");
 
         List<String> users = new ArrayList<>();
-        users.add("no one by this name I'm sure");
+        users.add("doesnt_exist_user_01");
 
         UserList userList = new UserList();
         userList.setUsers(users);
@@ -153,9 +159,7 @@ public class GitHubAPIRestTest {
 
         List<GitHubUser> result = instance.getUsers(userList);
 
-        // TODO find lordmat0 user details
-        GitHubUser mat = new GitHubUser("lordmat0", "?", "?");
-        assertEquals(mat, result.get(0));
+        assertTrue(result.isEmpty());
     }
 
     /**
@@ -167,7 +171,7 @@ public class GitHubAPIRestTest {
 
         // TODO find ID that has a few commits after it
         // always has a few commits ahead of this ID
-        String lasestCommitId = "";
+        String lasestCommitId = "need some date";
         GitHubAPIRest instance = new GitHubAPIRest();
 
         List<GitHubCommit> result = instance.getNewCommits(lasestCommitId);
@@ -175,6 +179,41 @@ public class GitHubAPIRestTest {
         assertTrue(result.size() > 0);
     }
 
+    /**
+     * Test of getNewCommits method, of class GitHubAPIRest.
+     */
+    @Ignore
+    public void testGetNewCommitsNullDate() {
+        System.out.println("getNewCommits");
+
+        // TODO find ID that has a few commits after it
+        // always has a few commits ahead of this ID
+        String nullDate = null;
+        String emptyString = "";
+        GitHubAPIRest instance = new GitHubAPIRest();
+
+        List<GitHubCommit> result = instance.getNewCommits(nullDate);
+
+        assertTrue(result.size() > 0);
+    }
+    
+        /**
+     * Test of getNewCommits method, of class GitHubAPIRest.
+     */
+    @Ignore
+    public void testGetNewCommitsEmptyDate() {
+        System.out.println("getNewCommits");
+
+        // TODO find ID that has a few commits after it
+        // always has a few commits ahead of this ID
+        String emptyString = "";
+        GitHubAPIRest instance = new GitHubAPIRest();
+
+        List<GitHubCommit> result = instance.getNewCommits(emptyString);
+
+        assertTrue(result.size() > 0);
+    }
+    
     /**
      * Test of getOldCommits method, of class GitHubAPIRest.
      */
