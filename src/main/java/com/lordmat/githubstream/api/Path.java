@@ -5,6 +5,7 @@
  */
 package com.lordmat.githubstream.api;
 
+import java.util.ResourceBundle;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import org.json.JSONObject;
@@ -47,11 +48,15 @@ public class Path {
     private static final String USER_URL;
 
     static {
+        // TODO move resource bundle into its own class to handle if its not there
+        ResourceBundle bundle = ResourceBundle.getBundle("project");
+        String token = bundle.getString("authtoken");
+        
         DEFAULT_PATH = "https://api.github.com/";
 
         String paths = ClientBuilder.newClient().target(DEFAULT_PATH)
-                //.queryParam("foo", "bar")
                 .request(MediaType.APPLICATION_JSON_TYPE)
+                .header("Authorization", " token " + token)
                 .get(String.class);
 
         JSONObject jsonPaths = new JSONObject(paths);
