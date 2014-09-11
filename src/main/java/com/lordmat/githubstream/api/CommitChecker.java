@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,6 +18,8 @@ import java.util.NavigableMap;
  */
 public class CommitChecker extends Thread {
 
+    private final static Logger LOGGER = Logger.getLogger(CommitChecker.class.getName());
+    
     private final GitHubCaller caller;
     private final NavigableMap<Date, GitHubCommit> gitHubCommits;
 
@@ -43,10 +46,12 @@ public class CommitChecker extends Thread {
             Map<Date, GitHubCommit> data = caller.getCommits(since, null);
 
             gitHubCommits.putAll(data);
-
+            
+            LOGGER.info("got commits");
             try {
                 sleep(10000);
             } catch (InterruptedException ex) {
+                LOGGER.severe(ex.getMessage());
                 ex.printStackTrace();
             }
         }

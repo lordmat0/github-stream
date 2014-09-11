@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
@@ -25,6 +26,8 @@ import org.json.JSONObject;
 // TODO add logging to this class
 public class GitHubCaller {
 
+    private final static Logger LOGGER = Logger.getLogger(GitHubCaller.class.getName());
+    
     private final String token;
 
     /**
@@ -114,7 +117,7 @@ public class GitHubCaller {
                     user.getString("avatar_url")
             );
         } catch (Exception ex) {
-            //TODO logging
+            LOGGER.info(ex.getMessage());
             return null;
         }
 

@@ -1,5 +1,6 @@
 package com.lordmat.githubstream;
 
+import com.lordmat.githubstream.logger.MyLogger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -14,6 +15,11 @@ public class StartManager implements ServletContextListener {
     public StartManager() {
         if (gitHubData == null) {
             gitHubData = new GitHubData();
+        }
+        try {
+            MyLogger.setup();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
