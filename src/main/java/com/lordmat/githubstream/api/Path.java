@@ -5,8 +5,8 @@
  */
 package com.lordmat.githubstream.api;
 
-import com.lordmat.githubstream.MyResourceBundle;
-import com.lordmat.githubstream.ResourceKey;
+import com.lordmat.githubstream.resource.MyResourceBundle;
+import com.lordmat.githubstream.resource.ResourceKey;
 import java.util.ResourceBundle;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
@@ -63,7 +63,6 @@ public class Path {
 
         RATE_LIMIT = jsonPaths.getString("rate_limit_url");
 
-        // TODO read this from a file
         REPO_NAME = MyResourceBundle.getString(ResourceKey.REPO_NAME);
         REPO_OWNER = MyResourceBundle.getString(ResourceKey.REPO_OWNER);
 

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.lordmat.githubstream.page;
+package com.lordmat.githubstream.controller;
 
 import com.lordmat.githubstream.api.GitHubCommit;
 import com.lordmat.githubstream.StartManager;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.lordmat.githubstream;
+package com.lordmat.githubstream.resource;
 
 import java.util.ResourceBundle;
 
@@ -14,16 +14,17 @@ import java.util.ResourceBundle;
 public class MyResourceBundle {
 
     private static ResourceBundle bundle;
-    static{
-        try{
-        bundle = ResourceBundle.getBundle("project");
-        }catch(Exception ex){
-            throw new RuntimeException("Could not find bundle, make sure project.properties is in class path");
+
+    static {
+        try {
+            bundle = ResourceBundle.getBundle("project");
+        } catch (Exception ex) {
+            throw new RuntimeException("Could not find bundle, "
+                    + "make sure project.properties is in class path");
         }
     }
 
-
-    private MyResourceBundle() {   
+    private MyResourceBundle() {
     }
 
     public static String getString(String key) {

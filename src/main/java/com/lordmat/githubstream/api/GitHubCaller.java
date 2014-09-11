@@ -5,8 +5,8 @@
  */
 package com.lordmat.githubstream.api;
 
-import com.lordmat.githubstream.MyResourceBundle;
-import com.lordmat.githubstream.ResourceKey;
+import com.lordmat.githubstream.resource.MyResourceBundle;
+import com.lordmat.githubstream.resource.ResourceKey;
 import com.lordmat.githubstream.util.GitDateFormat;
 import java.util.Date;
 import java.util.HashMap;

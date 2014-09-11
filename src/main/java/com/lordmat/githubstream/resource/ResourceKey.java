@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.lordmat.githubstream;
+package com.lordmat.githubstream.resource;
 
 /**
  * Holds keys to project.properties
