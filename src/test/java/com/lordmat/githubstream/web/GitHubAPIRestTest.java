@@ -54,7 +54,6 @@ public class GitHubAPIRestTest {
     public void testGetAllValidUsers() {
         System.out.println("getUsers getValidUsers");
 
-        // TODO add more users to test
         List<String> users = new ArrayList<>();
         users.add("lordmat0");
         users.add("shobute");
@@ -81,7 +80,6 @@ public class GitHubAPIRestTest {
     public void testGetAllWrongUsers() {
         System.out.println("getUsers allWrongUsers");
 
-        // TODO add more users to test
         List<String> users = new ArrayList<>();
 
         users.add("doesnt_exist_user_01");
@@ -106,7 +104,6 @@ public class GitHubAPIRestTest {
     public void testGetSomeWrongUsers() {
         System.out.println("getUsers someWrongUsers");
 
-        // TODO add more users to test
         List<String> users = new ArrayList<>();
         users.add("lordmat0");
         users.add("doesnt_exist_user_02");
