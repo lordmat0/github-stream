@@ -133,7 +133,7 @@ public class GitHubAPIRestTest {
 
         // TODO find lordmat0 user details
         GitHubUser mat = new GitHubUser("lordmat0",                     // user name
-                "https://api.github.com/users/lordmat0",                // account url
+                "https://github.com/lordmat0",                          // account url
                 "https://avatars.githubusercontent.com/u/4976353?v=2"); // avatar url
 
         assertEquals(mat, result.get(0));

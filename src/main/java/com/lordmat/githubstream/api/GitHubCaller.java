@@ -112,7 +112,7 @@ public class GitHubCaller {
         JSONObject user = new JSONObject(call(Path.user(userName)));
         return new GitHubUser(
                 user.getString("login"),
-                user.getString("url"),
+                user.getString("html_url"),
                 user.getString("avatar_url")
         );
     }
