@@ -5,12 +5,13 @@
  */
 package com.lordmat.githubstream.api;
 
+import com.lordmat.githubstream.MyResourceBundle;
+import com.lordmat.githubstream.ResourceKey;
 import com.lordmat.githubstream.util.GitDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
@@ -30,8 +31,7 @@ public class GitHubCaller {
      * Default constructor, attempts to load from resource bundle "project"
      */
     public GitHubCaller() {
-        ResourceBundle bundle = ResourceBundle.getBundle("project");
-        token = bundle.getString("authtoken");
+        token = MyResourceBundle.getString(ResourceKey.AUTH_TOKEN);
     }
 
     /**
@@ -82,9 +82,7 @@ public class GitHubCaller {
             String message = commit.getString("message");
             String user = author.getString("name");
 
-            Date date = null;
-
-            date = GitDateFormat.parse(author.getString("date"));
+            Date date = GitDateFormat.parse(author.getString("date"));
 
             //TODO work out a easy way to get files or remove it
             GitHubCommit ghCommit = new GitHubCommit(id, date, message, null, user);

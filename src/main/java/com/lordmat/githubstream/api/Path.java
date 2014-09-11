@@ -5,6 +5,8 @@
  */
 package com.lordmat.githubstream.api;
 
+import com.lordmat.githubstream.MyResourceBundle;
+import com.lordmat.githubstream.ResourceKey;
 import java.util.ResourceBundle;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
@@ -48,9 +50,7 @@ public class Path {
     private static final String USER_URL;
 
     static {
-        // TODO move resource bundle into its own class to handle if its not there
-        ResourceBundle bundle = ResourceBundle.getBundle("project");
-        String token = bundle.getString("authtoken");
+        String token = MyResourceBundle.getString(ResourceKey.AUTH_TOKEN);
         
         DEFAULT_PATH = "https://api.github.com/";
 
@@ -64,8 +64,8 @@ public class Path {
         RATE_LIMIT = jsonPaths.getString("rate_limit_url");
 
         // TODO read this from a file
-        REPO_NAME = "githubstream";
-        REPO_OWNER = "lordmat0";
+        REPO_NAME = MyResourceBundle.getString(ResourceKey.REPO_NAME);
+        REPO_OWNER = MyResourceBundle.getString(ResourceKey.REPO_OWNER);
 
         REPO_COMMITS = jsonPaths.getString("repository_url")
                 .replace("{owner}", REPO_OWNER)

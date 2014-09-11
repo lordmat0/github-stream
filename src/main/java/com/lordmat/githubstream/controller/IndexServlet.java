@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(urlPatterns ={"/index", "/.", "/index.jsp"})
 public class IndexServlet extends HttpServlet {
-    //TODO redirect /GitHubStream to this Servlet
     
     private List<GitHubCommit> commits;
     
