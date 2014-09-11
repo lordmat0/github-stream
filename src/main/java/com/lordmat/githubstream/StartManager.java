@@ -10,11 +10,18 @@ import javax.servlet.ServletContextListener;
 public class StartManager implements ServletContextListener {
 
     private static GitHubData gitHubData;
+    
+    public StartManager(){
+        if(gitHubData != null){
+            gitHubData = new GitHubData();
+        }
+    }
+    
     @Override
     public void contextInitialized(ServletContextEvent event) {
         // Program starts here
         System.out.println("contextInitialized");
-        gitHubData = new GitHubData();
+        
     }
     
     public static GitHubData getData(){
