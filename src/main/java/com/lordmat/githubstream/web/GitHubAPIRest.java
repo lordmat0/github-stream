@@ -4,12 +4,10 @@ import com.lordmat.githubstream.api.GitHubAPI;
 import com.lordmat.githubstream.api.GitHubUser;
 import com.lordmat.githubstream.api.GitHubCommit;
 import com.lordmat.githubstream.bean.UserList;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
@@ -25,7 +23,7 @@ import javax.ws.rs.core.MediaType;
  */
 //TODO finish this class
 @Path("githubapi")
-@Produces("application/json")
+@Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class GitHubAPIRest {
 
@@ -37,7 +35,6 @@ public class GitHubAPIRest {
      * Created every time the webAPI is hit
      */
     public GitHubAPIRest() {
-        System.out.println("GitHubAPI created");
         gitHubAPI = new GitHubAPI();
     }
 
@@ -61,7 +58,7 @@ public class GitHubAPIRest {
      * @param users List of users to find information about
      * @return A list of github users details requested
      */
-    @Path("user/")
+    @Path("user")
     @POST
     public List<GitHubUser> getUsers(UserList users) {
         return gitHubAPI.findUser(users.getUsers());

@@ -61,8 +61,15 @@ public class GitHubAPI {
             
             GitHubUser user = gitHubUsers.get(userName);
             
+            // Not cached
             if(user == null){
                 user = StartManager.getData().getCaller().getUser(userName);
+                
+                // User returns null if doesn't exist
+                if(user == null){
+                    continue;
+                }
+                
                 // Cache user
                 gitHubUsers.put(user.getUserName(), user);
             }

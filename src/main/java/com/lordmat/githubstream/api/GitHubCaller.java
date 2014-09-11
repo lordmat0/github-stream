@@ -21,6 +21,7 @@ import org.json.JSONObject;
  *
  * @author mat
  */
+// TODO add logging to this class
 public class GitHubCaller {
 
     private final String token;
@@ -92,12 +93,10 @@ public class GitHubCaller {
         }
 
         //Uncomment for fake commits
-        
         gitHubCommits.put(
                 GitDateFormat.parse(GitDateFormat.format(new Date())),
                 new GitHubCommit("fake", new Date(), "fake", null, "fake"));
-        
-        
+
         return gitHubCommits;
     }
 
@@ -109,12 +108,18 @@ public class GitHubCaller {
      * githubAPI.
      */
     public GitHubUser getUser(String userName) {
-        JSONObject user = new JSONObject(call(Path.user(userName)));
-        return new GitHubUser(
-                user.getString("login"),
-                user.getString("html_url"),
-                user.getString("avatar_url")
-        );
+        try {
+            JSONObject user = new JSONObject(call(Path.user(userName)));
+            return new GitHubUser(
+                    user.getString("login"),
+                    user.getString("html_url"),
+                    user.getString("avatar_url")
+            );
+        } catch (Exception ex) {
+            //TODO logging
+            return null;
+        }
+
     }
 
     /**
