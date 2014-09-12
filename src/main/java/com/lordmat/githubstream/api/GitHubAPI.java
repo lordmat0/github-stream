@@ -6,7 +6,7 @@
 package com.lordmat.githubstream.api;
 
 import com.lordmat.githubstream.StartManager;
-import com.lordmat.githubstream.util.GitDateFormat;
+import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +29,7 @@ public class GitHubAPI {
     }
 
     public List<GitHubCommit> checkForNewCommits(String date){
-        return checkForNewCommits(GitDateFormat.parse(date));
+        return checkForNewCommits(DateTimeFormat.parse(date));
     }
     
     public List<GitHubCommit> checkForNewCommits(Date date) {

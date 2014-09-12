@@ -7,6 +7,7 @@ package com.lordmat.githubstream.api;
 
 import com.lordmat.githubstream.resource.MyResourceBundle;
 import com.lordmat.githubstream.resource.ResourceKey;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.client.ClientBuilder;
@@ -63,9 +64,27 @@ public class Path {
                     .header("Authorization", " token " + token)
                     .get(String.class);
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Could not get path list", ex);
+            
+            // Check Rate Limit
+            String result = ClientBuilder.newClient().target("https://api.github.com/rate_limit")
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .header("Authorization", " token " + token)
+                    .get(String.class);
+
+            JSONObject jsonRateLimit = new JSONObject(result).getJSONObject("rate");
+
+            if (jsonRateLimit.getInt("remaining") == 0) {
+                Calendar unixtimestamp = Calendar.getInstance();
+                unixtimestamp.setTimeInMillis((long) jsonRateLimit.getInt("reset") * 1000);
+                
+                LOGGER.severe("Rate_limit is zero, can't make any github requests");
+
+                System.exit(1);
+            }
+
+            LOGGER.log(Level.SEVERE, "Could not get path list path=" + paths, ex);
             throw new RuntimeException("Error occured trying to"
-                    + " get path list: " + ex.getMessage());
+                    + " get path list path=" + paths + "\n" + ex.getMessage());
         }
 
         try {
@@ -84,7 +103,7 @@ public class Path {
         } catch (JSONException jEx) {
             LOGGER.log(Level.SEVERE, "Error with jsonformat "
                     + "from default paths:\n " + paths, jEx);
-            
+
             throw new RuntimeException("Error with jsonformat "
                     + "from default paths:\n " + paths + "\n" + jEx.getMessage());
         }

@@ -5,7 +5,6 @@
  */
 package com.lordmat.githubstream.util;
 
-import com.lordmat.githubstream.api.GitHubCaller;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,18 +14,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Handles commonly used date/time parsing and formatting in this project
  *
  * @author mat
  */
-public class GitDateFormat {
+public class DateTimeFormat {
 
-    private final static Logger LOGGER = Logger.getLogger(GitDateFormat.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(DateTimeFormat.class.getName());
 
     private static final TimeZone tz = TimeZone.getTimeZone("UTC");
-    private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    private static final DateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    private static final DateFormat time = new SimpleDateFormat("HH:mm:ss");
 
     static {
-        df.setTimeZone(tz);
+        dateTime.setTimeZone(tz);
+        time.setTimeZone(tz);
     }
 
     /**
@@ -38,7 +40,7 @@ public class GitDateFormat {
      */
     public static Date parse(String dateString) {
         try {
-            return df.parse(dateString);
+            return dateTime.parse(dateString);
         } catch (ParseException ex) {
             LOGGER.log(Level.WARNING, "Parse Exception of date", ex);
             return null;
@@ -46,7 +48,7 @@ public class GitDateFormat {
     }
 
     /**
-     * Formats date object in the string format of yyyy-MM-dd'T'HH:mm:ss'Z', ,
+     * Formats date object in the string format of yyyy-MM-dd'T'HH:mm:ss'Z',
      * returns null if fails
      *
      * @param date The date to be turned into a string
@@ -54,7 +56,7 @@ public class GitDateFormat {
      */
     public static String format(Date date) {
         try {
-            return df.format(date);
+            return dateTime.format(date);
         } catch (Exception ex) {
             LOGGER.log(Level.WARNING,
                     "Exception occured trying to format date", ex);
@@ -63,8 +65,19 @@ public class GitDateFormat {
     }
 
     /**
+     * Formats date object in the string format of HH:mm:ss'Z', returns null if
+     * fails
+     *
+     * @param date The date to be turned into a string
+     * @return A date in the format of yyyy-MM-dd'T'HH:mm:ss'Z'
+     */
+    public static String getTime(Date date) {
+        return time.format(date);
+    }
+
+    /**
      * Private constructor, can't initialize object
      */
-    private GitDateFormat() {
+    private DateTimeFormat() {
     }
 }

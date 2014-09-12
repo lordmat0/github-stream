@@ -7,7 +7,7 @@ package com.lordmat.githubstream.api;
 
 import com.lordmat.githubstream.resource.MyResourceBundle;
 import com.lordmat.githubstream.resource.ResourceKey;
-import com.lordmat.githubstream.util.GitDateFormat;
+import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -94,7 +94,7 @@ public class GitHubCaller {
             String message = commit.getString("message");
             String user = author.getString("name");
 
-            Date date = GitDateFormat.parse(author.getString("date"));
+            Date date = DateTimeFormat.parse(author.getString("date"));
 
             //TODO work out a easy way to get files or remove it
             GitHubCommit ghCommit = new GitHubCommit(id, date, message, null, user);
@@ -104,7 +104,7 @@ public class GitHubCaller {
 
         //Uncomment for fake commits
         gitHubCommits.put(
-                GitDateFormat.parse(GitDateFormat.format(new Date())),
+                DateTimeFormat.parse(DateTimeFormat.format(new Date())),
                 new GitHubCommit("fake", new Date(), "fake", null, "fake"));
 
         return gitHubCommits;

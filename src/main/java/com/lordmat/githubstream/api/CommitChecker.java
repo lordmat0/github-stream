@@ -5,7 +5,7 @@
  */
 package com.lordmat.githubstream.api;
 
-import com.lordmat.githubstream.util.GitDateFormat;
+import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -62,7 +62,7 @@ public class CommitChecker extends Thread {
                 // Add one second otherwise github returns the commit that happened on that date
                 cal.add(Calendar.SECOND, 1);
 
-                since = GitDateFormat.format(cal.getTime());
+                since = DateTimeFormat.format(cal.getTime());
             }
 
             Map<Date, GitHubCommit> data = caller.getCommits(since, null);

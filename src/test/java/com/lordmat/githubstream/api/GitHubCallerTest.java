@@ -5,7 +5,7 @@
  */
 package com.lordmat.githubstream.api;
 
-import com.lordmat.githubstream.util.GitDateFormat;
+import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -86,7 +86,7 @@ public class GitHubCallerTest {
         Calendar calender = Calendar.getInstance();
         calender.set(Calendar.DATE, calender.getActualMinimum(Calendar.DATE));
         
-        String since = GitDateFormat.format(calender.getTime());
+        String since = DateTimeFormat.format(calender.getTime());
         String until = null;
 
         Map<Date,GitHubCommit> result = instance.getCommits(since, until);
