@@ -5,22 +5,30 @@
  */
 package com.lordmat.githubstream.resource;
 
+import com.lordmat.githubstream.api.GitHubCaller;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author mat
  */
 public class MyResourceBundle {
-
+    private final static Logger LOGGER = Logger.getLogger(MyResourceBundle.class.getName());
+    
     private static ResourceBundle bundle;
 
     static {
         try {
             bundle = ResourceBundle.getBundle("project");
         } catch (Exception ex) {
-            throw new RuntimeException("Could not find bundle, "
-                    + "make sure project.properties is in class path");
+            String errorMessage = "Could not find bundle, "
+                    + "make sure project.properties is in the class path";
+            
+            LOGGER.log(Level.SEVERE, errorMessage, ex);
+            
+            throw new RuntimeException(errorMessage);
         }
     }
 
@@ -28,7 +36,11 @@ public class MyResourceBundle {
     }
 
     public static String getString(String key) {
-        //TODO logging
-        return bundle.getString(key);
+        try {
+            return bundle.getString(key);
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Could not find resource from bundle", ex);
+            return null;
+        }
     }
 }
