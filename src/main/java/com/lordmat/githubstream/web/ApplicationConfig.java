@@ -1,7 +1,6 @@
 package com.lordmat.githubstream.web;
 
 import java.util.Set;
-import javax.annotation.PostConstruct;
 import javax.ws.rs.core.Application;
 
 /**

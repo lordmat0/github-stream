@@ -7,7 +7,6 @@ package com.lordmat.githubstream.api;
 
 import com.lordmat.githubstream.resource.MyResourceBundle;
 import com.lordmat.githubstream.resource.ResourceKey;
-import java.util.ResourceBundle;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import org.json.JSONObject;

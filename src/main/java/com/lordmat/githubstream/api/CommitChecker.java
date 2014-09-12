@@ -20,6 +20,8 @@ import java.util.logging.Logger;
 public class CommitChecker extends Thread {
 
     private final static Logger LOGGER = Logger.getLogger(CommitChecker.class.getName());
+    
+    private final static int QUERY_TIME = 10000;
 
     private final GitHubCaller caller;
     private final NavigableMap<Date, GitHubCommit> gitHubCommits;
@@ -35,17 +37,23 @@ public class CommitChecker extends Thread {
             queryGitHub();
 
             try {
-                sleep(10000);
+                sleep(QUERY_TIME);
             } catch (InterruptedException ex) {
                 LOGGER.log(Level.FINE, "CommitChecker interrupted", ex);
             }
 
         }
     }
-    
+
+    /**
+     * Handles querying GitHub
+     */
     private void queryGitHub() {
         try {
             String since = null;
+
+            // If it's not empty then there already are 
+            // commits cached, so use the last date
             if (!gitHubCommits.isEmpty()) {
 
                 Calendar cal = Calendar.getInstance();
