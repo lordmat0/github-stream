@@ -7,7 +7,7 @@ import javax.ws.rs.core.Application;
  *
  * @author mat
  */
-@javax.ws.rs.ApplicationPath("res")
+@javax.ws.rs.ApplicationPath("rest")
 public class ApplicationConfig extends Application {
 
     @Override

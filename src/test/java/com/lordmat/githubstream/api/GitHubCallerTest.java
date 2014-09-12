@@ -51,7 +51,6 @@ public class GitHubCallerTest {
         GitHubCaller instance = createInstance();
         JSONObject result = instance.getPaths();
 
-        // TODO: Change test to run through an enum (the enum will hold all paths that are used in githubcaller)
         // Testing to make sure all currently used exist
         assertNotNull(result.get("current_user_repositories_url"));
         assertNotNull(result.get("rate_limit_url"));

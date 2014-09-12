@@ -21,7 +21,7 @@ public class CommitChecker extends Thread {
 
     private final static Logger LOGGER = Logger.getLogger(CommitChecker.class.getName());
     
-    private final static int QUERY_TIME = 10000;
+    private final static int QUERY_TIME = 30000;
 
     private final GitHubCaller caller;
     private final NavigableMap<Date, GitHubCommit> gitHubCommits;
