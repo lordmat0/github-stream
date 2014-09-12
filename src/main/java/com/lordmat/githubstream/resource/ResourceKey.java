@@ -10,9 +10,20 @@ package com.lordmat.githubstream.resource;
  *
  * @author mat
  */
-public interface ResourceKey {
+public enum ResourceKey {
 
-    String AUTH_TOKEN = "AUTH_TOKEN";
-    String REPO_NAME = "REPO_NAME";
-    String REPO_OWNER = "REPO_OWNER";
+    /**
+     * Authentication token for githubapi
+     */
+    AUTH_TOKEN,
+
+    /**
+     * Repository name
+     */
+    REPO_NAME,
+
+    /**
+     * Repository Owner 
+     */
+    REPO_OWNER
 }

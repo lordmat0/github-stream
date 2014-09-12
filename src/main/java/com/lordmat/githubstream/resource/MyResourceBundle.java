@@ -35,9 +35,9 @@ public class MyResourceBundle {
     private MyResourceBundle() {
     }
 
-    public static String getString(String key) {
+    public static String getString(ResourceKey key) {
         try {
-            return bundle.getString(key);
+            return bundle.getString(key.name());
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Could not find resource from bundle", ex);
             return null;
