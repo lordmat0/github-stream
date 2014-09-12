@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -19,7 +20,7 @@ import java.util.logging.Logger;
 public class CommitChecker extends Thread {
 
     private final static Logger LOGGER = Logger.getLogger(CommitChecker.class.getName());
-    
+
     private final GitHubCaller caller;
     private final NavigableMap<Date, GitHubCommit> gitHubCommits;
 
@@ -31,6 +32,19 @@ public class CommitChecker extends Thread {
     @Override
     public void run() {
         while (true) {
+            queryGitHub();
+
+            try {
+                sleep(10000);
+            } catch (InterruptedException ex) {
+                LOGGER.log(Level.FINE, "CommitChecker interrupted", ex);
+            }
+
+        }
+    }
+    
+    private void queryGitHub() {
+        try {
             String since = null;
             if (!gitHubCommits.isEmpty()) {
 
@@ -46,16 +60,9 @@ public class CommitChecker extends Thread {
             Map<Date, GitHubCommit> data = caller.getCommits(since, null);
 
             gitHubCommits.putAll(data);
-            
-            LOGGER.info("got commits");
-            try {
-                sleep(10000);
-            } catch (InterruptedException ex) {
-                LOGGER.severe(ex.getMessage());
-                ex.printStackTrace();
-            }
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "CommitChecker threw an error, re-trying", ex);
         }
-
     }
 
 }

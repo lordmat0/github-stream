@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -27,7 +28,7 @@ import org.json.JSONObject;
 public class GitHubCaller {
 
     private final static Logger LOGGER = Logger.getLogger(GitHubCaller.class.getName());
-    
+
     private final String token;
 
     /**
@@ -75,6 +76,14 @@ public class GitHubCaller {
 
         Map<Date, GitHubCommit> gitHubCommits = new LinkedHashMap<>();
 
+        // Ch3eck results
+        if (commits.length() == 0) {
+            LOGGER.fine("No commits retrieved");
+        } else if (!commits.getJSONObject(0).has("commit")) {
+            LOGGER.warning("getCommits did not receive a"
+                    + " list of commits (maybe a 404?)");
+        }
+
         for (int i = commits.length() - 1; i >= 0; i--) {
 
             JSONObject commitDetails = commits.getJSONObject(i);
@@ -117,7 +126,7 @@ public class GitHubCaller {
                     user.getString("avatar_url")
             );
         } catch (Exception ex) {
-            LOGGER.info(ex.getMessage());
+            LOGGER.log(Level.INFO, "Error getting user", ex);
             return null;
         }
 
