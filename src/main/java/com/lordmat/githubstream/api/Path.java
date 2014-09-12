@@ -7,8 +7,11 @@ package com.lordmat.githubstream.api;
 
 import com.lordmat.githubstream.resource.MyResourceBundle;
 import com.lordmat.githubstream.resource.ResourceKey;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -17,6 +20,7 @@ import org.json.JSONObject;
  */
 public class Path {
 
+    private final static Logger LOGGER = Logger.getLogger(Path.class.getName());
     /**
      * Default path of github API
      */
@@ -50,26 +54,40 @@ public class Path {
 
     static {
         String token = MyResourceBundle.getString(ResourceKey.AUTH_TOKEN);
-        
+
         DEFAULT_PATH = "https://api.github.com/";
+        String paths = null;
+        try {
+            paths = ClientBuilder.newClient().target(DEFAULT_PATH)
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .header("Authorization", " token " + token)
+                    .get(String.class);
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Could not get path list", ex);
+            throw new RuntimeException("Error occured trying to"
+                    + " get path list: " + ex.getMessage());
+        }
 
-        String paths = ClientBuilder.newClient().target(DEFAULT_PATH)
-                .request(MediaType.APPLICATION_JSON_TYPE)
-                .header("Authorization", " token " + token)
-                .get(String.class);
+        try {
+            JSONObject jsonPaths = new JSONObject(paths);
 
-        JSONObject jsonPaths = new JSONObject(paths);
+            RATE_LIMIT = jsonPaths.getString("rate_limit_url");
 
-        RATE_LIMIT = jsonPaths.getString("rate_limit_url");
+            REPO_NAME = MyResourceBundle.getString(ResourceKey.REPO_NAME);
+            REPO_OWNER = MyResourceBundle.getString(ResourceKey.REPO_OWNER);
 
-        REPO_NAME = MyResourceBundle.getString(ResourceKey.REPO_NAME);
-        REPO_OWNER = MyResourceBundle.getString(ResourceKey.REPO_OWNER);
+            REPO_COMMITS = jsonPaths.getString("repository_url")
+                    .replace("{owner}", REPO_OWNER)
+                    .replace("{repo}", REPO_NAME) + "/commits";
 
-        REPO_COMMITS = jsonPaths.getString("repository_url")
-                .replace("{owner}", REPO_OWNER)
-                .replace("{repo}", REPO_NAME) + "/commits";
-
-        USER_URL = jsonPaths.getString("user_url");
+            USER_URL = jsonPaths.getString("user_url");
+        } catch (JSONException jEx) {
+            LOGGER.log(Level.SEVERE, "Error with jsonformat "
+                    + "from default paths:\n " + paths, jEx);
+            
+            throw new RuntimeException("Error with jsonformat "
+                    + "from default paths:\n " + paths + "\n" + jEx.getMessage());
+        }
     }
 
     /**
