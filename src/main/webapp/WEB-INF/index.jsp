@@ -18,9 +18,9 @@
         <!-- Bootstrap -->
         <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         
-        <script type="text/javascript" src="../GitHubStream/res/js/main.js"></script>
+        <script type="text/javascript" src="../githubstream/res/js/main.js"></script>
         
-        <link rel="stylesheet" href="../GitHubStream/res/css/bootstrap/bootstrap.css">
+        <link rel="stylesheet" href="../githubstream/res/css/bootstrap/bootstrap.css">
         
     </head>
     <body>
