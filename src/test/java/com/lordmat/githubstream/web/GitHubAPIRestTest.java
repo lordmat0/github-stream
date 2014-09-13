@@ -37,9 +37,17 @@ public class GitHubAPIRestTest {
     }
 
     @Before
-    public void setUp() {
+    public void setUp() throws InterruptedException {
         // Need to create a start Manager to set up static variables
         StartManager startManager = new StartManager();
+        
+        // Need to have some commits before testing on them
+        for(int i = 0; i < 5; i++){
+            if(!StartManager.getData().getCommits().isEmpty()){
+                break;
+            }
+            Thread.sleep(1000);
+        }
     }
 
     @After
@@ -162,42 +170,41 @@ public class GitHubAPIRestTest {
     /**
      * Test of getNewCommits method, of class GitHubAPIRest.
      */
-    @Ignore
+    @Test
     public void testGetNewCommits() {
         System.out.println("getNewCommits");
 
         // TODO find ID that has a few commits after it
         // always has a few commits ahead of this ID
-        String lasestCommitId = "need some date";
+        String latestCommitDate = "2014-09-12T20:45:35Z";
         GitHubAPIRest instance = new GitHubAPIRest();
 
-        List<GitHubCommit> result = instance.getNewCommits(lasestCommitId);
+        List<GitHubCommit> result = instance.getNewCommits(latestCommitDate);
 
-        assertTrue(result.size() > 0);
+        assertTrue(!result.isEmpty());
     }
 
     /**
      * Test of getNewCommits method, of class GitHubAPIRest.
      */
-    @Ignore
+    @Test
     public void testGetNewCommitsNullDate() {
         System.out.println("getNewCommits");
 
         // TODO find ID that has a few commits after it
         // always has a few commits ahead of this ID
         String nullDate = null;
-        String emptyString = "";
         GitHubAPIRest instance = new GitHubAPIRest();
 
         List<GitHubCommit> result = instance.getNewCommits(nullDate);
 
-        assertTrue(result.size() > 0);
+        assertTrue(result.isEmpty());
     }
     
         /**
      * Test of getNewCommits method, of class GitHubAPIRest.
      */
-    @Ignore
+    @Test
     public void testGetNewCommitsEmptyDate() {
         System.out.println("getNewCommits");
 
@@ -208,7 +215,7 @@ public class GitHubAPIRestTest {
 
         List<GitHubCommit> result = instance.getNewCommits(emptyString);
 
-        assertTrue(result.size() > 0);
+        assertTrue(result.isEmpty());
     }
     
     /**

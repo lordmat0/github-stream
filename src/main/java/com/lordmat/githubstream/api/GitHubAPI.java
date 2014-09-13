@@ -23,18 +23,35 @@ public class GitHubAPI {
         gitHubUsers = StartManager.getData().getUsers();
     }
 
+    /**
+     * Checks for new commits, if the date passed in null or empty then a empty
+     * list is returned
+     *
+     * @param date
+     * @return
+     */
     public List<GitHubCommit> checkForNewCommits(String date) {
+        if (date == null || date.isEmpty()) {
+            return new ArrayList<>();
+        }
+
         return checkForNewCommits(DateTimeFormat.parse(date));
     }
 
     /**
      * Untested
+     *
      * @param date
-     * @return 
+     * @return
      */
     public List<GitHubCommit> checkForNewCommits(Date date) {
         List<GitHubCommit> newCommits = new ArrayList<>();
 
+        if(gitHubCommits.isEmpty()){
+            System.out.println("github commist is empty!?!?!?");
+        }
+        
+        
         if (gitHubCommits.lastKey().equals(date)) {
             return newCommits; // no new commits
         }
