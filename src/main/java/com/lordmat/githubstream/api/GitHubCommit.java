@@ -1,25 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.lordmat.githubstream.api;
 
 import java.util.Date;
 import java.util.List;
 
 /**
- * 
+ * This class contains details of a commit
+ *
  * @author mat
  */
-//TODO write XML mapping to return JSON
 public class GitHubCommit {
+
     private String id;
     private Date date;
     private String message;
     private List<String> filesChanged;
-    
+
     private String userCommited;
 
     public GitHubCommit(String id, Date date, String message, List<String> filesChanged, String userCommited) {
@@ -29,8 +24,12 @@ public class GitHubCommit {
         this.filesChanged = filesChanged;
         this.userCommited = userCommited;
     }
-    
-    public Date getDate(){
+
+    /**
+     *
+     * @return The date of the commit
+     */
+    public Date getDate() {
         return date;
     }
 
@@ -39,6 +38,10 @@ public class GitHubCommit {
         return id + ", " + date.toString() + ", " + message + ", " + userCommited;
     }
 
+    /**
+     *
+     * @return The id of the commit
+     */
     public String getId() {
         return id;
     }
@@ -70,7 +73,5 @@ public class GitHubCommit {
     public void setUserCommited(String userCommited) {
         this.userCommited = userCommited;
     }
-    
-    
-    
+
 }

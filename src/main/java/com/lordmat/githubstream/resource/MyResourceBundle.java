@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lordmat.githubstream.resource;
 
 import java.util.ResourceBundle;
@@ -35,12 +30,6 @@ public class MyResourceBundle {
     }
 
     /**
-     * Private constructor, can't make instance of class
-     */
-    private MyResourceBundle() {
-    }
-
-    /**
      * Checks project.properties for key
      *
      * @param key ResourceKey to check for
@@ -54,5 +43,11 @@ public class MyResourceBundle {
                     + "from bundle, Expected: " + key.name(), ex);
             return null;
         }
+    }
+
+    /**
+     * Private constructor, can't make instance of class
+     */
+    private MyResourceBundle() {
     }
 }

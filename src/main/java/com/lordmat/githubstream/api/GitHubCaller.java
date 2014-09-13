@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lordmat.githubstream.api;
 
 import com.lordmat.githubstream.resource.MyResourceBundle;
@@ -21,10 +16,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
+ * This class handles provides an interface to the public githubapi
  *
  * @author mat
  */
-// TODO add logging to this class
 public class GitHubCaller {
 
     private final static Logger LOGGER = Logger.getLogger(GitHubCaller.class.getName());

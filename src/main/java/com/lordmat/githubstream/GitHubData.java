@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.lordmat.githubstream;
 
 import com.lordmat.githubstream.api.CommitChecker;
@@ -18,33 +12,46 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
+ * This class provides access to github users stored and commits.
  *
  * @author mat
  */
 public class GitHubData {
-    
+
     private final Map<String, GitHubUser> gitHubUsers;
     private final NavigableMap<Date, GitHubCommit> gitHubCommits;
     private final GitHubCaller caller;
-    
+
     public GitHubData() {
         gitHubUsers = new ConcurrentHashMap<>();
         gitHubCommits = new ConcurrentSkipListMap<>();
         caller = new GitHubCaller();
-        
+
         new CommitChecker(gitHubCommits).start();
     }
-    
-    
+
+    /**
+     * Returns a unmodifiable a thread safe, sorted by keys map containing
+     * commits
+     *
+     * @return List of commits
+     */
     public NavigableMap<Date, GitHubCommit> getCommits() {
         return Collections.unmodifiableNavigableMap(gitHubCommits);
     }
-    
-    public Map<String, GitHubUser> getUsers(){
+
+    /**
+     * Returns a thread safe map containing users
+     *
+     * @return
+     */
+    public Map<String, GitHubUser> getUsers() {
         return gitHubUsers;
     }
-    
-    public GitHubCaller getCaller(){
+
+    public GitHubCaller getCaller() {
         return caller;
     }
+
+    // TODO maybe GitHubData should handle adding data to commits and users, just so this class can validate
 }

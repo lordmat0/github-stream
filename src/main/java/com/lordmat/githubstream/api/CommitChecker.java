@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lordmat.githubstream.api;
 
 import com.lordmat.githubstream.util.DateTimeFormat;
@@ -14,13 +9,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * This class handles the fixed interval to check the public github api. The map
+ * it updates is thread safe.
  *
  * @author mat
  */
 public class CommitChecker extends Thread {
 
     private final static Logger LOGGER = Logger.getLogger(CommitChecker.class.getName());
-    
+
+    /**
+     * How long before checking for new commits
+     */
     private final static int QUERY_TIME = 30000;
 
     private final GitHubCaller caller;
@@ -52,8 +52,8 @@ public class CommitChecker extends Thread {
         try {
             String since = null;
 
-            // If it's not empty then there already are 
-            // commits cached, so use the last date
+            // If it's not empty then we've already have some commits 
+            // have some commits , so use the last date to search on
             if (!gitHubCommits.isEmpty()) {
 
                 Calendar cal = Calendar.getInstance();

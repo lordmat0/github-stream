@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lordmat.githubstream.api;
 
 import com.lordmat.githubstream.StartManager;
@@ -28,10 +23,15 @@ public class GitHubAPI {
         gitHubUsers = StartManager.getData().getUsers();
     }
 
-    public List<GitHubCommit> checkForNewCommits(String date){
+    public List<GitHubCommit> checkForNewCommits(String date) {
         return checkForNewCommits(DateTimeFormat.parse(date));
     }
-    
+
+    /**
+     * Untested
+     * @param date
+     * @return 
+     */
     public List<GitHubCommit> checkForNewCommits(Date date) {
         List<GitHubCommit> newCommits = new ArrayList<>();
 
@@ -55,21 +55,30 @@ public class GitHubAPI {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Returns a list of github users details from the list passed in. If the
+     * user is not found then it is not put in the list. The list returned will
+     * never be null or contain null elements but is possible to be empty if no
+     * users are found from the list given.
+     *
+     * @param gitHubUserFind List of users to find
+     * @return a list containing found users details
+     */
     public List<GitHubUser> findUser(List<String> gitHubUserFind) {
         List<GitHubUser> returnedUsers = new ArrayList<>();
         for (String userName : gitHubUserFind) {
-            
+
             GitHubUser user = gitHubUsers.get(userName);
-            
+
             // Not cached
-            if(user == null){
+            if (user == null) {
                 user = StartManager.getData().getCaller().getUser(userName);
-                
+
                 // User returns null if doesn't exist
-                if(user == null){
+                if (user == null) {
                     continue;
                 }
-                
+
                 // Cache user
                 gitHubUsers.put(user.getUserName(), user);
             }
