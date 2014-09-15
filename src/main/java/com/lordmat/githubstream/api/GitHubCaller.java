@@ -3,15 +3,19 @@ package com.lordmat.githubstream.api;
 import com.lordmat.githubstream.resource.MyResourceBundle;
 import com.lordmat.githubstream.resource.ResourceKey;
 import com.lordmat.githubstream.util.DateTimeFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -67,11 +71,11 @@ public class GitHubCaller {
         queryParam.put("since", since);
         queryParam.put("until", until);
 
-        JSONArray commits = new JSONArray(call(Path.REPO_COMMITS, queryParam));
+        JSONArray commits = callAllPages(Path.REPO_COMMITS, queryParam);
 
         Map<Date, GitHubCommit> gitHubCommits = new LinkedHashMap<>();
 
-        // Ch3eck results
+        // Check results
         if (commits.length() == 0) {
             LOGGER.fine("No commits retrieved");
         } else if (!commits.getJSONObject(0).has("commit")) {
@@ -157,7 +161,56 @@ public class GitHubCaller {
         return webTarget.request(MediaType.APPLICATION_JSON_TYPE)
                 .header("Authorization", " token " + token)
                 .get(String.class);
-
     }
 
+    private JSONArray callAllPages(String path, Map<String, String> parameter) {
+        Collection<JSONArray> collection = new ArrayList<>();
+
+        while (true) {
+            WebTarget webTarget = ClientBuilder.newClient().target(path);
+            if (parameter != null) {
+
+                for (Map.Entry<String, String> entry : parameter.entrySet()) {
+                    webTarget = webTarget.queryParam(entry.getKey(), entry.getValue());
+                }
+            }
+
+            Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE)
+                    .header("Authorization", " token " + token)
+                    .get();
+            String data = response.readEntity(String.class);
+
+            if(data.equals("[]")){
+                break; // no data
+            }
+            
+            String[] urlArray  = response.getStringHeaders().get("Link").get(0).split(",");
+
+            String newURL = urlArray[0];
+            
+            if (!newURL.contains("next")) {
+                break;
+            }
+            // Valid URL
+            int start = newURL.indexOf("<");
+            int end = newURL.indexOf(">");
+
+            path = newURL.substring(start + 1, end - start);
+            
+           
+            collection.add(new JSONArray(data));
+        }
+        // Have to loop through and merge into one jsonArray
+        JSONArray array = new JSONArray();
+        
+        for(JSONArray jSONArray : collection){
+            for(int i = 0; i < jSONArray.length(); i++){
+                array.put(jSONArray.get(i));
+            }
+        }
+
+        
+
+        return array;
+    }
 }
