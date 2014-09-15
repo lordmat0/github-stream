@@ -188,12 +188,11 @@ public class GitHubCaller {
             collection.add(new JSONArray(data));
             MultivaluedMap<String, String> stringHeaders = response.getStringHeaders();
 
-            if (stringHeaders == null) {
+            if (stringHeaders == null || !stringHeaders.containsKey("Link")) {
                 break;
             }
 
             List<String> linkHeaders = stringHeaders.get("Link");
-
             String[] urlArray = linkHeaders.get(0).split(",");
 
             String newURL = urlArray[0];
@@ -218,4 +217,5 @@ public class GitHubCaller {
 
         return array;
     }
+
 }

@@ -65,7 +65,7 @@ public class CommitChecker extends Thread {
                 since = DateTimeFormat.format(cal.getTime());
             }
 
-            Map<Date, GitHubCommit> data = caller.getCommits(since, null);
+           Map<Date, GitHubCommit> data = caller.getCommits(since, null);
 
             gitHubCommits.putAll(data);
         } catch (Exception ex) {
