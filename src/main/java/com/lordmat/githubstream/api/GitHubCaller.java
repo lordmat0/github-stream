@@ -164,11 +164,20 @@ public class GitHubCaller {
                 .get(String.class);
     }
 
+    /**
+     * Makes a call to the githubAPI and calls all pages returned through the
+     * response header Link
+     *
+     * @param path The URL to call
+     * @param parameter Extra parameters used
+     * @return
+     */
     private JSONArray callAllPages(String path, Map<String, String> parameter) {
         Collection<JSONArray> collection = new ArrayList<>();
-
+        
         while (true) {
             WebTarget webTarget = ClientBuilder.newClient().target(path);
+            
             if (parameter != null) {
 
                 for (Map.Entry<String, String> entry : parameter.entrySet()) {

@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -18,7 +17,7 @@ import java.util.logging.Logger;
 public class GitHubAPI {
 
     private final static Logger LOGGER = Logger.getLogger(GitHubAPI.class.getName());
-    
+
     NavigableMap<Date, GitHubCommit> gitHubCommits;
     Map<String, GitHubUser> gitHubUsers;
 
@@ -51,13 +50,12 @@ public class GitHubAPI {
     public List<GitHubCommit> checkForNewCommits(Date date) {
         List<GitHubCommit> newCommits = new ArrayList<>();
 
-        if(gitHubCommits.isEmpty()){
-           
+        if (gitHubCommits.isEmpty()) {
+
             LOGGER.info("Githubcommit list is empty");
             return newCommits;
         }
-        
-        
+
         if (gitHubCommits.lastKey().equals(date)) {
             return newCommits; // no new commits
         }
