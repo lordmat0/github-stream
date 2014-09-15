@@ -180,9 +180,11 @@ public class GitHubCaller {
                     .get();
             String data = response.readEntity(String.class);
 
-            if(data.equals("[]")){
+            if(data == null || data.equals("[]")){
                 break; // no data
             }
+            
+            collection.add(new JSONArray(data));
             
             String[] urlArray  = response.getStringHeaders().get("Link").get(0).split(",");
 
@@ -196,9 +198,6 @@ public class GitHubCaller {
             int end = newURL.indexOf(">");
 
             path = newURL.substring(start + 1, end - start);
-            
-           
-            collection.add(new JSONArray(data));
         }
         // Have to loop through and merge into one jsonArray
         JSONArray array = new JSONArray();
