@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -180,16 +181,23 @@ public class GitHubCaller {
                     .get();
             String data = response.readEntity(String.class);
 
-            if(data == null || data.equals("[]")){
+            if (data == null || data.equals("[]")) {
                 break; // no data
             }
-            
+
             collection.add(new JSONArray(data));
-            
-            String[] urlArray  = response.getStringHeaders().get("Link").get(0).split(",");
+            MultivaluedMap<String, String> stringHeaders = response.getStringHeaders();
+
+            if (stringHeaders == null) {
+                break;
+            }
+
+            List<String> linkHeaders = stringHeaders.get("Link");
+
+            String[] urlArray = linkHeaders.get(0).split(",");
 
             String newURL = urlArray[0];
-            
+
             if (!newURL.contains("next")) {
                 break;
             }
@@ -201,14 +209,12 @@ public class GitHubCaller {
         }
         // Have to loop through and merge into one jsonArray
         JSONArray array = new JSONArray();
-        
-        for(JSONArray jSONArray : collection){
-            for(int i = 0; i < jSONArray.length(); i++){
+
+        for (JSONArray jSONArray : collection) {
+            for (int i = 0; i < jSONArray.length(); i++) {
                 array.put(jSONArray.get(i));
             }
         }
-
-        
 
         return array;
     }
