@@ -72,7 +72,7 @@ public class GitHubCaller {
         queryParam.put("since", since);
         queryParam.put("until", until);
 
-        JSONArray commits = callAllPages(Path.REPO_COMMITS, queryParam);
+        JSONArray commits = callForAllPages(Path.REPO_COMMITS, queryParam);
 
         Map<Date, GitHubCommit> gitHubCommits = new LinkedHashMap<>();
 
@@ -172,12 +172,14 @@ public class GitHubCaller {
      * @param parameter Extra parameters used
      * @return
      */
-    private JSONArray callAllPages(String path, Map<String, String> parameter) {
+    private JSONArray callForAllPages(String path, Map<String, String> parameter) {
         Collection<JSONArray> collection = new ArrayList<>();
-        
+
         while (true) {
+            // Path is passed in at the start but is 
+            // changed at the end of this loop
             WebTarget webTarget = ClientBuilder.newClient().target(path);
-            
+
             if (parameter != null) {
 
                 for (Map.Entry<String, String> entry : parameter.entrySet()) {
@@ -188,31 +190,33 @@ public class GitHubCaller {
             Response response = webTarget.request(MediaType.APPLICATION_JSON_TYPE)
                     .header("Authorization", " token " + token)
                     .get();
+
+            // Response Data
             String data = response.readEntity(String.class);
 
-            if (data == null || data.equals("[]")) {
+            if (data.equals("[]")) {
                 break; // no data
             }
-
+            // Valid data
             collection.add(new JSONArray(data));
+            
+            // check to see if there is any more data in response headers
             MultivaluedMap<String, String> stringHeaders = response.getStringHeaders();
 
             if (stringHeaders == null || !stringHeaders.containsKey("Link")) {
                 break;
             }
 
-            List<String> linkHeaders = stringHeaders.get("Link");
-            String[] urlArray = linkHeaders.get(0).split(",");
+            String newURL = stringHeaders.get("Link").get(0).split(",")[0];
 
-            String newURL = urlArray[0];
-
+            // 'Next' indicates there is more data to be fetched
             if (!newURL.contains("next")) {
-                break;
+                break; // No more data to get
             }
-            // Valid URL
+
+            // Get path out of string
             int start = newURL.indexOf("<");
             int end = newURL.indexOf(">");
-
             path = newURL.substring(start + 1, end - start);
         }
         // Have to loop through and merge into one jsonArray
