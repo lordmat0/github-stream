@@ -2,6 +2,7 @@ package com.lordmat.githubstream.resource;
 
 import com.lordmat.githubstream.resource.MyResourceBundle;
 import com.lordmat.githubstream.resource.ResourceKey;
+import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,7 +60,7 @@ public class Path {
                     .header("Authorization", " token " + token)
                     .get(String.class);
         } catch (Exception ex) {
-            
+
             // Check Rate Limit
             String result = ClientBuilder.newClient().target("https://api.github.com/rate_limit")
                     .request(MediaType.APPLICATION_JSON_TYPE)
@@ -71,8 +72,9 @@ public class Path {
             if (jsonRateLimit.getInt("remaining") == 0) {
                 Calendar unixtimestamp = Calendar.getInstance();
                 unixtimestamp.setTimeInMillis((long) jsonRateLimit.getInt("reset") * 1000);
-                
-                LOGGER.severe("Rate_limit is zero, can't make any github requests");
+
+                LOGGER.severe("Rate_limit is zero, can't make any github requests, wait till: " 
+                        + DateTimeFormat.getTime(unixtimestamp.getTime()));
 
                 System.exit(1);
             }
