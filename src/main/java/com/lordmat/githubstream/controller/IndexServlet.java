@@ -8,7 +8,7 @@ package com.lordmat.githubstream.controller;
 
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.StartManager;
-import com.lordmat.githubstream.api.Path;
+import com.lordmat.githubstream.resource.Path;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

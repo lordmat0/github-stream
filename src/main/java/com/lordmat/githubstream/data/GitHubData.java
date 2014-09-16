@@ -1,7 +1,7 @@
-package com.lordmat.githubstream;
+package com.lordmat.githubstream.data;
 
-import com.lordmat.githubstream.api.CommitChecker;
-import com.lordmat.githubstream.api.GitHubCaller;
+import com.lordmat.githubstream.data.CommitChecker;
+import com.lordmat.githubstream.data.GitHubCaller;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.GitHubUser;
 import java.util.Collections;

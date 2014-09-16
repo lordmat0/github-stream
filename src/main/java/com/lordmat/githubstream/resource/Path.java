@@ -1,4 +1,4 @@
-package com.lordmat.githubstream.api;
+package com.lordmat.githubstream.resource;
 
 import com.lordmat.githubstream.resource.MyResourceBundle;
 import com.lordmat.githubstream.resource.ResourceKey;

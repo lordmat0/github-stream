@@ -1,5 +1,6 @@
 package com.lordmat.githubstream;
 
+import com.lordmat.githubstream.data.GitHubData;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 

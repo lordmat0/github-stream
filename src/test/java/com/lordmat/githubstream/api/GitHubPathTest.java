@@ -5,6 +5,7 @@
  */
 package com.lordmat.githubstream.api;
 
+import com.lordmat.githubstream.resource.Path;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

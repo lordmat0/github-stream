@@ -1,4 +1,4 @@
-package com.lordmat.githubstream.api;
+package com.lordmat.githubstream.data;
 
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.util.DateTimeFormat;
