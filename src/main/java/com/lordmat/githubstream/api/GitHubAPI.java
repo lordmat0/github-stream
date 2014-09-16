@@ -1,5 +1,7 @@
 package com.lordmat.githubstream.api;
 
+import com.lordmat.githubstream.bean.GitHubUser;
+import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.StartManager;
 import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.ArrayList;

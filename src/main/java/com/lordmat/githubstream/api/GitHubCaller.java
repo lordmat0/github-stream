@@ -1,5 +1,8 @@
 package com.lordmat.githubstream.api;
 
+import com.lordmat.githubstream.bean.GitHubUser;
+import com.lordmat.githubstream.bean.GitHubCommit;
+import com.lordmat.githubstream.StartManager;
 import com.lordmat.githubstream.resource.MyResourceBundle;
 import com.lordmat.githubstream.resource.ResourceKey;
 import com.lordmat.githubstream.util.DateTimeFormat;
@@ -8,7 +11,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -95,6 +97,9 @@ public class GitHubCaller {
             String user = author.getString("login");
 
             Date date = DateTimeFormat.parse(commit.getJSONObject("author").getString("date"));
+            
+            GitHubUser ghuser = StartManager.getData().getUsers().get(user);
+            
 
             //TODO work out a easy way to get files or remove it
             GitHubCommit ghCommit = new GitHubCommit(id, date, message, null, user);

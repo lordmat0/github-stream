@@ -6,8 +6,8 @@
 package com.lordmat.githubstream.web;
 
 import com.lordmat.githubstream.StartManager;
-import com.lordmat.githubstream.api.GitHubCommit;
-import com.lordmat.githubstream.api.GitHubUser;
+import com.lordmat.githubstream.bean.GitHubCommit;
+import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.bean.UserList;
 import java.util.ArrayList;
 import java.util.List;

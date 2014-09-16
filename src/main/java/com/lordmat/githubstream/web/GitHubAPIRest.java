@@ -1,8 +1,8 @@
 package com.lordmat.githubstream.web;
 
 import com.lordmat.githubstream.api.GitHubAPI;
-import com.lordmat.githubstream.api.GitHubUser;
-import com.lordmat.githubstream.api.GitHubCommit;
+import com.lordmat.githubstream.bean.GitHubUser;
+import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.UserList;
 import java.util.List;
 import javax.ws.rs.core.Context;
@@ -66,7 +66,7 @@ public class GitHubAPIRest {
 
     /**
      *
-     * @param latestDate The commit ID to check against
+     * @param latestCommitDate The commit ID to check against
      * @return An empty list or commits that come after the lastestCommitId
      *
      */

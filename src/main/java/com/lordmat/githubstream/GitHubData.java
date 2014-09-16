@@ -2,8 +2,8 @@ package com.lordmat.githubstream;
 
 import com.lordmat.githubstream.api.CommitChecker;
 import com.lordmat.githubstream.api.GitHubCaller;
-import com.lordmat.githubstream.api.GitHubCommit;
-import com.lordmat.githubstream.api.GitHubUser;
+import com.lordmat.githubstream.bean.GitHubCommit;
+import com.lordmat.githubstream.bean.GitHubUser;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
