@@ -45,8 +45,8 @@ public class GitHubAPIRest {
      * Created every time the webAPI is hit
      */
     public GitHubAPIRest() {
-        gitHubCommits = StartManager.getData().getCommits();
-        gitHubUsers = StartManager.getData().getUsers();
+        gitHubCommits = StartManager.data().getCommits();
+        gitHubUsers = StartManager.data().getUsers();
     }
 
     /**
@@ -80,17 +80,9 @@ public class GitHubAPIRest {
 
             GitHubUser user = gitHubUsers.get(userName);
 
-            // Not cached
+            // User returns null if it doesn't exist and not used in any commits
             if (user == null) {
-                user = StartManager.getData().getCaller().getUser(userName);
-
-                // User returns null if doesn't exist
-                if (user == null) {
-                    continue;
-                }
-
-                // Cache user
-                gitHubUsers.put(user.getUserName(), user);
+                continue;
             }
 
             returnedUsers.add(user);

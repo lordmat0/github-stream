@@ -43,7 +43,7 @@ public class GitHubAPIRestTest {
         
         // Need to have some commits before testing on them
         for(int i = 0; i < 5; i++){
-            if(!StartManager.getData().getCommits().isEmpty()){
+            if(!StartManager.data().getCommits().isEmpty()){
                 break;
             }
             Thread.sleep(1000);
@@ -75,10 +75,8 @@ public class GitHubAPIRestTest {
         //List<GitHubUser> expResult = null;
         List<GitHubUser> result = instance.getUsers(userList);
         
-        assertTrue(result.size() == 3);
+        assertTrue(result.size() == 1);
         assertNotNull(result.get(0));
-        assertNotNull(result.get(1));
-        assertNotNull(result.get(2));
     }
 
     /**
