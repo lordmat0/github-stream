@@ -88,13 +88,13 @@ public class GitHubCaller {
 
             JSONObject commitDetails = commits.getJSONObject(i);
             JSONObject commit = commitDetails.getJSONObject("commit");
-            JSONObject author = commit.getJSONObject("author");
+            JSONObject author = commitDetails.getJSONObject("author");
 
             String id = commitDetails.getString("sha");
             String message = commit.getString("message");
-            String user = author.getString("name");
+            String user = author.getString("login");
 
-            Date date = DateTimeFormat.parse(author.getString("date"));
+            Date date = DateTimeFormat.parse(commit.getJSONObject("author").getString("date"));
 
             //TODO work out a easy way to get files or remove it
             GitHubCommit ghCommit = new GitHubCommit(id, date, message, null, user);
