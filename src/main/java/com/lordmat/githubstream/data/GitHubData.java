@@ -47,9 +47,6 @@ public class GitHubData {
         return gitHubUsers;
     }
 
-    public GitHubCaller getCaller() {
-        return caller;
-    }
 
     // TODO maybe GitHubData should handle adding data to commits and users, just so this class can validate
 }

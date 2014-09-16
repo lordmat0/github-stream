@@ -99,19 +99,18 @@ public class GitHubCaller {
             String user = author.getString("login");
 
             Date date = DateTimeFormat.parse(commit.getJSONObject("author").getString("date"));
-            
+
             GitHubUser ghUser = ghUsers.get(user);
-            
-            if(ghUser == null){
+
+            if (ghUser == null) {
                 String accountUrl = author.getString("html_url");
                 String avatarUrl = author.getString("avatar_url");
-                
+
                 ghUser = new GitHubUser(user, accountUrl, avatarUrl);
                 ghUsers.put(user, ghUser);
             }
-            
-           
-            //TODO work out a easy way to get files or remove it
+
+            // TODO work out a easy way to get files or remove it
             GitHubCommit ghCommit = new GitHubCommit(id, date, message, null, ghUser);
 
             gitHubCommits.put(date, ghCommit);
@@ -120,11 +119,11 @@ public class GitHubCaller {
         //Uncomment for fake commits
         gitHubCommits.put(
                 DateTimeFormat.parse(DateTimeFormat.format(new Date())),
-                new GitHubCommit("1f1d8f711b4258e38825083a2db401862602c14b", 
-                        new Date(), 
-                        "Some bogus message that has some weight to it", 
-                        null, 
-                        new GitHubUser("FakeUser", "","")));
+                new GitHubCommit("1f1d8f711b4258e38825083a2db401862602c14b",
+                        new Date(),
+                        "Some bogus message that has some weight to it",
+                        null,
+                        new GitHubUser("FakeUser", "", "")));
 
         return gitHubCommits;
     }
@@ -152,7 +151,7 @@ public class GitHubCaller {
     }
 
     /**
-     * Makes a call to the githubAPI with variables passed in.
+     * Makes a call to the githubAPI without passing in header variables in.
      *
      * @param path The URL to call
      * @return Results from the call
