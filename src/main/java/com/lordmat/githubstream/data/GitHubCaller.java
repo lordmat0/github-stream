@@ -89,31 +89,35 @@ public class GitHubCaller {
 
         Map<String, GitHubUser> ghUsers = StartManager.data().getUsers();
         for (int i = commits.length() - 1; i >= 0; i--) {
+            try {
+                JSONObject commitDetails = commits.getJSONObject(i);
+                JSONObject commit = commitDetails.getJSONObject("commit");
+                JSONObject author = commitDetails.getJSONObject("author");
 
-            JSONObject commitDetails = commits.getJSONObject(i);
-            JSONObject commit = commitDetails.getJSONObject("commit");
-            JSONObject author = commitDetails.getJSONObject("author");
+                String id = commitDetails.getString("sha");
+                String message = commit.getString("message");
+                String user = author.getString("login");
 
-            String id = commitDetails.getString("sha");
-            String message = commit.getString("message");
-            String user = author.getString("login");
+                Date date = DateTimeFormat.parse(commit.getJSONObject("author").getString("date"));
 
-            Date date = DateTimeFormat.parse(commit.getJSONObject("author").getString("date"));
+                GitHubUser ghUser = ghUsers.get(user);
 
-            GitHubUser ghUser = ghUsers.get(user);
+                if (ghUser == null) {
+                    String accountUrl = author.getString("html_url");
+                    String avatarUrl = author.getString("avatar_url");
 
-            if (ghUser == null) {
-                String accountUrl = author.getString("html_url");
-                String avatarUrl = author.getString("avatar_url");
+                    ghUser = new GitHubUser(user, accountUrl, avatarUrl);
+                    ghUsers.put(user, ghUser);
+                }
 
-                ghUser = new GitHubUser(user, accountUrl, avatarUrl);
-                ghUsers.put(user, ghUser);
+                // TODO work out a easy way to get files or remove it
+                GitHubCommit ghCommit = new GitHubCommit(id, date, message, null, ghUser);
+
+                gitHubCommits.put(date, ghCommit);
+            } catch (Exception ex) {
+                LOGGER.log(Level.WARNING, "Error parsing JSONObject", ex);
+                //Skip this one and carry on
             }
-
-            // TODO work out a easy way to get files or remove it
-            GitHubCommit ghCommit = new GitHubCommit(id, date, message, null, ghUser);
-
-            gitHubCommits.put(date, ghCommit);
         }
 
         //Uncomment for fake commits
