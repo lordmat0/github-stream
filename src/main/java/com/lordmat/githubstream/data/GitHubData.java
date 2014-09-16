@@ -29,8 +29,8 @@ public class GitHubData {
     }
 
     /**
-     * Returns a unmodifiable a thread safe, sorted by keys map containing
-     * commits
+     * Returns an unmodifiable thread safe NavigableMap, sorted by keys map
+     * containing commits.
      *
      * @return List of commits
      */

@@ -27,7 +27,7 @@ public class StartManager implements ServletContextListener {
         }
     }
 
-    public static GitHubData getData() {
+    public static GitHubData data() {
         return gitHubData;
     }
 
