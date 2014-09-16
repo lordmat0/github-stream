@@ -11,7 +11,7 @@ import java.util.List;
 public class GitHubCommit {
 
     private String id;
-    private Date date;
+    private final Date date;
     private String message;
     private List<String> filesChanged;
 

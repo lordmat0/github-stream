@@ -32,12 +32,12 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class GitHubAPIRest {
-    
+
     private final static Logger LOGGER = Logger.getLogger(GitHubAPIRest.class.getName());
 
     @Context
     private UriInfo context;
-    
+
     private NavigableMap<Date, GitHubCommit> gitHubCommits;
     private Map<String, GitHubUser> gitHubUsers;
 
@@ -49,7 +49,6 @@ public class GitHubAPIRest {
         gitHubUsers = StartManager.getData().getUsers();
     }
 
-    
     /**
      * Returns a list of github users details from the list passed in. If the
      * user is not found then it is not put in the list. The list returned will
@@ -103,6 +102,7 @@ public class GitHubAPIRest {
     /**
      * Checks for new commits, if the date passed in null or empty then a empty
      * list is returned
+     *
      * @param latestCommitDate The commit ID to check against
      * @return An empty list or commits that come after the lastestCommitId
      *
@@ -110,12 +110,15 @@ public class GitHubAPIRest {
     @Path("commit/new")
     @POST
     public List<GitHubCommit> getNewCommits(String latestCommitDate) {
-        Date date = DateTimeFormat.parse(latestCommitDate);
-        
         List<GitHubCommit> newCommits = new ArrayList<>();
 
-        if (gitHubCommits.isEmpty()) {
+        if (latestCommitDate == null || latestCommitDate.isEmpty()) {
+            return newCommits;
+        }
 
+        Date date = DateTimeFormat.parse(latestCommitDate);
+
+        if (gitHubCommits.isEmpty()) {
             LOGGER.info("Githubcommit list is empty");
             return newCommits;
         }
