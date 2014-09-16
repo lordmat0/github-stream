@@ -105,7 +105,11 @@ public class GitHubCaller {
         //Uncomment for fake commits
         gitHubCommits.put(
                 DateTimeFormat.parse(DateTimeFormat.format(new Date())),
-                new GitHubCommit("fake", new Date(), "fake", null, "fake"));
+                new GitHubCommit("1f1d8f711b4258e38825083a2db401862602c14b", 
+                        new Date(), 
+                        "Some bogus message that has some weight to it", 
+                        null, 
+                        "FakeName"));
 
         return gitHubCommits;
     }
@@ -199,7 +203,7 @@ public class GitHubCaller {
             }
             // Valid data
             collection.add(new JSONArray(data));
-            
+
             // check to see if there is any more data in response headers
             MultivaluedMap<String, String> stringHeaders = response.getStringHeaders();
 

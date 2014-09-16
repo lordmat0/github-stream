@@ -27,8 +27,9 @@
     <body>
 
         <div class="container">
-            <h1>Commits for project</h1>
-
+            
+            <h1>Commits for <c:out value="${project}"/> owned by <c:out value="${owner}"/></h1>
+            
             <c:forEach items="${commits}" var="commits">
                 <div class="alert alert-dismissable alert-success container-fluid row" >
 
@@ -36,10 +37,27 @@
 
                     <div class="col-md-8" > 
                         <div class="row">
-                            <div class="col-md-3 col-sm-3"><c:out value="${commits.userCommited}" /></div>
-                            <div class="col-md-7 col-sm-7"><c:out value="${commits.id}" /></div>
-                            <div class="col-md-2 col-sm-2"> <fmt:formatDate pattern="yyyy-MM-dd'T'HH:mm:ss'Z'" value="${commits.date}" /></div>
+
+                            <div class="col-md-3 col-sm-3">
+                                <strong>
+                                    <c:out value="${commits.userCommited}" />
+                                </strong>
+                            </div>
+
+                            <div class="col-md-7 col-sm-7">
+                                <strong>
+                                    <c:out value="${commits.id}" />
+                                </strong>
+                            </div>
+
+                            <div class="col-md-2 col-sm-2">
+                                <strong>
+                                    <fmt:formatDate pattern="yyyy-MM-dd'T'HH:mm:ss'Z'" value="${commits.date}" />
+                                </strong>
+                            </div>
+
                         </div>
+                                
                         <div class="row">
                             <div class="col-md-12 col-sm-12">
                                 <c:out value="${commits.message}" />
@@ -72,7 +90,7 @@
             </div>
             
             -->
-            
+
         </div>
     </body>
 </html>

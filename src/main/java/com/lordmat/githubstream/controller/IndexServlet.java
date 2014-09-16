@@ -8,6 +8,7 @@ package com.lordmat.githubstream.controller;
 
 import com.lordmat.githubstream.api.GitHubCommit;
 import com.lordmat.githubstream.StartManager;
+import com.lordmat.githubstream.api.Path;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,8 @@ public class IndexServlet extends HttpServlet {
         commits = new ArrayList<>(StartManager.getData().getCommits().descendingMap().values());
         
         request.setAttribute("commits", commits);
+        request.setAttribute("project", Path.REPO_NAME);
+        request.setAttribute("owner", Path.REPO_OWNER);
         
         request.getRequestDispatcher("WEB-INF/index.jsp").forward(request, response);
     }
