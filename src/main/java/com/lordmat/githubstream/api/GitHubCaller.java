@@ -86,6 +86,7 @@ public class GitHubCaller {
                     + " list of commits (maybe a 404?)");
         }
 
+        Map<String, GitHubUser> ghUsers = StartManager.getData().getUsers();
         for (int i = commits.length() - 1; i >= 0; i--) {
 
             JSONObject commitDetails = commits.getJSONObject(i);
@@ -98,11 +99,19 @@ public class GitHubCaller {
 
             Date date = DateTimeFormat.parse(commit.getJSONObject("author").getString("date"));
             
-            GitHubUser ghuser = StartManager.getData().getUsers().get(user);
+            GitHubUser ghUser = ghUsers.get(user);
             
-
+            if(ghUser == null){
+                String accountUrl = author.getString("html_url");
+                String avatarUrl = author.getString("avatar_url");
+                
+                ghUser = new GitHubUser(user, accountUrl, avatarUrl);
+                ghUsers.put(user, ghUser);
+            }
+            
+           
             //TODO work out a easy way to get files or remove it
-            GitHubCommit ghCommit = new GitHubCommit(id, date, message, null, user);
+            GitHubCommit ghCommit = new GitHubCommit(id, date, message, null, ghUser);
 
             gitHubCommits.put(date, ghCommit);
         }
@@ -114,7 +123,7 @@ public class GitHubCaller {
                         new Date(), 
                         "Some bogus message that has some weight to it", 
                         null, 
-                        "FakeName"));
+                        new GitHubUser("FakeUser", "","")));
 
         return gitHubCommits;
     }

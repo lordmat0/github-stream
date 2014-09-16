@@ -27,20 +27,23 @@
     <body>
 
         <div class="container">
-            
+
             <h1>Commits for <c:out value="${project}"/> owned by <c:out value="${owner}"/></h1>
-            
+
             <c:forEach items="${commits}" var="commits">
                 <div class="alert alert-dismissable alert-success container-fluid row" >
 
-                    <img class="col-sm-1 col-md-1 col-lg-1" alt="dunno" src="https://avatars3.githubusercontent.com/u/4976353?v=2&s=460" style="max-width: 150px;" >
+                    <img class="col-sm-1 col-md-1 col-lg-1" alt="Missing Avatar" src="<c:out value="${commits.userCommited.avatarUrl}" />" style="max-width: 150px;" >
 
                     <div class="col-md-8" > 
                         <div class="row">
 
                             <div class="col-md-3 col-sm-3">
                                 <strong>
-                                    <c:out value="${commits.userCommited}" />
+                                    <a href="<c:out value="${commits.userCommited.accountUrl}" />" >
+                                        <c:out value="${commits.userCommited.userName}" />
+                                    </a>
+
                                 </strong>
                             </div>
 
@@ -57,7 +60,7 @@
                             </div>
 
                         </div>
-                                
+
                         <div class="row">
                             <div class="col-md-12 col-sm-12">
                                 <c:out value="${commits.message}" />
