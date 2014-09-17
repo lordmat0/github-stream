@@ -28,6 +28,3 @@ dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
-
-# My own ignore (contains authkey)
-project.properties
