@@ -221,12 +221,29 @@ public class GitHubAPIRestTest {
      * Test of getOldCommits method, of class GitHubAPIRest.
      */
     @Test
-    public void testGetOldCommits() {
-        System.out.println("getOldCommits");
+    public void testGetOldCommitsAlreadyCached() {
+        System.out.println("testGetOldCommitsAlreadyCached");
 
         // TODO find ID that has a few commits before it
         // always has a few commits before of this ID
         String earlistCommitId = "2014-09-16T22:38:19Z";
+        GitHubAPIRest instance = new GitHubAPIRest();
+
+        Collection<GitHubCommit> result = instance.getOldCommits(earlistCommitId);
+
+        assertTrue(result.size() > 0);
+    }
+    
+    /**
+     * Test of getOldCommits method, of class GitHubAPIRest.
+     */
+    @Test
+    public void testGetOldCommitsNotCached() {
+        System.out.println("testGetOldCommitsNotCached");
+
+        // TODO find ID that has a few commits before it
+        // always has a few commits before of this ID
+        String earlistCommitId = "2014-09-02T23:12:59Z";
         GitHubAPIRest instance = new GitHubAPIRest();
 
         Collection<GitHubCommit> result = instance.getOldCommits(earlistCommitId);
