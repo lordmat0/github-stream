@@ -109,7 +109,8 @@ public class GitHubData {
 
         Date date = DateTimeFormat.parse(earlistCommitDate);
 
-        if (!hasLastCommit && !gitHubCommits.containsKey(date)) {
+        if (!hasLastCommit && 
+                (gitHubCommits.firstKey().equals(date) || !gitHubCommits.containsKey(date))) {
 
             date = gitHubCommits.firstKey();
 
