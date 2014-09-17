@@ -9,8 +9,10 @@ import com.lordmat.githubstream.StartManager;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.bean.UserList;
+import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -178,6 +180,10 @@ public class GitHubAPIRestTest {
 
         List<GitHubCommit> result = instance.getNewCommits(latestCommitDate);
 
+        Date date = DateTimeFormat.parse(latestCommitDate);
+        
+        assertTrue(date.before(result.get(result.size() -1).getDate()));
+        
         assertTrue(!result.isEmpty());
     }
 
