@@ -2,8 +2,11 @@ package com.lordmat.githubstream.data;
 
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.GitHubUser;
+import com.lordmat.githubstream.util.DateTimeFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,6 +50,29 @@ public class GitHubData {
         return gitHubUsers;
     }
 
+    public synchronized List<GitHubCommit> getOldCommits(String earlistCommitDate) {
+        List<GitHubCommit> newCommits = new ArrayList<>();
+
+        if (earlistCommitDate == null || earlistCommitDate.isEmpty()) {
+            return newCommits;
+        }
+
+       Date date = DateTimeFormat.parse(earlistCommitDate);
+        
+        
+
+        if (!gitHubCommits.containsKey(date)) {
+            Map<Date, GitHubCommit> mapCommits = caller.getCommits(null, DateTimeFormat.format(date));
+
+            gitHubCommits.putAll(mapCommits);
+        }
+
+        // get a subset of the list
+        newCommits.addAll(gitHubCommits.headMap(date).values());
+        Collections.reverse(newCommits);
+
+        return newCommits;
+    }
 
     // TODO maybe GitHubData should handle adding data to commits and users, just so this class can validate
 }

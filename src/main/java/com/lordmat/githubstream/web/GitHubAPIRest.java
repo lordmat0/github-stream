@@ -4,6 +4,7 @@ import com.lordmat.githubstream.StartManager;
 import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.UserList;
+import com.lordmat.githubstream.data.GitHubData;
 import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,13 +40,15 @@ public class GitHubAPIRest {
     @Context
     private UriInfo context;
 
-    private NavigableMap<Date, GitHubCommit> gitHubCommits;
-    private Map<String, GitHubUser> gitHubUsers;
+    private final NavigableMap<Date, GitHubCommit> gitHubCommits;
+    private final Map<String, GitHubUser> gitHubUsers;
+    private final GitHubData gitHubData;
 
     /**
      * Created every time the webAPI is hit
      */
     public GitHubAPIRest() {
+        gitHubData = StartManager.data();
         gitHubCommits = StartManager.data().getCommits();
         gitHubUsers = StartManager.data().getUsers();
     }
@@ -132,30 +135,13 @@ public class GitHubAPIRest {
 
     /**
      *
-     * @param earlistCommitId The commit ID to check against
+     * @param earlistCommitDate The commit ID to check against
      * @return An empty list or commits that come before the earlistCommitId
      */
     @Path("commit/old")
     @POST
-    public List<GitHubCommit> getOldCommits(String earlistCommitId) {
-        List<GitHubCommit> newCommits = new ArrayList<>();
-
-        if (earlistCommitId == null || earlistCommitId.isEmpty()) {
-            return newCommits;
-        }
-        
-        Date date = DateTimeFormat.parse(earlistCommitId);
-        
-        if(gitHubCommits.containsKey(date)){
-            // get a subset of the list
-            newCommits.addAll(gitHubCommits.headMap(date).values());
-            Collections.reverse(newCommits);
-        }else{
-            // make a request for older commits
-        }
-        
-        
-        return newCommits;
+    public List<GitHubCommit> getOldCommits(String earlistCommitDate) {
+        return gitHubData.getOldCommits(earlistCommitDate);
     }
 
 }
