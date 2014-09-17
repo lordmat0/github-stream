@@ -17,7 +17,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -41,10 +40,10 @@ public class GitHubAPIRestTest {
     public void setUp() throws InterruptedException {
         // Need to create a start Manager to set up static variables
         StartManager startManager = new StartManager();
-        
+
         // Need to have some commits before testing on them
-        for(int i = 0; i < 5; i++){
-            if(!StartManager.data().getCommits().isEmpty()){
+        for (int i = 0; i < 5; i++) {
+            if (!StartManager.data().getCommits().isEmpty()) {
                 break;
             }
             Thread.sleep(1000);
@@ -54,7 +53,6 @@ public class GitHubAPIRestTest {
     @After
     public void tearDown() {
     }
-
 
     /**
      * Test of getUsers method, of class GitHubAPIRest.
@@ -67,15 +65,15 @@ public class GitHubAPIRestTest {
         users.add("lordmat0");
         users.add("shobute");
         users.add("Mottie");
-        
+
         UserList userList = new UserList();
         userList.setUsers(users);
 
         GitHubAPIRest instance = new GitHubAPIRest();
-        
+
         //List<GitHubUser> expResult = null;
         List<GitHubUser> result = instance.getUsers(userList);
-        
+
         assertTrue(result.size() == 1);
         assertNotNull(result.get(0));
     }
@@ -199,8 +197,8 @@ public class GitHubAPIRestTest {
 
         assertTrue(result.isEmpty());
     }
-    
-        /**
+
+    /**
      * Test of getNewCommits method, of class GitHubAPIRest.
      */
     @Test
@@ -216,7 +214,7 @@ public class GitHubAPIRestTest {
 
         assertTrue(result.isEmpty());
     }
-    
+
     /**
      * Test of getOldCommits method, of class GitHubAPIRest.
      */
@@ -233,7 +231,7 @@ public class GitHubAPIRestTest {
 
         assertTrue(result.size() > 0);
     }
-    
+
     /**
      * Test of getOldCommits method, of class GitHubAPIRest.
      */
@@ -249,6 +247,23 @@ public class GitHubAPIRestTest {
         Collection<GitHubCommit> result = instance.getOldCommits(earlistCommitId);
 
         assertTrue(result.size() > 0);
+    }
+
+    /**
+     * Test of getOldCommits method, of class GitHubAPIRest.
+     */
+    @Test
+    public void testGetOldCommitsDateNotInProject() {
+        System.out.println("testGetOldCommitsDateNotInProject");
+
+        // TODO find ID that has a few commits before it
+        // always has a few commits before of this ID
+        String earlistCommitId = "2010-01-02T23:12:59Z";
+        GitHubAPIRest instance = new GitHubAPIRest();
+
+        Collection<GitHubCommit> result = instance.getOldCommits(earlistCommitId);
+
+        assertTrue(result.isEmpty());
     }
 
 }
