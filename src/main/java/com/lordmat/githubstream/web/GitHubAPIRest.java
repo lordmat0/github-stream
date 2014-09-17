@@ -6,6 +6,7 @@ import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.UserList;
 import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -137,7 +138,24 @@ public class GitHubAPIRest {
     @Path("commit/old")
     @POST
     public List<GitHubCommit> getOldCommits(String earlistCommitId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<GitHubCommit> newCommits = new ArrayList<>();
+
+        if (earlistCommitId == null || earlistCommitId.isEmpty()) {
+            return newCommits;
+        }
+        
+        Date date = DateTimeFormat.parse(earlistCommitId);
+        
+        if(gitHubCommits.containsKey(date)){
+            // get a subset of the list
+            newCommits.addAll(gitHubCommits.headMap(date).values());
+            Collections.reverse(newCommits);
+        }else{
+            // make a request for older commits
+        }
+        
+        
+        return newCommits;
     }
 
 }

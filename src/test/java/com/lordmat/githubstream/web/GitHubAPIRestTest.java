@@ -10,6 +10,7 @@ import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.bean.UserList;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -219,16 +220,16 @@ public class GitHubAPIRestTest {
     /**
      * Test of getOldCommits method, of class GitHubAPIRest.
      */
-    @Ignore
+    @Test
     public void testGetOldCommits() {
         System.out.println("getOldCommits");
 
         // TODO find ID that has a few commits before it
         // always has a few commits before of this ID
-        String earlistCommitId = "";
+        String earlistCommitId = "2014-09-16T22:38:19Z";
         GitHubAPIRest instance = new GitHubAPIRest();
 
-        List<GitHubCommit> result = instance.getOldCommits(earlistCommitId);
+        Collection<GitHubCommit> result = instance.getOldCommits(earlistCommitId);
 
         assertTrue(result.size() > 0);
     }

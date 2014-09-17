@@ -75,7 +75,9 @@ public class GitHubCaller {
         queryParam.put("since", since);
         queryParam.put("until", until);
 
-        JSONArray commits = callForAllPages(Path.REPO_COMMITS, queryParam);
+        String data = call(Path.REPO_COMMITS, queryParam);
+        
+        JSONArray commits = new JSONArray(data);
 
         Map<Date, GitHubCommit> gitHubCommits = new LinkedHashMap<>();
 
