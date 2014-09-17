@@ -22,14 +22,8 @@ public class DateTimeFormat {
 
     private final static Logger LOGGER = Logger.getLogger(DateTimeFormat.class.getName());
 
-    private static final TimeZone tz = TimeZone.getTimeZone("UTC");
     private static final DateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     private static final DateFormat time = new SimpleDateFormat("HH:mm:ss");
-
-    static {
-        dateTime.setTimeZone(tz);
-        time.setTimeZone(tz);
-    }
 
     /**
      * Parses dates that are in yyyy-MM-dd'T'HH:mm:ss'Z' format into a Date
