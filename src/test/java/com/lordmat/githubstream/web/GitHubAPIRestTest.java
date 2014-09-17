@@ -255,21 +255,4 @@ public class GitHubAPIRestTest {
         assertTrue(result.size() > 0);
     }
 
-    /**
-     * Test of getOldCommits method, of class GitHubAPIRest.
-     */
-    @Test
-    public void testGetOldCommitsDateNotInProject() {
-        System.out.println("testGetOldCommitsDateNotInProject");
-
-        // TODO find ID that has a few commits before it
-        // always has a few commits before of this ID
-        String earlistCommitId = "2010-01-02T23:12:59Z";
-        GitHubAPIRest instance = new GitHubAPIRest();
-
-        Collection<GitHubCommit> result = instance.getOldCommits(earlistCommitId);
-
-        assertTrue(result.isEmpty());
-    }
-
 }

@@ -29,7 +29,6 @@ import javax.ws.rs.core.MediaType;
  *
  * @author mat
  */
-//TODO finish this class
 @Path("githubapi")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -106,31 +105,7 @@ public class GitHubAPIRest {
     @Path("commit/new")
     @POST
     public List<GitHubCommit> getNewCommits(String latestCommitDate) {
-        List<GitHubCommit> newCommits = new ArrayList<>();
-
-        if (latestCommitDate == null || latestCommitDate.isEmpty()) {
-            return newCommits;
-        }
-
-        Date date = DateTimeFormat.parse(latestCommitDate);
-
-        if (gitHubCommits.isEmpty()) {
-            LOGGER.info("Githubcommit list is empty");
-            return newCommits;
-        }
-
-        if (gitHubCommits.lastKey().equals(date)) {
-            return newCommits; // no new commits
-        }
-
-        for (GitHubCommit commit : gitHubCommits.values()) {
-            if (commit.getDate().equals(date)) {
-                break;
-            }
-            newCommits.add(commit);
-        }
-
-        return newCommits;
+        return gitHubData.getNewCommits(latestCommitDate);
     }
 
     /**
