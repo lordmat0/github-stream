@@ -181,9 +181,9 @@ public class GitHubAPIRestTest {
         List<GitHubCommit> result = instance.getNewCommits(latestCommitDate);
 
         Date date = DateTimeFormat.parse(latestCommitDate);
-        
-        assertTrue(date.before(result.get(result.size() -1).getDate()));
-        
+
+        assertTrue(date.before(result.get(result.size() - 1).getDate()));
+
         assertTrue(!result.isEmpty());
     }
 
@@ -253,6 +253,31 @@ public class GitHubAPIRestTest {
         Collection<GitHubCommit> result = instance.getOldCommits(earlistCommitId);
 
         assertTrue(result.size() > 0);
+    }
+
+    /**
+     * Test of getOldCommits method, of class GitHubAPIRest.
+     *
+     * I used this test method to get all the commits to make sure result4 is
+     * empty since all the commits have already been got. This test will fail
+     * when there are more commits
+     *
+     */
+    @Test
+    public void testGetAllCommits() {
+        System.out.println("testGetAllCommits");
+
+        // TODO find ID that has a few commits before it
+        // always has a few commits before of this ID
+        String earlistCommitId = "2014-09-01T20:22:36Z";
+        GitHubAPIRest instance = new GitHubAPIRest();
+
+        Collection<GitHubCommit> result = instance.getOldCommits(earlistCommitId);
+        Collection<GitHubCommit> result2 = instance.getOldCommits(earlistCommitId);
+        Collection<GitHubCommit> result3 = instance.getOldCommits(earlistCommitId);
+        Collection<GitHubCommit> result4 = instance.getOldCommits(earlistCommitId);
+
+        assertTrue(result4.isEmpty());
     }
 
 }
