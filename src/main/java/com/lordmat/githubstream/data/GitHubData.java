@@ -26,6 +26,12 @@ public class GitHubData {
     private final NavigableMap<Date, GitHubCommit> gitHubCommits;
     private final GitHubCaller caller;
 
+    /**
+     * Set to true if all the commits from the repo have been cached inside
+     * gitHubCommits
+     */
+    private boolean hasLastCommit;
+
     public GitHubData() {
         gitHubUsers = new ConcurrentHashMap<>();
         gitHubCommits = new ConcurrentSkipListMap<>();
@@ -91,7 +97,7 @@ public class GitHubData {
      * would mean that it could be calling getCommits twice on the same date
      * wasting bandwidth
      *
-     * @param earlistCommitDate
+     * @param earlistCommitDate The earlist commit date
      * @return
      */
     public synchronized List<GitHubCommit> getOldCommits(String earlistCommitDate) {
@@ -103,14 +109,18 @@ public class GitHubData {
 
         Date date = DateTimeFormat.parse(earlistCommitDate);
 
-        if (!gitHubCommits.containsKey(date)) {
-            
+        if (!hasLastCommit && !gitHubCommits.containsKey(date)) {
+
             date = gitHubCommits.firstKey();
-            
+
             // If we don't contain the date assume we need to get more commits,
             // but don't trust the client date passed in
-            Map<Date, GitHubCommit> mapCommits = caller.getCommits(null, 
+            NavigableMap<Date, GitHubCommit> mapCommits = caller.getCommits(null,
                     DateTimeFormat.format(date));
+
+            if (mapCommits.firstKey().equals(date)) {
+                hasLastCommit = true;
+            }
 
             gitHubCommits.putAll(mapCommits);
         }
@@ -119,8 +129,7 @@ public class GitHubData {
         newCommits.addAll(gitHubCommits.headMap(date).values());
         Collections.reverse(newCommits);
 
-       
-         // Limit size to 30
+        // Limit size to 30
         int newCommitsSize = newCommits.size();
         return newCommits.subList(0, (newCommitsSize >= 30 ? 30 : newCommitsSize));
     }

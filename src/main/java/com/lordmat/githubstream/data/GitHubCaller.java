@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.client.ClientBuilder;
@@ -70,7 +72,7 @@ public class GitHubCaller {
      * @return a JSONArray that contains details on commits which are retrieved
      * from an API call to the githubAPI
      */
-    public Map<Date, GitHubCommit> getCommits(String since, String until) {
+    public NavigableMap<Date, GitHubCommit> getCommits(String since, String until) {
         Map<String, String> queryParam = new HashMap<>();
         queryParam.put("since", since);
         queryParam.put("until", until);
@@ -79,7 +81,7 @@ public class GitHubCaller {
         
         JSONArray commits = new JSONArray(data);
 
-        Map<Date, GitHubCommit> gitHubCommits = new LinkedHashMap<>();
+        NavigableMap<Date, GitHubCommit> gitHubCommits = new TreeMap<>();
 
         // Check results
         if (commits.length() == 0) {
