@@ -59,6 +59,24 @@ public class GitHubData {
         return gitHubUsers;
     }
 
+    public List<GitHubUser> getUsers(List<String> users) {
+
+        List<GitHubUser> returnedUsers = new ArrayList<>();
+        for (String userName : users) {
+
+            GitHubUser user = gitHubUsers.get(userName);
+
+            // User returns null if it doesn't exist and not used in any commits
+            if (user == null) {
+                continue;
+            }
+
+            returnedUsers.add(user);
+        }
+
+        return returnedUsers;
+    }
+
     /**
      * Checks for new commits, if the date passed in null or empty then a empty
      * list is returned
@@ -109,8 +127,8 @@ public class GitHubData {
 
         Date date = DateTimeFormat.parse(earlistCommitDate);
 
-        if (!hasLastCommit && 
-                (gitHubCommits.firstKey().equals(date) || !gitHubCommits.containsKey(date))) {
+        if (!hasLastCommit
+                && (gitHubCommits.firstKey().equals(date) || !gitHubCommits.containsKey(date))) {
 
             date = gitHubCommits.firstKey();
 

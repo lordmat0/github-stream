@@ -5,14 +5,11 @@ import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.UserList;
 import com.lordmat.githubstream.data.GitHubData;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.NavigableMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.POST;
@@ -35,10 +32,8 @@ public class GitHubAPIRest {
     private final static Logger LOGGER = Logger.getLogger(GitHubAPIRest.class.getName());
 
     @Context
-    private UriInfo context;
+    private HttpServletRequest request;
 
-    private final NavigableMap<Date, GitHubCommit> gitHubCommits;
-    private final Map<String, GitHubUser> gitHubUsers;
     private final GitHubData gitHubData;
 
     /**
@@ -46,8 +41,6 @@ public class GitHubAPIRest {
      */
     public GitHubAPIRest() {
         gitHubData = StartManager.data();
-        gitHubCommits = StartManager.data().getCommits();
-        gitHubUsers = StartManager.data().getUsers();
     }
 
     /**
@@ -75,21 +68,9 @@ public class GitHubAPIRest {
     @Path("user")
     @POST
     public List<GitHubUser> getUsers(UserList users) {
+        LOGGER.log(Level.FINE, "Searching for users: {0}", users.getUsers().toString());
 
-        List<GitHubUser> returnedUsers = new ArrayList<>();
-        for (String userName : users.getUsers()) {
-
-            GitHubUser user = gitHubUsers.get(userName);
-
-            // User returns null if it doesn't exist and not used in any commits
-            if (user == null) {
-                continue;
-            }
-
-            returnedUsers.add(user);
-        }
-
-        return returnedUsers;
+        return gitHubData.getUsers(users.getUsers());
     }
 
     /**
@@ -103,6 +84,8 @@ public class GitHubAPIRest {
     @Path("commit/new")
     @POST
     public List<GitHubCommit> getNewCommits(String latestCommitDate) {
+        LOGGER.log(Level.FINE, "Getting new commits latestCommitDate: {0}", latestCommitDate);
+
         return gitHubData.getNewCommits(latestCommitDate);
     }
 
@@ -114,6 +97,8 @@ public class GitHubAPIRest {
     @Path("commit/old")
     @POST
     public List<GitHubCommit> getOldCommits(String earlistCommitDate) {
+        LOGGER.log(Level.FINE, "Getting old commits earlistCommitDate: {0}", earlistCommitDate);
+
         return gitHubData.getOldCommits(earlistCommitDate);
     }
 
