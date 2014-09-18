@@ -130,7 +130,7 @@ public class GitHubCaller {
                         new Date(),
                         "Some bogus message that has some weight to it",
                         null,
-                        new GitHubUser("FakeUser", "", "")));
+                        new GitHubUser("FakeUser", "#", "#")));
 
         return gitHubCommits;
     }

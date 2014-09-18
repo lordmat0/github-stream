@@ -3,7 +3,6 @@
     Created on : 09-Sep-2014, 23:31:18
     Author     : mat
 --%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -28,32 +27,31 @@
 
         <div class="container">
 
-            <h1>Commits for <c:out value="${project}"/> owned by <c:out value="${owner}"/></h1>
+            <h1>Commits for <c:out value="${project}"/> owned by <c:out value="${owner}"/>  </h1>
 
             <c:forEach items="${commits}" var="commits">
-                <div class="alert alert-dismissable alert-success container-fluid row" >
+                <div class="commit alert alert-dismissable alert-success container-fluid row" >
 
-                    <img class="col-sm-1 col-md-1 col-lg-1" alt="Missing Avatar" src="<c:out value="${commits.userCommited.avatarUrl}" />" style="max-width: 150px;" >
+                    <img class="commit-user-avatar col-sm-1 col-md-1 col-lg-1" alt="Missing Avatar" src="<c:out value='${commits.userCommited.avatarUrl}' />" style="max-width: 150px;" >
 
                     <div class="col-md-8" > 
                         <div class="row">
 
                             <div class="col-md-3 col-sm-3">
                                 <strong>
-                                    <a href="<c:out value="${commits.userCommited.accountUrl}" />" >
+                                    <a class="commit-accounturl" href="<c:out value='${commits.userCommited.accountUrl}' />" >
                                         <c:out value="${commits.userCommited.userName}" />
                                     </a>
-
                                 </strong>
                             </div>
 
-                            <div class="col-md-7 col-sm-7">
+                            <div class="commit-id col-md-7 col-sm-7">
                                 <strong>
                                     <c:out value="${commits.id}" />
                                 </strong>
                             </div>
 
-                            <div class="col-md-2 col-sm-2">
+                            <div class="commit-date col-md-2 col-sm-2">
                                 <strong>
                                     <fmt:formatDate pattern="yyyy-MM-dd'T'HH:mm:ss'Z'" value="${commits.date}" />
                                 </strong>
@@ -61,7 +59,7 @@
 
                         </div>
 
-                        <div class="row">
+                        <div class="commit-message row">
                             <div class="col-md-12 col-sm-12">
                                 <c:out value="${commits.message}" />
                             </div>
