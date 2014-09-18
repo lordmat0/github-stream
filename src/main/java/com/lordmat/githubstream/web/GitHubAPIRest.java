@@ -3,6 +3,7 @@ package com.lordmat.githubstream.web;
 import com.lordmat.githubstream.StartManager;
 import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.bean.GitHubCommit;
+import com.lordmat.githubstream.bean.StringBean;
 import com.lordmat.githubstream.bean.UserList;
 import com.lordmat.githubstream.data.GitHubData;
 import java.util.List;
@@ -51,7 +52,7 @@ public class GitHubAPIRest {
      * <p>
      *
      * <code>
-     * $.ajax('res/githubapi/user/', {
+     * $.ajax('rest/githubapi/user/', {
      * <br>
      * contentType: 'application/json',
      * <br>
@@ -83,10 +84,10 @@ public class GitHubAPIRest {
      */
     @Path("commit/new")
     @POST
-    public List<GitHubCommit> getNewCommits(String latestCommitDate) {
-        LOGGER.log(Level.FINE, "Getting new commits latestCommitDate: {0}", latestCommitDate);
+    public List<GitHubCommit> getNewCommits(StringBean latestCommitDate) {
+        LOGGER.log(Level.FINE, "Getting new commits latestCommitDate: {0}", latestCommitDate.getData());
 
-        return gitHubData.getNewCommits(latestCommitDate);
+        return gitHubData.getNewCommits(latestCommitDate.getData());
     }
 
     /**
@@ -96,10 +97,10 @@ public class GitHubAPIRest {
      */
     @Path("commit/old")
     @POST
-    public List<GitHubCommit> getOldCommits(String earlistCommitDate) {
-        LOGGER.log(Level.FINE, "Getting old commits earlistCommitDate: {0}", earlistCommitDate);
+    public List<GitHubCommit> getOldCommits(StringBean earlistCommitDate) {
+        LOGGER.log(Level.FINE, "Getting old commits earlistCommitDate: {0}", earlistCommitDate.getData());
 
-        return gitHubData.getOldCommits(earlistCommitDate);
+        return gitHubData.getOldCommits(earlistCommitDate.getData());
     }
 
 }
