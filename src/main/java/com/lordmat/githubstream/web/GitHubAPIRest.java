@@ -76,7 +76,20 @@ public class GitHubAPIRest {
 
     /**
      * Checks for new commits, if the date passed in null or empty then a empty
-     * list is returned
+     * list is returned. Example ajax call
+     *
+     * <p>
+     * <code>
+     * $.ajax('rest/githubapi/commit/new', {
+     * <br>
+     * contentType: 'application/json',
+     * <br>
+     * type: 'POST',
+     * <br>
+     * data: JSON.stringify({"data":"2014-09-17T22:16:06Z"})
+     * <br>
+     * });
+     * </code>
      *
      * @param latestCommitDate The commit ID to check against
      * @return An empty list or commits that come after the lastestCommitId
@@ -91,6 +104,21 @@ public class GitHubAPIRest {
     }
 
     /**
+     * Checks for old commits,if the date passed in null or empty then a empty
+     * list is returned.      
+     * 
+     * <p>
+     * <code>
+     * $.ajax('rest/githubapi/commit/old', {
+     * <br>
+     * contentType: 'application/json',
+     * <br>
+     * type: 'POST',
+     * <br>
+     * data: JSON.stringify({"data":"2014-09-17T22:16:06Z"})
+     * <br>
+     * });
+     * </code>
      *
      * @param earlistCommitDate The commit ID to check against
      * @return An empty list or commits that come before the earlistCommitId
