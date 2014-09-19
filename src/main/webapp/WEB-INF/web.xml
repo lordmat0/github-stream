@@ -8,4 +8,22 @@
     <listener>
         <listener-class>com.lordmat.githubstream.StartManager</listener-class>
     </listener>
+    
+    
+    <filter>
+        <description>
+            This filter class removes any whitespace from the response. It actually trims all
+            leading and trailing spaces or tabs and newlines before writing to the response stream.
+            This will greatly save the network bandwith, but this will make the source of the
+            response more hard to read.
+        </description>
+        <filter-name>whitespaceFilter</filter-name>
+        <filter-class>com.lordmat.githubstream.controller.WhitespaceFilter</filter-class>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>whitespaceFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
 </web-app>
