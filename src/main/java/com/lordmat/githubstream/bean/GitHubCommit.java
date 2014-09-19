@@ -29,13 +29,7 @@ public class GitHubCommit {
         this.userCommited = userCommited;
     }
 
-    /**
-     *
-     * @return The date of the commit
-     */
-    public Date getDate() {
-        return date;
-    }
+
 
     @Override
     public String toString() {
@@ -77,5 +71,18 @@ public class GitHubCommit {
     public void setUserCommited(GitHubUser userCommited) {
         this.userCommited = userCommited;
     }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    
+    /**
+     *
+     * @return The date of the commit
+     */
+    public Date getDate() {
+        return date;
+    }
+    
     
 }
