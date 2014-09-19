@@ -29,14 +29,16 @@ function handleNewCommits(data) {
         var user = data[i].userCommited;
 
         // Change values to new commit
-        $commit.find('.commit-id').text(data[i].id);
-        $commit.find('.commit-message').text(data[i].message);
-        $commit.find('.commit-date').text(data[i].date)
-        $commit.find('.commit-accounturl').attr('id', user.accountUrl).text(user.userName);
+        $commit.find('.commit-id strong').text(data[i].id);
+        $commit.find('.commit-message div').text(data[i].message);
+        $commit.find('.commit-date strong').text(data[i].date)
+        $commit.find('.commit-accounturl')
+                .attr('href', user.accountUrl)
+                .find('strong').text(user.userName);
+        
         $commit.find('.commit-user-avatar').attr('src', user.avatarUrl);
         
-        
+        // Add the new commit to the DOM
         $('section').prepend($commit);
-
     }
 }
