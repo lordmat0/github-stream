@@ -5,6 +5,7 @@
  */
 package com.lordmat.githubstream.api;
 
+import com.lordmat.githubstream.StartManager;
 import com.lordmat.githubstream.data.GitHubCaller;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.GitHubUser;
@@ -31,6 +32,8 @@ public class GitHubCallerTest {
 
     @BeforeClass
     public static void setUpClass() {
+        // Need to init to create GitHubData
+        new StartManager();
     }
 
     @AfterClass

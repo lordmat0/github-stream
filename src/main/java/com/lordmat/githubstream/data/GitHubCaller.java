@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
@@ -131,7 +130,7 @@ public class GitHubCaller {
                         new Date(),
                         "Some bogus message that has some weight to it",
                         null,
-                        new GitHubUser("FakeUser", "", "")));
+                        new GitHubUser("FakeUser", "#", "#")));
 
         return gitHubCommits;
     }
