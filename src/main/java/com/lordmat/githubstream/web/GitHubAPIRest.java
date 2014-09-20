@@ -105,8 +105,8 @@ public class GitHubAPIRest {
 
     /**
      * Checks for old commits,if the date passed in null or empty then a empty
-     * list is returned.      
-     * 
+     * list is returned.
+     *
      * <p>
      * <code>
      * $.ajax('rest/githubapi/commit/old', {

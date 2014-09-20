@@ -105,7 +105,6 @@ public class GitHubData {
 
         // get a subset of the list
         newCommits.addAll(gitHubCommits.tailMap(date).values());
-        Collections.reverse(newCommits);
 
         return newCommits;
     }
