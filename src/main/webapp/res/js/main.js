@@ -27,11 +27,13 @@ function handleNewCommits(data) {
         var $commit = $('.commit').first().clone(false);
         
         var user = data[i].userCommited;
-
+        var date =  data[i].date.substring(0, data[i].date.lastIndexOf('.')) + 'Z';
+      
+        
         // Change values to new commit
         $commit.find('.commit-id strong').text(data[i].id);
         $commit.find('.commit-message div').text(data[i].message);
-        $commit.find('.commit-date strong').text(data[i].date)
+        $commit.find('.commit-date strong').text(date);
         $commit.find('.commit-accounturl')
                 .attr('href', user.accountUrl)
                 .find('strong').text(user.userName);
