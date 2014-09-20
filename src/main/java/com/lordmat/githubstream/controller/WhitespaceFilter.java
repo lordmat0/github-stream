@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -41,8 +43,12 @@ import javax.servlet.http.HttpServletResponseWrapper;
  *
  * @author BalusC
  * @link http://balusc.blogspot.com/2007/12/whitespacefilter.html
+ * 
+ * @author mat - modifications
  */
 public class WhitespaceFilter implements Filter {
+
+    private final static Logger LOGGER = Logger.getLogger(WhitespaceFilter.class.getName());
 
     // Constants ----------------------------------------------------------------------------------
     // Specify here where you'd like to start/stop the trimming.
@@ -52,15 +58,24 @@ public class WhitespaceFilter implements Filter {
 
     // Actions ------------------------------------------------------------------------------------
     /**
+     * @param config
+     * @throws javax.servlet.ServletException
      * @see Filter#init(FilterConfig)
      */
+    @Override
     public void init(FilterConfig config) throws ServletException {
         //
     }
 
     /**
+     * @param request
+     * @param response
+     * @param chain
+     * @throws java.io.IOException
+     * @throws javax.servlet.ServletException
      * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
      */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         if (response instanceof HttpServletResponse) {
@@ -74,6 +89,7 @@ public class WhitespaceFilter implements Filter {
     /**
      * @see Filter#destroy()
      */
+    @Override
     public void destroy() {
         //
     }
@@ -93,21 +109,25 @@ public class WhitespaceFilter implements Filter {
             private StringBuilder builder = new StringBuilder();
             private boolean trim = false;
 
+            @Override
             public void write(int c) {
                 builder.append((char) c); // It is actually a char, not an int.
             }
 
+            @Override
             public void write(char[] chars, int offset, int length) {
                 builder.append(chars, offset, length);
                 this.flush(); // Preflush it.
             }
 
+            @Override
             public void write(String string, int offset, int length) {
                 builder.append(string, offset, length);
                 this.flush(); // Preflush it.
             }
 
             // Finally override the flush method so that it trims whitespace.
+            @Override
             public void flush() {
                 synchronized (builder) {
                     BufferedReader reader = new BufferedReader(new StringReader(builder.toString()));
@@ -144,8 +164,9 @@ public class WhitespaceFilter implements Filter {
                                 out.write(line);
                             }
                         }
-                    } catch (IOException e) {
+                    } catch (IOException ex) {
                         setError();
+                        LOGGER.log(Level.SEVERE, "Page failed to render", ex);
                         // Log e or do e.printStackTrace() if necessary.
                     }
 
@@ -187,6 +208,7 @@ public class WhitespaceFilter implements Filter {
     private static HttpServletResponse wrapResponse(
             final HttpServletResponse response, final PrintWriter writer) {
         return new HttpServletResponseWrapper(response) {
+            @Override
             public PrintWriter getWriter() throws IOException {
                 return writer;
             }
