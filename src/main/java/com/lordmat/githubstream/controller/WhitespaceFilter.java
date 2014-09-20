@@ -114,19 +114,34 @@ public class WhitespaceFilter implements Filter {
                     String line = null;
 
                     try {
+                        boolean firstLine = true;
+
                         while ((line = reader.readLine()) != null) {
+
+                            if (firstLine && line.trim().startsWith("class")) {
+                                out.write(" ");
+                                firstLine = false;
+                            }
+
                             if (startTrim(line)) {
                                 trim = true;
                                 out.write(line);
                             } else if (trim) {
-                                out.write(line.trim());
+
+                                if (line.endsWith(" ")) {
+                                    out.write(line.trim() + " ");
+                                } else if (line.startsWith(" ")) {
+                                    out.write(" " + line.trim());
+                                } else {
+                                    out.write(line.trim());
+                                }
+
                                 if (stopTrim(line)) {
                                     trim = false;
-                                    println();
                                 }
+
                             } else {
                                 out.write(line);
-                                println();
                             }
                         }
                     } catch (IOException e) {
