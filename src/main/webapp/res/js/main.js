@@ -55,7 +55,7 @@ function createCommit(data) {
     var $commit = $('.commit').first().clone(false);
 
     var user = data.userCommited;
-    var date = data.date.substring(0, data.date.lastIndexOf('.')) + 'Z';
+    var date = data.date.substring(0, data.date.lastIndexOf('+')) + 'Z';
 
 
     // Change values to new commit
