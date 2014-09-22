@@ -6,6 +6,7 @@ import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -75,6 +76,27 @@ public class GitHubData {
         }
 
         return returnedUsers;
+    }
+
+    /**
+     * This returns the top 25 commits in the list currently, The top is defined
+     * as the newest commits. If there are less than 25 commits than all the
+     * commits will be returned.
+     *
+     * @return A list of the newest github commits
+     */
+    public List<GitHubCommit> getTopCommits() {
+        List<GitHubCommit> commitList = new ArrayList<>(25);
+
+        {
+            Iterator iter = gitHubCommits.descendingMap().values().iterator();
+
+            for (int i = 0; !iter.hasNext() || i < 25; i++) {
+                commitList.add((GitHubCommit) iter.next());
+            }
+        }
+
+        return commitList;
     }
 
     /**
