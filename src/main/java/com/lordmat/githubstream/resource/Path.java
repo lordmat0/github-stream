@@ -1,7 +1,5 @@
 package com.lordmat.githubstream.resource;
 
-import com.lordmat.githubstream.resource.MyResourceBundle;
-import com.lordmat.githubstream.resource.ResourceKey;
 import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.Calendar;
 import java.util.logging.Level;

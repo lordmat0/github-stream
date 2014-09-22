@@ -175,7 +175,6 @@ public class GitHubAPIRestTest {
     public void testGetNewCommits() {
         System.out.println("getNewCommits");
 
-        // TODO find ID that has a few commits after it
         // always has a few commits ahead of this ID
         String latestCommitDate = "2014-09-12T20:45:35Z";
         GitHubAPIRest instance = new GitHubAPIRest();
@@ -196,8 +195,6 @@ public class GitHubAPIRestTest {
     public void testGetNewCommitsNullDate() {
         System.out.println("getNewCommits");
 
-        // TODO find ID that has a few commits after it
-        // always has a few commits ahead of this ID
         StringBean nullDate = new StringBean(null);
         GitHubAPIRest instance = new GitHubAPIRest();
 
@@ -213,7 +210,6 @@ public class GitHubAPIRestTest {
     public void testGetNewCommitsEmptyDate() {
         System.out.println("getNewCommits");
 
-        // TODO find ID that has a few commits after it
         // always has a few commits ahead of this ID
         String emptyString = "";
         GitHubAPIRest instance = new GitHubAPIRest();
@@ -230,7 +226,6 @@ public class GitHubAPIRestTest {
     public void testGetOldCommitsAlreadyCached() {
         System.out.println("testGetOldCommitsAlreadyCached");
 
-        // TODO find ID that has a few commits before it
         // always has a few commits before of this ID
         String earlistCommitId = "2014-09-12T19:58:39Z"; // 2014-09-12T19:58:39
         GitHubAPIRest instance = new GitHubAPIRest();
@@ -247,7 +242,6 @@ public class GitHubAPIRestTest {
     public void testGetOldCommitsNotCached() {
         System.out.println("testGetOldCommitsNotCached");
 
-        // TODO find ID that has a few commits before it
         // always has a few commits before of this ID
         String earlistCommitId = "2014-09-02T23:12:59Z";
         GitHubAPIRest instance = new GitHubAPIRest();
@@ -269,7 +263,6 @@ public class GitHubAPIRestTest {
     public void testGetAllCommits() {
         System.out.println("testGetAllCommits");
 
-        // TODO find ID that has a few commits before it
         // always has a few commits before of this ID
         String earlistCommitId = "2014-09-01T20:22:36Z";
         GitHubAPIRest instance = new GitHubAPIRest();
