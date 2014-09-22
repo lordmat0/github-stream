@@ -104,7 +104,7 @@ public class GitHubData {
         }
 
         // get a subset of the list
-        newCommits.addAll(gitHubCommits.tailMap(date).values());
+        newCommits.addAll(gitHubCommits.tailMap(date, false).values());
 
         return newCommits;
     }
