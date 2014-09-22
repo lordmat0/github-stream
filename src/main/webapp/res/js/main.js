@@ -1,7 +1,36 @@
 $(function () {
 
+    $(window).scroll(function () {
+        var totalHeight = document.body.offsetHeight;
+        var visibleHeight = document.documentElement.clientHeight;
+
+        var scrollTop = document.documentElement.scrollTop;
+
+        // Where the scroll bar is currently
+        var currentScroll = scrollTop ? scrollTop : document.body.scrollTop;
+
+        if (totalHeight <= visibleHeight + currentScroll) {
+            // At bottom of the page
+            
+            var date = $('.commit').last().find('.commit-date strong').text();
+            
+            $.ajax('rest/githubapi/commit/old', {
+                contentType: 'application/json',
+                type: 'POST',
+                data: JSON.stringify({
+                    "data": date
+                }),
+                success: handleOldCommits
+            });
+        }
+
+    });
+
+
+
+    // Check for new Commits
     setInterval(function () {
-        var date = $('.commit').first().find('.commit-date strong').text().trim();
+        var date = $('.commit').first().find('.commit-date strong').text();
 
         $.ajax('rest/githubapi/commit/new', {
             contentType: 'application/json',
@@ -55,6 +84,7 @@ function createCommit(data) {
     var $commit = $('.commit').first().clone(false);
 
     var user = data.userCommited;
+    
     var date = data.date.substring(0, data.date.lastIndexOf('+')) + 'Z';
 
 
