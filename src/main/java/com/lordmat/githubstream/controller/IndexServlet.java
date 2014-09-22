@@ -24,7 +24,6 @@ public class IndexServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
-        //TODO get only the top 25 commits
         commits = new ArrayList<>(StartManager.data().getCommits().descendingMap().values());
         
         request.setAttribute("commits", commits);
