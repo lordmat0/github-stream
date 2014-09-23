@@ -1,4 +1,4 @@
-githubstream
+Github-stream
 ============
 
 This project is a Java web server that connects to GitHub's API that provides a nice front end for seeing commits. It doesn't use a database to hold data but this may change.
@@ -13,7 +13,7 @@ Animation
 
 
 
-Settings that need to be Changed
+Settings that need to be changed
 ===========
 
 project.properties needs to be configured correctly  the owner of the repository and the repository name
