@@ -91,7 +91,7 @@ public class GitHubData {
         {
             Iterator iter = gitHubCommits.descendingMap().values().iterator();
 
-            for (int i = 0; !iter.hasNext() || i < 25; i++) {
+            for (int i = 0; iter.hasNext() && i < 25; i++) {
                 commitList.add((GitHubCommit) iter.next());
             }
         }
