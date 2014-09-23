@@ -13,7 +13,6 @@ $(function () {
                 return; // already Calling
             }
             
-            
             var totalHeight = document.body.offsetHeight;
             var visibleHeight = document.documentElement.clientHeight;
 
