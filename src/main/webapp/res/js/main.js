@@ -85,9 +85,11 @@ function createCommit(data) {
 
     var user = data.userCommited;
     
-    var date = data.date.substring(0, data.date.lastIndexOf('+')) + 'Z';
-
-
+    var date = data.date;
+    
+    // Add Z to the ender if not appended on at the server (seems to be an issue with osx)
+    date = date + (date.indexOf("Z") > -1 ? '' : 'Z');
+    
     // Change values to new commit
     $commit.find('.commit-id strong').text(data.id);
     $commit.find('.commit-message div').text(data.message);

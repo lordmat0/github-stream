@@ -7,7 +7,6 @@ import com.lordmat.githubstream.StartManager;
 import com.lordmat.githubstream.resource.MyResourceBundle;
 import com.lordmat.githubstream.resource.ResourceKey;
 import com.lordmat.githubstream.util.DateTimeFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -103,7 +102,8 @@ public class GitHubCaller {
                 String message = commit.getString("message");
                 String user = author.getString("login");
 
-                Date date = DateTimeFormat.parse(commit.getJSONObject("author").getString("date"));
+                String dateStr = commit.getJSONObject("author").getString("date");
+                Date date = DateTimeFormat.parse(dateStr);
 
                 GitHubUser ghUser = ghUsers.get(user);
 
