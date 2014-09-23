@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author mat
  */
-@WebServlet(urlPatterns ={"/index", "/.", "/index.jsp"})
+@WebServlet(urlPatterns ={"/index", "/.", "/index.jsp"}, loadOnStartup = 1)
 public class IndexServlet extends HttpServlet {
     
     private List<GitHubCommit> commits;
@@ -24,8 +24,7 @@ public class IndexServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
-        //TODO get only the top 25 commits
-        commits = new ArrayList<>(StartManager.data().getCommits().descendingMap().values());
+        commits = StartManager.data().getTopCommits();
         
         request.setAttribute("commits", commits);
         request.setAttribute("project", Path.REPO_NAME);

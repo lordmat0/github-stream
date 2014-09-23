@@ -6,6 +6,7 @@ import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -59,6 +60,45 @@ public class GitHubData {
         return gitHubUsers;
     }
 
+    public List<GitHubUser> getUsers(List<String> users) {
+
+        List<GitHubUser> returnedUsers = new ArrayList<>();
+        for (String userName : users) {
+
+            GitHubUser user = gitHubUsers.get(userName);
+
+            // User returns null if it doesn't exist and not used in any commits
+            if (user == null) {
+                continue;
+            }
+
+            returnedUsers.add(user);
+        }
+
+        return returnedUsers;
+    }
+
+    /**
+     * This returns the top 25 commits in the list currently, The top is defined
+     * as the newest commits. If there are less than 25 commits than all the
+     * commits will be returned.
+     *
+     * @return A list of the newest github commits
+     */
+    public List<GitHubCommit> getTopCommits() {
+        List<GitHubCommit> commitList = new ArrayList<>(25);
+
+        {
+            Iterator iter = gitHubCommits.descendingMap().values().iterator();
+
+            for (int i = 0; !iter.hasNext() || i < 25; i++) {
+                commitList.add((GitHubCommit) iter.next());
+            }
+        }
+
+        return commitList;
+    }
+
     /**
      * Checks for new commits, if the date passed in null or empty then a empty
      * list is returned
@@ -86,8 +126,7 @@ public class GitHubData {
         }
 
         // get a subset of the list
-        newCommits.addAll(gitHubCommits.tailMap(date).values());
-        Collections.reverse(newCommits);
+        newCommits.addAll(gitHubCommits.tailMap(date, false).values());
 
         return newCommits;
     }
@@ -109,8 +148,8 @@ public class GitHubData {
 
         Date date = DateTimeFormat.parse(earlistCommitDate);
 
-        if (!hasLastCommit && 
-                (gitHubCommits.firstKey().equals(date) || !gitHubCommits.containsKey(date))) {
+        if (!hasLastCommit
+                && (gitHubCommits.firstKey().equals(date) || !gitHubCommits.containsKey(date))) {
 
             date = gitHubCommits.firstKey();
 

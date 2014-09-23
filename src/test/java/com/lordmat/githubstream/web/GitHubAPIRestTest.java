@@ -8,6 +8,7 @@ package com.lordmat.githubstream.web;
 import com.lordmat.githubstream.StartManager;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.GitHubUser;
+import com.lordmat.githubstream.bean.StringBean;
 import com.lordmat.githubstream.bean.UserList;
 import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.ArrayList;
@@ -174,12 +175,11 @@ public class GitHubAPIRestTest {
     public void testGetNewCommits() {
         System.out.println("getNewCommits");
 
-        // TODO find ID that has a few commits after it
         // always has a few commits ahead of this ID
         String latestCommitDate = "2014-09-12T20:45:35Z";
         GitHubAPIRest instance = new GitHubAPIRest();
 
-        List<GitHubCommit> result = instance.getNewCommits(latestCommitDate);
+        List<GitHubCommit> result = instance.getNewCommits(new StringBean(latestCommitDate));
 
         Date date = DateTimeFormat.parse(latestCommitDate);
 
@@ -195,9 +195,7 @@ public class GitHubAPIRestTest {
     public void testGetNewCommitsNullDate() {
         System.out.println("getNewCommits");
 
-        // TODO find ID that has a few commits after it
-        // always has a few commits ahead of this ID
-        String nullDate = null;
+        StringBean nullDate = new StringBean(null);
         GitHubAPIRest instance = new GitHubAPIRest();
 
         List<GitHubCommit> result = instance.getNewCommits(nullDate);
@@ -212,12 +210,11 @@ public class GitHubAPIRestTest {
     public void testGetNewCommitsEmptyDate() {
         System.out.println("getNewCommits");
 
-        // TODO find ID that has a few commits after it
         // always has a few commits ahead of this ID
         String emptyString = "";
         GitHubAPIRest instance = new GitHubAPIRest();
 
-        List<GitHubCommit> result = instance.getNewCommits(emptyString);
+        List<GitHubCommit> result = instance.getNewCommits(new StringBean(emptyString));
 
         assertTrue(result.isEmpty());
     }
@@ -229,12 +226,11 @@ public class GitHubAPIRestTest {
     public void testGetOldCommitsAlreadyCached() {
         System.out.println("testGetOldCommitsAlreadyCached");
 
-        // TODO find ID that has a few commits before it
         // always has a few commits before of this ID
         String earlistCommitId = "2014-09-12T19:58:39Z"; // 2014-09-12T19:58:39
         GitHubAPIRest instance = new GitHubAPIRest();
 
-        Collection<GitHubCommit> result = instance.getOldCommits(earlistCommitId);
+        Collection<GitHubCommit> result = instance.getOldCommits(new StringBean(earlistCommitId));
 
         assertTrue(result.size() > 0);
     }
@@ -246,12 +242,11 @@ public class GitHubAPIRestTest {
     public void testGetOldCommitsNotCached() {
         System.out.println("testGetOldCommitsNotCached");
 
-        // TODO find ID that has a few commits before it
         // always has a few commits before of this ID
         String earlistCommitId = "2014-09-02T23:12:59Z";
         GitHubAPIRest instance = new GitHubAPIRest();
 
-        Collection<GitHubCommit> result = instance.getOldCommits(earlistCommitId);
+        Collection<GitHubCommit> result = instance.getOldCommits(new StringBean(earlistCommitId));
 
         assertTrue(result.size() > 0);
     }
@@ -268,15 +263,14 @@ public class GitHubAPIRestTest {
     public void testGetAllCommits() {
         System.out.println("testGetAllCommits");
 
-        // TODO find ID that has a few commits before it
         // always has a few commits before of this ID
         String earlistCommitId = "2014-09-01T20:22:36Z";
         GitHubAPIRest instance = new GitHubAPIRest();
-
-        Collection<GitHubCommit> result = instance.getOldCommits(earlistCommitId);
-        Collection<GitHubCommit> result2 = instance.getOldCommits(earlistCommitId);
-        Collection<GitHubCommit> result3 = instance.getOldCommits(earlistCommitId);
-        Collection<GitHubCommit> result4 = instance.getOldCommits(earlistCommitId);
+        
+        Collection<GitHubCommit> result = instance.getOldCommits(new StringBean(earlistCommitId));
+        Collection<GitHubCommit> result2 = instance.getOldCommits(new StringBean(earlistCommitId));
+        Collection<GitHubCommit> result3 = instance.getOldCommits(new StringBean(earlistCommitId));
+        Collection<GitHubCommit> result4 = instance.getOldCommits(new StringBean(earlistCommitId));
 
         assertTrue(result4.isEmpty());
     }

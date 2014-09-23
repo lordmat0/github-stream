@@ -11,12 +11,16 @@ import java.util.List;
 public class GitHubCommit {
 
     private String id;
-    private final Date date;
+    private Date date;
     private String message;
     private List<String> filesChanged;
 
     private GitHubUser userCommited;
 
+    public GitHubCommit(){
+        
+    }
+    
     public GitHubCommit(String id, Date date, String message, List<String> filesChanged, GitHubUser userCommited) {
         this.id = id;
         this.date = date;
@@ -25,13 +29,7 @@ public class GitHubCommit {
         this.userCommited = userCommited;
     }
 
-    /**
-     *
-     * @return The date of the commit
-     */
-    public Date getDate() {
-        return date;
-    }
+
 
     @Override
     public String toString() {
@@ -70,8 +68,21 @@ public class GitHubCommit {
         return userCommited;
     }
 
-    public void GitHubUser(GitHubUser userCommited) {
+    public void setUserCommited(GitHubUser userCommited) {
         this.userCommited = userCommited;
     }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    
+    /**
+     *
+     * @return The date of the commit
+     */
+    public Date getDate() {
+        return date;
+    }
+    
+    
 }

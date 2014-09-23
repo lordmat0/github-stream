@@ -3,16 +3,14 @@ package com.lordmat.githubstream.web;
 import com.lordmat.githubstream.StartManager;
 import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.bean.GitHubCommit;
+import com.lordmat.githubstream.bean.StringBean;
 import com.lordmat.githubstream.bean.UserList;
 import com.lordmat.githubstream.data.GitHubData;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.NavigableMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.POST;
@@ -35,10 +33,8 @@ public class GitHubAPIRest {
     private final static Logger LOGGER = Logger.getLogger(GitHubAPIRest.class.getName());
 
     @Context
-    private UriInfo context;
+    private HttpServletRequest request;
 
-    private final NavigableMap<Date, GitHubCommit> gitHubCommits;
-    private final Map<String, GitHubUser> gitHubUsers;
     private final GitHubData gitHubData;
 
     /**
@@ -46,8 +42,6 @@ public class GitHubAPIRest {
      */
     public GitHubAPIRest() {
         gitHubData = StartManager.data();
-        gitHubCommits = StartManager.data().getCommits();
-        gitHubUsers = StartManager.data().getUsers();
     }
 
     /**
@@ -58,7 +52,7 @@ public class GitHubAPIRest {
      * <p>
      *
      * <code>
-     * $.ajax('res/githubapi/user/', {
+     * $.ajax('rest/githubapi/user/', {
      * <br>
      * contentType: 'application/json',
      * <br>
@@ -75,26 +69,27 @@ public class GitHubAPIRest {
     @Path("user")
     @POST
     public List<GitHubUser> getUsers(UserList users) {
+        LOGGER.log(Level.FINE, "Searching for users: {0}", users.getUsers().toString());
 
-        List<GitHubUser> returnedUsers = new ArrayList<>();
-        for (String userName : users.getUsers()) {
-
-            GitHubUser user = gitHubUsers.get(userName);
-
-            // User returns null if it doesn't exist and not used in any commits
-            if (user == null) {
-                continue;
-            }
-
-            returnedUsers.add(user);
-        }
-
-        return returnedUsers;
+        return gitHubData.getUsers(users.getUsers());
     }
 
     /**
      * Checks for new commits, if the date passed in null or empty then a empty
-     * list is returned
+     * list is returned. Example ajax call
+     *
+     * <p>
+     * <code>
+     * $.ajax('rest/githubapi/commit/new', {
+     * <br>
+     * contentType: 'application/json',
+     * <br>
+     * type: 'POST',
+     * <br>
+     * data: JSON.stringify({"data":"2014-09-17T22:16:06Z"})
+     * <br>
+     * });
+     * </code>
      *
      * @param latestCommitDate The commit ID to check against
      * @return An empty list or commits that come after the lastestCommitId
@@ -102,19 +97,38 @@ public class GitHubAPIRest {
      */
     @Path("commit/new")
     @POST
-    public List<GitHubCommit> getNewCommits(String latestCommitDate) {
-        return gitHubData.getNewCommits(latestCommitDate);
+    public List<GitHubCommit> getNewCommits(StringBean latestCommitDate) {
+        LOGGER.log(Level.FINE, "Getting new commits latestCommitDate: {0}", latestCommitDate.getData());
+
+        return gitHubData.getNewCommits(latestCommitDate.getData());
     }
 
     /**
+     * Checks for old commits,if the date passed in null or empty then a empty
+     * list is returned.
+     *
+     * <p>
+     * <code>
+     * $.ajax('rest/githubapi/commit/old', {
+     * <br>
+     * contentType: 'application/json',
+     * <br>
+     * type: 'POST',
+     * <br>
+     * data: JSON.stringify({"data":"2014-09-17T22:16:06Z"})
+     * <br>
+     * });
+     * </code>
      *
      * @param earlistCommitDate The commit ID to check against
      * @return An empty list or commits that come before the earlistCommitId
      */
     @Path("commit/old")
     @POST
-    public List<GitHubCommit> getOldCommits(String earlistCommitDate) {
-        return gitHubData.getOldCommits(earlistCommitDate);
+    public List<GitHubCommit> getOldCommits(StringBean earlistCommitDate) {
+        LOGGER.log(Level.FINE, "Getting old commits earlistCommitDate: {0}", earlistCommitDate.getData());
+
+        return gitHubData.getOldCommits(earlistCommitDate.getData());
     }
 
 }

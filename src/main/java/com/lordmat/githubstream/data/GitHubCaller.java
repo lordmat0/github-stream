@@ -8,10 +8,10 @@ import com.lordmat.githubstream.resource.MyResourceBundle;
 import com.lordmat.githubstream.resource.ResourceKey;
 import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
@@ -102,7 +102,8 @@ public class GitHubCaller {
                 String message = commit.getString("message");
                 String user = author.getString("login");
 
-                Date date = DateTimeFormat.parse(commit.getJSONObject("author").getString("date"));
+                String dateStr = commit.getJSONObject("author").getString("date");
+                Date date = DateTimeFormat.parse(dateStr);
 
                 GitHubUser ghUser = ghUsers.get(user);
 
@@ -123,15 +124,20 @@ public class GitHubCaller {
                 //Skip this one and carry on
             }
         }
+        
 
-        //Uncomment for fake commits
+        // Comment out to stop fake commits
+        
+       Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MILLISECOND, 0);
+        
         gitHubCommits.put(
                 DateTimeFormat.parse(DateTimeFormat.format(new Date())),
                 new GitHubCommit("1f1d8f711b4258e38825083a2db401862602c14b",
-                        new Date(),
+                        calendar.getTime(),
                         "Some bogus message that has some weight to it",
                         null,
-                        new GitHubUser("FakeUser", "", "")));
+                        new GitHubUser("FakeUser", "#", "#")));
 
         return gitHubCommits;
     }
