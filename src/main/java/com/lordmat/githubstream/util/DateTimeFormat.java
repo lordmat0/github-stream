@@ -9,6 +9,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,6 +25,12 @@ public class DateTimeFormat {
 
     private static final DateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     private static final DateFormat time = new SimpleDateFormat("HH:mm:ss");
+   
+    
+    static{
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        //dateTime.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
 
     /**
      * Parses dates that are in yyyy-MM-dd'T'HH:mm:ss'Z' format into a Date
