@@ -28,6 +28,10 @@
         <div class="container">
 
             <h1>Commits for <c:out value="${project}"/> owned by <c:out value="${owner}"/></h1>
+            
+            <c:if test="${commitsLength == 0}">
+                <h3>No commits found - try refreshing the page</h3>
+            </c:if>
 
             <section>
                 <c:forEach items="${commits}" var="commits">

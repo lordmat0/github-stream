@@ -27,6 +27,7 @@ public class IndexServlet extends HttpServlet {
         commits = StartManager.data().getTopCommits();
         
         request.setAttribute("commits", commits);
+        request.setAttribute("commitsLength", commits.size());
         request.setAttribute("project", Path.REPO_NAME);
         request.setAttribute("owner", Path.REPO_OWNER);
         
