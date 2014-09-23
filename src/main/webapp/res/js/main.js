@@ -1,5 +1,39 @@
 $(function () {
 
+    $(window).scroll(function(){
+        var ajaxCall = false;
+        return function(){
+            if(ajaxCall){
+                return; // already Calling
+            }
+            
+            
+            var totalHeight = document.body.offsetHeight;
+            var visibleHeight = document.documentElement.clientHeight;
+
+            var scrollTop = document.documentElement.scrollTop;
+
+            // Where the scroll bar is currently
+            var currentScroll = scrollTop ? scrollTop : document.body.scrollTop;
+
+            if (totalHeight <= visibleHeight + currentScroll) {
+                // At bottom of the page
+                ajaxCall = true;
+                var date = $('.commit').last().find('.commit-date strong').text();
+
+                $.ajax('rest/githubapi/commit/old', {
+                    contentType: 'application/json',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        "data": date
+                    }),
+                    success: function(data){handleOldCommits(data); ajaxCall = false;}
+                });
+            }
+        };
+    }());
+
+    /*
     $(window).scroll(function () {
         var totalHeight = document.body.offsetHeight;
         var visibleHeight = document.documentElement.clientHeight;
@@ -25,6 +59,7 @@ $(function () {
         }
 
     });
+    */
 
 
 
@@ -50,12 +85,16 @@ $(function () {
  * @param {type} data POST data returned from Ajax call
  */
 function handleNewCommits(data) {
-
+    var fadeTime = 1500;
+    
     for (var i = 0; i < data.length; i++) {
         var $commit = createCommit(data[i]);
 
         // Add the new commit to the DOM
-        $('section').prepend($commit);
+        //$commit.prepend($('section')).fadeIn(1000);
+        
+        $('section').prepend($commit.fadeIn(fadeTime));
+        fadeTime += 50;
     }
 }
 
@@ -64,12 +103,16 @@ function handleNewCommits(data) {
  * @param {type} data POST data returned from Ajax call
  */
 function handleOldCommits(data) {
+    var fadeTime = 1500;
+    
     for (var i = 0; i < data.length; i++) {
         var $commit = createCommit(data[i]);
 
         // Add the new commit to the DOM
-        $('section').append($commit);
+        $('section').append($commit.fadeIn((fadeTime)));
+        fadeTime += 50;
     }
+    ajaxCall = false;
 }
 
 
@@ -99,7 +142,8 @@ function createCommit(data) {
             .find('strong').text(user.userName);
 
     $commit.find('.commit-user-avatar').attr('src', user.avatarUrl);
-
+    
+    $commit.hide();
 
     return $commit;
 }
