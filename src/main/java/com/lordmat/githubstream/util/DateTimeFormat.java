@@ -9,7 +9,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +28,6 @@ public class DateTimeFormat {
     
     static{
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-        //dateTime.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
     /**
