@@ -20,7 +20,9 @@ project.properties needs to be configured correctly  the owner of the repository
 
 
 AUTH_TOKEN=5e6d63541d1dbd266955c16fed0053e6d56936af
+
 REPO_NAME=githubstream
+
 REPO_OWNER=lordmat0
 
 
