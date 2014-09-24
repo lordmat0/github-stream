@@ -1,13 +1,13 @@
 $(function () {
 
-    $(window).scroll(function () {
+    $(window).scroll(function(){
         var ajaxCall = false;
-        return function () {
-            if (ajaxCall) {
+        return function(){
+            if(ajaxCall){
                 return; // already Calling
             }
-
-
+            
+            
             var totalHeight = document.body.offsetHeight;
             var visibleHeight = document.documentElement.clientHeight;
 
@@ -27,53 +27,40 @@ $(function () {
                     data: JSON.stringify({
                         "data": date
                     }),
-                    success: function (data) {
-                        handleOldCommits(data);
-                        ajaxCall = false;
-                    }
+                    success: function(data){handleOldCommits(data); ajaxCall = false;}
                 });
             }
         };
     }());
 
+    /*
+    $(window).scroll(function () {
+        var totalHeight = document.body.offsetHeight;
+        var visibleHeight = document.documentElement.clientHeight;
 
-    /**
-     * 
-     * @param {type} data Expected data = { userCommited, date, id, message, userCommited: { accountUrl, userName, avatarUrl }
-     * 
-     * @returns {createCommit.$commit|jQuery} A 
-     */
-    createCommit = (function (data) {
-        // master commit here, fixes bug with cloning a fading element
-        // clone a commit on the DOM
-        var $masterCommit = $('.commit').first().clone(false);
+        var scrollTop = document.documentElement.scrollTop;
 
-        // Closure scope
-        return function (data) {
-            var $commit = $masterCommit.clone(false);
+        // Where the scroll bar is currently
+        var currentScroll = scrollTop ? scrollTop : document.body.scrollTop;
 
-            var user = data.userCommited;
+        if (totalHeight <= visibleHeight + currentScroll) {
+            // At bottom of the page
+            
+            var date = $('.commit').last().find('.commit-date strong').text();
+            
+            $.ajax('rest/githubapi/commit/old', {
+                contentType: 'application/json',
+                type: 'POST',
+                data: JSON.stringify({
+                    "data": date
+                }),
+                success: handleOldCommits
+            });
+        }
 
-            var date = data.date;
+    });
+    */
 
-            // Add Z to the ender if not appended on at the server (seems to be an issue with osx)
-            date = date + (date.indexOf("Z") > -1 ? '' : 'Z');
-
-            // Change values to new commit
-            $commit.find('.commit-id strong').text(data.id);
-            $commit.find('.commit-message div').text(data.message);
-            $commit.find('.commit-date strong').text(date);
-            $commit.find('.commit-accounturl')
-                    .attr('href', user.accountUrl)
-                    .find('strong').text(user.userName);
-
-            $commit.find('.commit-user-avatar').attr('src', user.avatarUrl);
-
-            $commit.hide();
-
-            return $commit;
-        };
-    }());
 
 
     // Check for new Commits
@@ -98,14 +85,16 @@ $(function () {
  * @param {type} data POST data returned from Ajax call
  */
 function handleNewCommits(data) {
-    var delayTime = 0;
-
+    var fadeTime = 1500;
+    
     for (var i = 0; i < data.length; i++) {
         var $commit = createCommit(data[i]);
 
         // Add the new commit to the DOM
-        $('section').prepend($commit.delay(delayTime).fadeIn(1500));
-        delayTime += 50;
+        //$commit.prepend($('section')).fadeIn(1000);
+        
+        $('section').prepend($commit.fadeIn(fadeTime));
+        fadeTime += 50;
     }
 }
 
@@ -114,16 +103,47 @@ function handleNewCommits(data) {
  * @param {type} data POST data returned from Ajax call
  */
 function handleOldCommits(data) {
-    var delayTime = 0;
-
+    var fadeTime = 1500;
+    
     for (var i = 0; i < data.length; i++) {
         var $commit = createCommit(data[i]);
 
         // Add the new commit to the DOM
-        $('section').append($commit.delay(delayTime).fadeIn(1500));
-        delayTime += 50;
+        $('section').append($commit.fadeIn((fadeTime)));
+        fadeTime += 50;
     }
     ajaxCall = false;
 }
 
 
+/**
+ * 
+ * @param {type} data Expected data = { userCommited, date, id, message, userCommited: { accountUrl, userName, avatarUrl }
+ * 
+ * @returns {createCommit.$commit|jQuery} A 
+ */
+function createCommit(data) {
+    // Clone existing object
+    var $commit = $('.commit').first().clone(false);
+
+    var user = data.userCommited;
+    
+    var date = data.date;
+    
+    // Add Z to the ender if not appended on at the server (seems to be an issue with osx)
+    date = date + (date.indexOf("Z") > -1 ? '' : 'Z');
+    
+    // Change values to new commit
+    $commit.find('.commit-id strong').text(data.id);
+    $commit.find('.commit-message div').text(data.message);
+    $commit.find('.commit-date strong').text(date);
+    $commit.find('.commit-accounturl')
+            .attr('href', user.accountUrl)
+            .find('strong').text(user.userName);
+
+    $commit.find('.commit-user-avatar').attr('src', user.avatarUrl);
+    
+    $commit.hide();
+
+    return $commit;
+}
