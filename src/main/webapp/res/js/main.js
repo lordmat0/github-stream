@@ -1,4 +1,10 @@
 $(function () {
+    
+    // If there are no commits on the page return, the JSP will handle the DOM
+    if(!$('.commit').length){
+        return;
+    }
+    
 
     $(window).scroll(function () {
         var ajaxCall = false;
@@ -6,8 +12,7 @@ $(function () {
             if (ajaxCall) {
                 return; // already Calling
             }
-
-
+            
             var totalHeight = document.body.offsetHeight;
             var visibleHeight = document.documentElement.clientHeight;
 
