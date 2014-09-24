@@ -98,16 +98,14 @@ $(function () {
  * @param {type} data POST data returned from Ajax call
  */
 function handleNewCommits(data) {
-    var fadeTime = 1500;
-    
+    var delayTime = 0;
+
     for (var i = 0; i < data.length; i++) {
         var $commit = createCommit(data[i]);
 
         // Add the new commit to the DOM
-        //$commit.prepend($('section')).fadeIn(1000);
-        
-        $('section').prepend($commit.fadeIn(fadeTime));
-        fadeTime += 50;
+        $('section').prepend($commit.delay(delayTime).fadeIn(1500));
+        delayTime += 50;
     }
 }
 
@@ -116,14 +114,14 @@ function handleNewCommits(data) {
  * @param {type} data POST data returned from Ajax call
  */
 function handleOldCommits(data) {
-    var fadeTime = 1500;
-    
+    var delayTime = 0;
+
     for (var i = 0; i < data.length; i++) {
         var $commit = createCommit(data[i]);
 
         // Add the new commit to the DOM
-        $('section').append($commit.fadeIn((fadeTime)));
-        fadeTime += 50;
+        $('section').append($commit.delay(delayTime).fadeIn(1500));
+        delayTime += 50;
     }
     ajaxCall = false;
 }
