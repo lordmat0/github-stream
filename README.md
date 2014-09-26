@@ -18,22 +18,21 @@ More/better Animation
 Settings that need to be changed
 ===========
 
-project.properties needs to be configured correctly  the owner of the repository and the repository name
+project.properties contains settings that can be changed in the project. It can be located at src/main/resources
 
 
-AUTH_TOKEN=5e6d63541d1dbd266955c16fed0053e6d56936af
+Currently there are three different settings to be changed
+* AUTH_TOKEN  - This is your github auth token
+* REPO_NAME   - This is the repository to get commits form
+* REPO_OWNER  - This is the owner of the repository 
 
-REPO_NAME=githubstream
+The AUTH_TOKEN set is a dummy account I have set up. GitHub has a rate_limit of 5000 (how many times it can query in a hour) so it's wise to set up your own AUTH_TOKEN.
 
-REPO_OWNER=lordmat0
-
-
-It would be best to use your own AUTH_TOKEN as it only has a rate_limit of 5000, this AUTH_TOKEN is on a dummy account.
 
 
 
 Note
 =========
-This has only been tested on Glassfish 4.1
+This has only been tested on Glassfish 4.1 but I don't see why other servers wouldn't work.
 
 If it helps you learn about Java Web servers let me know :)
