@@ -70,7 +70,7 @@ $(function () {
             $commit.find('.commit-date strong').text(date);
             $commit.find('.commit-accounturl')
                     .attr('href', user.accountUrl)
-                    .find('strong').text(user.userName);
+                    .text(user.userName);
 
             $commit.find('.commit-user-avatar').attr('src', user.avatarUrl);
 
