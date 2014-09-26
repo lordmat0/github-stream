@@ -68,28 +68,8 @@
                 </c:forEach>
 
             </section>
-            <!--
-                        <div class="alert alert-dismissable alert-success container-fluid row" >
 
-                <img class="col-sm-1 col-md-1 col-lg-1" alt="dunno" src="https://avatars3.githubusercontent.com/u/4976353?v=2&s=460" style="max-width: 150px;" >
-
-                <div class="col-md-8" > 
-                    <div class="row">
-                        <div class="col-md-3 col-sm-3">Matthew</div>
-                        <div class="col-md-7 col-sm-7">2d233f8bb0981d0116b9537b8e44000733cb6958</div>
-                        <div class="col-md-2 col-sm-2"> 2014-09-15T23:57:50Z</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12">
-                            Fixed issue where resource was not found due to be being case senistive. 
-                            (On OSX, need to test on other operating systems)
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            
-            -->
+            <img id="img-loading" class="center-block" src="res/img/loader.gif">
 
         </div>
     </body>
