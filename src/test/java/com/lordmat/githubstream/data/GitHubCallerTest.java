@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.lordmat.githubstream.api;
+package com.lordmat.githubstream.data;
 
 import com.lordmat.githubstream.StartManager;
-import com.lordmat.githubstream.data.GitHubCaller;
+import com.lordmat.githubstream.bean.GitHubBranch;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.util.DateTimeFormat;
@@ -88,18 +88,17 @@ public class GitHubCallerTest {
     public void testGetCommits() {
         System.out.println("testGetCommits");
         GitHubCaller instance = createInstance();
-        
+
         Calendar calender = Calendar.getInstance();
         calender.set(Calendar.DATE, calender.getActualMinimum(Calendar.DATE));
-        
+
         String since = DateTimeFormat.format(calender.getTime());
         String until = null;
 
-        Map<Date,GitHubCommit> result = instance.getCommits(since, until);
+        Map<Date, GitHubCommit> result = instance.getCommits(since, until);
 
         assertTrue(result.size() > 0);
-        
-        
+
         assertNotNull(result.values().iterator().next().getDate());
     }
 
@@ -111,6 +110,17 @@ public class GitHubCallerTest {
         GitHubUser gitHubUser = instance.getUser("lordmat0");
 
         assertNotNull(gitHubUser);
+    }
+
+    @Test
+    public void testGetBranches() {
+        System.out.println("testGetBranches");
+        GitHubCaller instance = createInstance();
+
+        Map<String, GitHubBranch> branches = instance.getBranches();
+
+        assertTrue(!branches.isEmpty());
+        assertTrue(branches.containsKey("master"));
     }
 
     /**

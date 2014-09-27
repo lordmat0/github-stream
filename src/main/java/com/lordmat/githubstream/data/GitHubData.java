@@ -1,11 +1,15 @@
 package com.lordmat.githubstream.data;
 
+import com.lordmat.githubstream.bean.GitHubBranch;
+import com.lordmat.githubstream.data.checker.CommitChecker;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.GitHubUser;
+import com.lordmat.githubstream.data.checker.BranchChecker;
 import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -25,11 +29,13 @@ public class GitHubData {
 
     private final Map<String, GitHubUser> gitHubUsers;
     private final NavigableMap<Date, GitHubCommit> gitHubCommits;
+    private final Map<String, GitHubBranch> branches;
+
     private final GitHubCaller caller;
 
     /**
      * Set to true if all the commits from the repo have been cached inside
-     * gitHubCommits
+     * gitHubCommits, this is used by the getOldCommits method
      */
     private boolean hasLastCommit;
 
@@ -37,8 +43,10 @@ public class GitHubData {
         gitHubUsers = new ConcurrentHashMap<>();
         gitHubCommits = new ConcurrentSkipListMap<>();
         caller = new GitHubCaller();
+        branches = new ConcurrentHashMap<>();
 
         new CommitChecker(gitHubCommits).start();
+        new BranchChecker(branches).start();
     }
 
     /**
@@ -52,7 +60,7 @@ public class GitHubData {
     }
 
     /**
-     * Returns a thread safe map containing users
+     * Returns a thread safe map containing all users
      *
      * @return
      */
@@ -60,6 +68,12 @@ public class GitHubData {
         return gitHubUsers;
     }
 
+    /**
+     * Returns a list of GitHubUsers that are found
+     *
+     * @param users Users to find
+     * @return Found users, users not found are not returned
+     */
     public List<GitHubUser> getUsers(List<String> users) {
 
         List<GitHubUser> returnedUsers = new ArrayList<>();
@@ -174,4 +188,8 @@ public class GitHubData {
         return newCommits.subList(0, (newCommitsSize >= 30 ? 30 : newCommitsSize));
     }
 
+    public Map<String, GitHubBranch> getBranches(){
+        return new HashMap<>(branches);
+    }
+    
 }

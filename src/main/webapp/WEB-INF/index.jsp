@@ -24,7 +24,7 @@
 
     </head>
     <body>
-        
+
         <%-- Nav bar --%>
         <div class="navbar navbar-default">
             <div class="navbar-header">
@@ -37,18 +37,25 @@
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Master</a></li>
+                    <c:if test="${branchesHasMaster}">
+                        <li class="active">
+                            <a href="#">Master</a>
+                        </li>
+                    </c:if>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Branches <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Branch 1</a></li>
-                            <li><a href="#">Branch 2</a></li>
-                            <li><a href="#">Branch 3</a></li>
-                            <li><a href="#">Branch 4</a></li>
-                            <li><a href="#">Branch 5</a></li>
-                            <li><a href="#">Branch 6</a></li>
-                            <li><a href="#">Branch 7</a></li>
-
+                            <c:if test="${branchesLength == 0}">
+                                <li>
+                                    <a href="#">No Branches found :(</a>
+                                </li>
+                            </c:if>
+                                
+                            <c:forEach items="${branches}" var="branches">        
+                                <li>
+                                    <a href="#"><c:out value="${branches.key}"/></a>
+                                </li>
+                            </c:forEach>
                         </ul>
                     </li>
                 </ul>
