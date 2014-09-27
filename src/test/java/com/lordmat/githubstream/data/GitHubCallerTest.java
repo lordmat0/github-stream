@@ -6,12 +6,13 @@
 package com.lordmat.githubstream.data;
 
 import com.lordmat.githubstream.StartManager;
-import com.lordmat.githubstream.data.GitHubCaller;
+import com.lordmat.githubstream.bean.GitHubBranch;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import org.json.JSONObject;
 import org.junit.After;
@@ -111,6 +112,17 @@ public class GitHubCallerTest {
         GitHubUser gitHubUser = instance.getUser("lordmat0");
 
         assertNotNull(gitHubUser);
+    }
+    
+    @Test
+    public void testGetBranches(){
+        System.out.println("testGetBranches");
+        GitHubCaller instance = createInstance();
+        
+        List<GitHubBranch> branches = instance.getBranches();
+        
+        assertTrue(!branches.isEmpty());
+        
     }
 
     /**
