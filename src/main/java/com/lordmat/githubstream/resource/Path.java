@@ -38,6 +38,11 @@ public class Path {
     public static final String REPO_OWNER;
 
     /**
+     * Base path for repository for api calls
+     */
+    public static final String REPO_BASE_URL;
+    
+    /**
      * Path needed for querying commits information
      */
     public static final String REPO_COMMITS;
@@ -52,6 +57,10 @@ public class Path {
      */
     public static final String COMMIT_ID_PATH;
     
+    /**
+     * Path to get list of branches
+     */
+    public static final String REPO_BRANCHS;
 
     /**
      * Path needed to get user information, use method user() instead
@@ -101,9 +110,13 @@ public class Path {
             REPO_NAME = MyResourceBundle.getString(ResourceKey.REPO_NAME);
             REPO_OWNER = MyResourceBundle.getString(ResourceKey.REPO_OWNER);
 
-            REPO_COMMITS = jsonPaths.getString("repository_url")
+            REPO_BASE_URL = jsonPaths.getString("repository_url")
                     .replace("{owner}", REPO_OWNER)
-                    .replace("{repo}", REPO_NAME) + "/commits";
+                    .replace("{repo}", REPO_NAME);
+            
+            REPO_COMMITS = REPO_BASE_URL + "/commits";
+            
+            REPO_BRANCHS = REPO_BASE_URL + "/branches";
 
             USER_URL = jsonPaths.getString("user_url");
             
@@ -111,6 +124,7 @@ public class Path {
             REPO_URL = "https://github.com/" + Path.REPO_OWNER + "/" + Path.REPO_NAME;
 
             COMMIT_ID_PATH = REPO_URL + "/commit/";
+             
             
         } catch (JSONException jEx) {
             LOGGER.log(Level.SEVERE, "Error with jsonformat "

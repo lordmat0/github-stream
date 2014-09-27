@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package com.lordmat.githubstream.api;
+package com.lordmat.githubstream.resource;
 
-import com.lordmat.githubstream.resource.Path;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -63,9 +57,33 @@ public class GitHubPathTest {
     }
 
     @Test
+    public void testRepoBaseUrl() {
+        System.out.println("testRepoBaseUrl");
+        assertTrue(Path.REPO_BASE_URL.length() > 0);
+    }
+
+    @Test
     public void testCommits() {
         System.out.println("testCommits");
         assertTrue(Path.REPO_COMMITS.length() > 0);
+    }
+
+    @Test
+    public void testRepoUrl() {
+        System.out.println("testRepoUrl");
+        assertTrue(Path.REPO_URL.length() > 0);
+    }
+
+    @Test
+    public void testCommitIdPath() {
+        System.out.println("testCommitIdPath");
+        assertTrue(Path.COMMIT_ID_PATH.length() > 0);
+    }
+
+    @Test
+    public void testRepoBranches() {
+        System.out.println("testRepoBranches");
+        assertTrue(Path.REPO_BRANCHS.length() > 0);
     }
 
     @Test
