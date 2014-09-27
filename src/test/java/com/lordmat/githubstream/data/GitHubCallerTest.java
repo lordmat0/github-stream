@@ -10,6 +10,7 @@ import com.lordmat.githubstream.bean.GitHubBranch;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.util.DateTimeFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -121,6 +122,38 @@ public class GitHubCallerTest {
 
         assertTrue(!branches.isEmpty());
         assertTrue(branches.containsKey("master"));
+    }
+
+    @Test
+    public void testGetCommitsFromBranch() {
+        System.out.println("testGetCommitsFromBranch");
+        GitHubCaller instance = createInstance();
+
+        Map<String, GitHubBranch> branches = instance.getBranches();
+
+        String sha = branches.get("develop").getSha();
+
+        // My project always has a develop branch
+        // but others may not so just get a random branch
+        if (sha == null) {
+            sha = branches.get(new ArrayList<>(branches.keySet()).get(0)).getSha();
+        }
+
+        Map<Date, GitHubCommit> result = instance.getCommits(null, null, sha);
+
+        assertTrue(!result.isEmpty());
+    }
+
+    @Test
+    public void testGetCommitsFromUnknownBranch() {
+        System.out.println("testGetCommitsFromUnknownBranch");
+        GitHubCaller instance = createInstance();
+
+        String sha = "asdas";
+
+        Map<Date, GitHubCommit> result = instance.getCommits(null, null, sha);
+
+        assertTrue(result.isEmpty());
     }
 
     /**
