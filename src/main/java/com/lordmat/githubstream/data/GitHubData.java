@@ -26,6 +26,8 @@ public class GitHubData {
 
     private final Map<String, GitHubUser> gitHubUsers;
     private final NavigableMap<Date, GitHubCommit> gitHubCommits;
+    private final Map<String, GitHubBranch> branches;
+
     private final GitHubCaller caller;
 
     /**
@@ -38,8 +40,10 @@ public class GitHubData {
         gitHubUsers = new ConcurrentHashMap<>();
         gitHubCommits = new ConcurrentSkipListMap<>();
         caller = new GitHubCaller();
+        branches = new ConcurrentHashMap<>();
 
         new CommitChecker(gitHubCommits).start();
+        new BranchChecker(branches).start();
     }
 
     /**

@@ -5,16 +5,27 @@
  */
 package com.lordmat.githubstream.data.checker;
 
+import com.lordmat.githubstream.bean.GitHubBranch;
+import com.lordmat.githubstream.data.GitHubCaller;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author mat
  */
 public class BranchChecker extends AbstractChecker{
 
-    
-    
-    public BranchChecker() {
+    private final static Logger LOGGER = Logger.getLogger(CommitChecker.class.getName());
+
+    private final GitHubCaller caller;
+    private final Map<String, GitHubBranch> branches;
+
+    public BranchChecker(Map<String, GitHubBranch> branches) {
         super(300_000); // 5 minutes
+        this.branches = branches;
+        caller = new GitHubCaller();
     }
     
     
@@ -22,9 +33,18 @@ public class BranchChecker extends AbstractChecker{
 
     @Override
     protected void query() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            // Need to perform more than one operation so need to it synchronized
+            synchronized (branches) {
+                Map<String, GitHubBranch> newBranches = caller.getBranches();
+                branches.clear();
+                branches.putAll(newBranches);
+            }
+
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "BranchChecker threw an error, re-trying", ex);
+        }
+
     }
-   
-    
-    
+
 }
