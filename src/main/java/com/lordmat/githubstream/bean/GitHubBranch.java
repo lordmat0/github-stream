@@ -14,6 +14,12 @@ public class GitHubBranch {
     private String name;
     private String sha;
 
+    /**
+     * Needed for javabean
+     */
+    public GitHubBranch(){
+    }
+
     public GitHubBranch(String name, String sha) {
         this.name = name;
         this.sha = sha;

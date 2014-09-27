@@ -164,25 +164,25 @@ public class GitHubCaller {
     }
 
     /**
-     * 
-     * @return 
+     * Gets the current list of branches the repository has
+     *
+     * @return A map of branches with the key being the branch name
      */
-    public List<GitHubBranch> getBranches() {
-        List<GitHubBranch> branchList = new ArrayList<>();
+    public Map<String, GitHubBranch> getBranches() {
+        Map<String, GitHubBranch> branchList = new HashMap<>();
         JSONArray branches = new JSONArray(call(Path.REPO_BRANCHS));
-        
-        for(int i = 0; i < branches.length(); i++){
+
+        for (int i = 0; i < branches.length(); i++) {
             JSONObject jsonBranch = branches.getJSONObject(i);
-            
+
             String name = jsonBranch.getString("name");
             String sha = jsonBranch.getJSONObject("commit").getString("sha");
-            
+
             GitHubBranch branch = new GitHubBranch(name, sha);
-            
-            branchList.add(branch);
+
+            branchList.put(name, branch);
         }
-        
-        
+
         return branchList;
     }
 

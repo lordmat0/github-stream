@@ -119,10 +119,10 @@ public class GitHubCallerTest {
         System.out.println("testGetBranches");
         GitHubCaller instance = createInstance();
         
-        List<GitHubBranch> branches = instance.getBranches();
+        Map<String, GitHubBranch> branches = instance.getBranches();
         
         assertTrue(!branches.isEmpty());
-        
+        assertTrue(branches.containsKey("master"));
     }
 
     /**
