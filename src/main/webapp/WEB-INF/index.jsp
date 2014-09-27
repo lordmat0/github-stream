@@ -36,7 +36,7 @@
 
             <section>
                 <c:forEach items="${commits}" var="commits">
-                    <article class="commit alert alert-dismissable alert-success container-fluid row" >
+                    <article class="commit alert alert-dismissable alert-info container-fluid row" >
 
                         <img class="commit-user-avatar col-sm-1 col-md-1 col-lg-1" alt="Missing Avatar" src="<c:out value='${commits.userCommited.avatarUrl}' />" style="max-width: 150px;" >
 
