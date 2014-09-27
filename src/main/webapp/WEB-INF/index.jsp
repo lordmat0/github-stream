@@ -45,7 +45,7 @@
 
                                 <div class="col-md-3 col-sm-3">
                                     <strong>
-                                        <a class="commit-accounturl" href="<c:out value='${commits.userCommited.accountUrl}' />" >
+                                        <a class="commit-accounturl" href="<c:out value='${commits.userCommited.accountUrl}' />" target="_blank" >
                                             <c:out value="${commits.userCommited.userName}" />
                                         </a>
                                     </strong>
@@ -53,7 +53,7 @@
 
                                 <div class="col-md-7 col-sm-7">
                                     <strong>
-                                        <a class="commit-id" href="<c:out value='${commits.idUrl}' />" >
+                                        <a class="commit-id" href="<c:out value='${commits.idUrl}' />" target="_blank">
                                             <c:out value="${commits.id}" />
                                         </a>
                                     </strong>
