@@ -11,8 +11,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class handles the fixed interval to check the public github api. The map
- * it updates is thread safe.
+ * This class extends AbstractChecker to implement the query method. This object
+ * will check the GitHubApi every 30 seconds to get the latest commits. The map
+ * passed in is thread-safe
  *
  * @author mat
  */
@@ -50,7 +51,7 @@ public class CommitChecker extends AbstractChecker {
                 since = DateTimeFormat.format(cal.getTime());
             }
 
-           Map<Date, GitHubCommit> data = caller.getCommits(since, null);
+            Map<Date, GitHubCommit> data = caller.getCommits(since, null);
 
             gitHubCommits.putAll(data);
         } catch (Exception ex) {

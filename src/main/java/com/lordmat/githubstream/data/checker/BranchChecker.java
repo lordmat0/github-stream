@@ -12,10 +12,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * This class extends AbstractChecker to implement the query method. This object
+ * will check the GitHubApi every 5 minutes to get an updated branch list. The
+ * map passed in is thread-safe
  *
  * @author mat
  */
-public class BranchChecker extends AbstractChecker{
+public class BranchChecker extends AbstractChecker {
 
     private final static Logger LOGGER = Logger.getLogger(CommitChecker.class.getName());
 
@@ -27,9 +30,6 @@ public class BranchChecker extends AbstractChecker{
         this.branches = branches;
         caller = new GitHubCaller();
     }
-    
-    
-    
 
     @Override
     protected void query() {

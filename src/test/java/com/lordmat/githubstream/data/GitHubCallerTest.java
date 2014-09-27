@@ -89,18 +89,17 @@ public class GitHubCallerTest {
     public void testGetCommits() {
         System.out.println("testGetCommits");
         GitHubCaller instance = createInstance();
-        
+
         Calendar calender = Calendar.getInstance();
         calender.set(Calendar.DATE, calender.getActualMinimum(Calendar.DATE));
-        
+
         String since = DateTimeFormat.format(calender.getTime());
         String until = null;
 
-        Map<Date,GitHubCommit> result = instance.getCommits(since, until);
+        Map<Date, GitHubCommit> result = instance.getCommits(since, until);
 
         assertTrue(result.size() > 0);
-        
-        
+
         assertNotNull(result.values().iterator().next().getDate());
     }
 
@@ -113,14 +112,14 @@ public class GitHubCallerTest {
 
         assertNotNull(gitHubUser);
     }
-    
+
     @Test
-    public void testGetBranches(){
+    public void testGetBranches() {
         System.out.println("testGetBranches");
         GitHubCaller instance = createInstance();
-        
+
         Map<String, GitHubBranch> branches = instance.getBranches();
-        
+
         assertTrue(!branches.isEmpty());
         assertTrue(branches.containsKey("master"));
     }

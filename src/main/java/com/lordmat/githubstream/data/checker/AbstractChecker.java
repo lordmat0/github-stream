@@ -5,30 +5,34 @@
  */
 package com.lordmat.githubstream.data.checker;
 
-import com.lordmat.githubstream.data.GitHubCaller;
 import static java.lang.Thread.sleep;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * A thread that calls the query method and then sleeps for the time passed in.
+ * The sleep time will always be over 20 seconds
  *
  * @author mat
  */
 public abstract class AbstractChecker extends Thread {
-    
+
     private final static Logger LOGGER = Logger.getLogger(AbstractChecker.class.getName());
-    
+
     /**
      * How long before checking for new commits
      */
     private final int QUERY_TIME;
 
-    
-    public AbstractChecker(int queryTime){
-        QUERY_TIME = queryTime;
+    /**
+     *
+     * @param queryTime If less than 20 seconds, will be set to 20 seconds
+     */
+    public AbstractChecker(int queryTime) {
+        QUERY_TIME = queryTime < 20_000 ? 20_000 : queryTime;
     }
-    
-        @Override
+
+    @Override
     public void run() {
         while (true) {
             query();
@@ -36,7 +40,7 @@ public abstract class AbstractChecker extends Thread {
             try {
                 sleep(QUERY_TIME);
             } catch (InterruptedException ex) {
-                LOGGER.log(Level.FINE, "CommitChecker interrupted", ex);
+                LOGGER.log(Level.FINE, this.getClass() + " interrupted", ex);
             }
 
         }

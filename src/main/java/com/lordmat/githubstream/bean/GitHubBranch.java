@@ -6,12 +6,21 @@
 package com.lordmat.githubstream.bean;
 
 /**
+ * Contains details for a GitHub branch
  *
  * @author mat
  */
 public class GitHubBranch {
 
+    /**
+     * Name of the branch
+     */
     private String name;
+
+    /**
+     * The Secure Hash Algorithm of the branch, needed for getting the commits
+     * of the branch
+     */
     private String sha;
 
     /**
