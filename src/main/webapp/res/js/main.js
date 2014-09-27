@@ -2,6 +2,9 @@ $(function () {
 
     // If there are no commits on the page return, the JSP will handle the DOM
     if (!$('.commit').length) {
+        // Hide loading gif
+        $('#img-loading').hide();
+        
         return;
     }
 
