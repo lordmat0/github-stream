@@ -1,5 +1,6 @@
 package com.lordmat.githubstream.data;
 
+import com.lordmat.githubstream.data.checker.CommitChecker;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.util.DateTimeFormat;
