@@ -80,7 +80,8 @@ $(function () {
             date = date + (date.indexOf("Z") > -1 ? '' : 'Z');
 
             // Change values to new commit
-            $commit.find('.commit-id strong').text(data.id);
+            $commit.find('.commit-id').attr('href', data.idUrl)
+                    .text(data.id);
             $commit.find('.commit-message div').text(data.message);
             $commit.find('.commit-date strong').text(date);
             $commit.find('.commit-accounturl')

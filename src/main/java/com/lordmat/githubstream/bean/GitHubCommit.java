@@ -1,5 +1,6 @@
 package com.lordmat.githubstream.bean;
 
+import com.lordmat.githubstream.resource.Path;
 import java.util.Date;
 import java.util.List;
 
@@ -11,25 +12,26 @@ import java.util.List;
 public class GitHubCommit {
 
     private String id;
+    private String idUrl;
     private Date date;
     private String message;
     private List<String> filesChanged;
 
     private GitHubUser userCommited;
 
-    public GitHubCommit(){
-        
+    public GitHubCommit() {
+
     }
-    
+
     public GitHubCommit(String id, Date date, String message, List<String> filesChanged, GitHubUser userCommited) {
         this.id = id;
         this.date = date;
         this.message = message;
         this.filesChanged = filesChanged;
         this.userCommited = userCommited;
+
+        idUrl = Path.COMMIT_ID_PATH + id;
     }
-
-
 
     @Override
     public String toString() {
@@ -60,6 +62,10 @@ public class GitHubCommit {
         return filesChanged;
     }
 
+    public String getIdUrl() {
+        return idUrl;
+    }
+
     public void setFilesChanged(List<String> filesChanged) {
         this.filesChanged = filesChanged;
     }
@@ -75,7 +81,11 @@ public class GitHubCommit {
     public void setDate(Date date) {
         this.date = date;
     }
-    
+
+    public void setIdUrl(String idUrl) {
+        this.idUrl = idUrl;
+    }
+
     /**
      *
      * @return The date of the commit
@@ -83,6 +93,5 @@ public class GitHubCommit {
     public Date getDate() {
         return date;
     }
-    
-    
+
 }
