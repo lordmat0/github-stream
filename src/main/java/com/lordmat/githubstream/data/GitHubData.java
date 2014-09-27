@@ -9,6 +9,7 @@ import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -187,4 +188,8 @@ public class GitHubData {
         return newCommits.subList(0, (newCommitsSize >= 30 ? 30 : newCommitsSize));
     }
 
+    public Map<String, GitHubBranch> getBranches(){
+        return new HashMap<>(branches);
+    }
+    
 }
