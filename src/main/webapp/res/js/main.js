@@ -1,10 +1,13 @@
 $(function () {
-    
+
     // If there are no commits on the page return, the JSP will handle the DOM
-    if(!$('.commit').length){
+    if (!$('.commit').length) {
+        // Hide loading gif
+        $('#img-loading').hide();
+        
         return;
     }
-    
+
 
     $(window).scroll(function () {
         var ajaxCall = false;
@@ -12,7 +15,7 @@ $(function () {
             if (ajaxCall) {
                 return; // already Calling
             }
-            
+
             var totalHeight = document.body.offsetHeight;
             var visibleHeight = document.documentElement.clientHeight;
 
@@ -23,7 +26,14 @@ $(function () {
 
             if (totalHeight <= visibleHeight + currentScroll) {
                 // At bottom of the page
+
+                // Stop other ajaxCalls
                 ajaxCall = true;
+
+                // Show loading gif
+                $('#img-loading').show();
+
+                // Get the date of the last commit
                 var date = $('.commit').last().find('.commit-date strong').text();
 
                 $.ajax('rest/githubapi/commit/old', {
@@ -34,7 +44,12 @@ $(function () {
                     }),
                     success: function (data) {
                         handleOldCommits(data);
+
+                        // Allow other ajax calls as we've finished adding commits
                         ajaxCall = false;
+
+                        // Hide loading gif
+                        $('#img-loading').hide();
                     }
                 });
             }
