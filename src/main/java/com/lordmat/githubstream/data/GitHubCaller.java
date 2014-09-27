@@ -127,8 +127,8 @@ public class GitHubCaller {
         
 
         // Comment out to stop fake commits
-        
-       Calendar calendar = Calendar.getInstance();
+        /*
+        Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.MILLISECOND, 0);
         
         gitHubCommits.put(
@@ -138,7 +138,8 @@ public class GitHubCaller {
                         "Some bogus message that has some weight to it",
                         null,
                         new GitHubUser("FakeUser", "#", "#")));
-
+        */
+        
         return gitHubCommits;
     }
 
