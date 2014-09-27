@@ -23,10 +23,13 @@ public class CommitChecker extends AbstractChecker {
 
     private final GitHubCaller caller;
     private final NavigableMap<Date, GitHubCommit> gitHubCommits;
+    
+    private String branchSha;
 
-    public CommitChecker(NavigableMap<Date, GitHubCommit> gitHubCommits) {
+    public CommitChecker(NavigableMap<Date, GitHubCommit> gitHubCommits, String branchSha) {
         super(30000);
         this.gitHubCommits = gitHubCommits;
+        this.branchSha = branchSha;
         caller = new GitHubCaller();
     }
 
@@ -51,7 +54,7 @@ public class CommitChecker extends AbstractChecker {
                 since = DateTimeFormat.format(cal.getTime());
             }
 
-            Map<Date, GitHubCommit> data = caller.getCommits(since, null);
+            Map<Date, GitHubCommit> data = caller.getCommits(since, null, branchSha);
 
             gitHubCommits.putAll(data);
         } catch (Exception ex) {

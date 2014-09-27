@@ -45,8 +45,7 @@ public class GitHubData {
         caller = new GitHubCaller();
         branches = new ConcurrentHashMap<>();
 
-        new CommitChecker(gitHubCommits).start();
-        new BranchChecker(branches).start();
+        new BranchChecker(gitHubCommits, branches).start();
     }
 
     /**
