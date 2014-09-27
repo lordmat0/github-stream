@@ -73,6 +73,7 @@ public class BranchChecker extends AbstractChecker {
                                 .submit(new CommitChecker(gitHubCommits, sha));
 
                         threads.put(branchName, newThread);
+                        branches.put(branchName, branchEntry.getValue());
                     }
                 }
 
