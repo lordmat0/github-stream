@@ -45,16 +45,22 @@
 
                                 <div class="col-md-3 col-sm-3">
                                     <strong>
-                                        <a class="commit-accounturl" href="<c:out value='${commits.userCommited.accountUrl}' />" ><c:out value="${commits.userCommited.userName}" /></a>
+                                        <a class="commit-accounturl" href="<c:out value='${commits.userCommited.accountUrl}' />" >
+                                            <c:out value="${commits.userCommited.userName}" />
+                                        </a>
                                     </strong>
                                 </div>
 
-                                <div class="commit-id col-md-7 col-sm-7">
-                                    <strong><c:out value="${commits.id}" /></strong>
+                                <div class="col-md-7 col-sm-7">
+                                    <strong>
+                                        <a class="commit-id" href="<c:out value='${commits.idUrl}' />" >
+                                            <c:out value="${commits.id}" />
+                                        </a>
+                                    </strong>
                                 </div>
 
                                 <div class="commit-date col-md-2 col-sm-2">
-                                    <strong><fmt:formatDate pattern="yyyy-MM-dd'T'HH:mm:ss'Z'" value="${commits.date}" /></strong>
+                                    <strong><fmt:formatDate pattern="yyyy-MM-dd'T'HH:mm:ss'Z'" value="${commits.date}"/></strong>
                                 </div>
 
                             </div>

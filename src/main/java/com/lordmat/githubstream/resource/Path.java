@@ -43,6 +43,11 @@ public class Path {
     public static final String REPO_COMMITS;
 
     /**
+     * Path for commit ID's
+     */
+    public static final String COMMIT_ID_PATH;
+    
+    /**
      * Path needed to get user information, use method user() instead
      */
     private static final String USER_URL;
@@ -95,6 +100,9 @@ public class Path {
                     .replace("{repo}", REPO_NAME) + "/commits";
 
             USER_URL = jsonPaths.getString("user_url");
+            
+            COMMIT_ID_PATH = "https://github.com/" + REPO_OWNER + "/" + REPO_NAME + "/commit/";
+            
         } catch (JSONException jEx) {
             LOGGER.log(Level.SEVERE, "Error with jsonformat "
                     + "from default paths:\n " + paths, jEx);
