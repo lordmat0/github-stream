@@ -41,12 +41,18 @@ public class Path {
      * Path needed for querying commits information
      */
     public static final String REPO_COMMITS;
+    
+    /**
+     * URL to the repository 
+     */
+    public static final String REPO_URL;
 
     /**
      * Path for commit ID's
      */
     public static final String COMMIT_ID_PATH;
     
+
     /**
      * Path needed to get user information, use method user() instead
      */
@@ -76,7 +82,7 @@ public class Path {
                 Calendar unixtimestamp = Calendar.getInstance();
                 unixtimestamp.setTimeInMillis((long) jsonRateLimit.getInt("reset") * 1000);
 
-                LOGGER.severe("Rate_limit is zero, can't make any github requests, wait till: " 
+                LOGGER.severe("Rate_limit is zero, can't make any github requests, wait till: "
                         + DateTimeFormat.getTime(unixtimestamp.getTime()));
 
                 System.exit(1);
@@ -101,7 +107,10 @@ public class Path {
 
             USER_URL = jsonPaths.getString("user_url");
             
-            COMMIT_ID_PATH = "https://github.com/" + REPO_OWNER + "/" + REPO_NAME + "/commit/";
+            
+            REPO_URL = "https://github.com/" + Path.REPO_OWNER + "/" + Path.REPO_NAME;
+
+            COMMIT_ID_PATH = REPO_URL + "/commit/";
             
         } catch (JSONException jEx) {
             LOGGER.log(Level.SEVERE, "Error with jsonformat "

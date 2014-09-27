@@ -4,7 +4,6 @@ import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.StartManager;
 import com.lordmat.githubstream.resource.Path;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,19 +18,16 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(urlPatterns = {"/index", "/.", "/index.jsp"}, loadOnStartup = 1)
 public class IndexServlet extends HttpServlet {
 
-    private List<GitHubCommit> commits;
-    private final String projectUrl = "https://github.com/" + Path.REPO_OWNER + "/" + Path.REPO_NAME;
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        commits = StartManager.data().getTopCommits();
+        List<GitHubCommit> commits = StartManager.data().getTopCommits();
 
         request.setAttribute("commits", commits);
         request.setAttribute("commitsLength", commits.size());
         request.setAttribute("project", Path.REPO_NAME);
         request.setAttribute("owner", Path.REPO_OWNER);
-        request.setAttribute("projectUrl", projectUrl);
+        request.setAttribute("projectUrl", Path.REPO_URL);
 
         request.getRequestDispatcher("WEB-INF/index.jsp").forward(request, response);
     }
