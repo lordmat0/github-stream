@@ -67,13 +67,13 @@ public class BranchChecker extends AbstractChecker {
                     String branchName = branchEntry.getKey();
 
                     if (!branches.containsKey(branchName)) {
-                        String sha = branchEntry.getValue().getSha();
+                        GitHubBranch branch = branchEntry.getValue();
 
                         Future<?> newThread = threadHandler
-                                .submit(new CommitChecker(gitHubCommits, sha));
+                                .submit(new CommitChecker(gitHubCommits, branch));
 
                         threads.put(branchName, newThread);
-                        branches.put(branchName, branchEntry.getValue());
+                        branches.put(branchName, branch);
                     }
                 }
 

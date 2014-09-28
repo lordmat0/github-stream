@@ -1,5 +1,6 @@
 package com.lordmat.githubstream.data.checker;
 
+import com.lordmat.githubstream.bean.GitHubBranch;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.data.GitHubCaller;
 import com.lordmat.githubstream.util.DateTimeFormat;
@@ -23,14 +24,17 @@ public class CommitChecker extends AbstractChecker {
 
     private final GitHubCaller caller;
     private final NavigableMap<Date, GitHubCommit> gitHubCommits;
-    
-    private String branchSha;
+    private final GitHubBranch branch;
 
-    public CommitChecker(NavigableMap<Date, GitHubCommit> gitHubCommits, String branchSha) {
-        super(30000);
+    public CommitChecker(NavigableMap<Date, GitHubCommit> gitHubCommits, GitHubBranch branch) {
+        this(gitHubCommits, branch, 30000);
+    }
+
+    public CommitChecker(NavigableMap<Date, GitHubCommit> gitHubCommits, GitHubBranch branch, int queryTime) {
+        super(queryTime);
         this.gitHubCommits = gitHubCommits;
-        this.branchSha = branchSha;
         caller = new GitHubCaller();
+        this.branch = branch;
     }
 
     /**
@@ -54,7 +58,9 @@ public class CommitChecker extends AbstractChecker {
                 since = DateTimeFormat.format(cal.getTime());
             }
 
-            Map<Date, GitHubCommit> data = caller.getCommits(since, null, branchSha);
+            Map<Date, GitHubCommit> data = caller.getCommits(since, null, branch.getSha());
+
+            branch.getCommits().addAll(data.keySet());
 
             gitHubCommits.putAll(data);
         } catch (Exception ex) {
