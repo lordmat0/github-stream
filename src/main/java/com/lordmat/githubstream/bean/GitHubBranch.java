@@ -5,6 +5,10 @@
  */
 package com.lordmat.githubstream.bean;
 
+import java.util.Date;
+import java.util.Set;
+import java.util.TreeSet;
+
 /**
  * Contains details for a GitHub branch
  *
@@ -22,6 +26,11 @@ public class GitHubBranch {
      * of the branch
      */
     private String sha;
+    
+    /**
+     * Holds a reference to the commits this branch has done
+     */
+    private Set<Date> commits;
 
     /**
      * Needed for javabean
@@ -32,6 +41,7 @@ public class GitHubBranch {
     public GitHubBranch(String name, String sha) {
         this.name = name;
         this.sha = sha;
+        this.commits = new TreeSet<>();
     }
 
     public String getName() {
@@ -50,4 +60,12 @@ public class GitHubBranch {
         this.sha = sha;
     }
 
+    public void setCommits(Set<Date> commits) {
+        this.commits = commits;
+    }
+    
+    public Set<Date> getCommits() {
+        return commits;
+    }
+    
 }
