@@ -6,15 +6,18 @@ import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.StringBean;
 import com.lordmat.githubstream.bean.UserList;
 import com.lordmat.githubstream.data.GitHubData;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -96,11 +99,14 @@ public class GitHubAPIRest {
      *
      */
     @Path("commit/new")
-    @POST
-    public List<GitHubCommit> getNewCommits(StringBean latestCommitDate) {
-        LOGGER.log(Level.FINE, "Getting new commits latestCommitDate: {0}", latestCommitDate.getData());
+    @GET
+    public List<GitHubCommit> getNewCommits(@QueryParam("date") String latestCommitDate,
+            @QueryParam("branch") String branchName) {
 
-        return gitHubData.getNewCommits(latestCommitDate.getData());
+        LOGGER.log(Level.FINE, "Getting new commits latestCommitDate: {0}, BranchName: {1}",
+                Arrays.asList(latestCommitDate, branchName));
+
+        return gitHubData.getNewCommits(latestCommitDate);
     }
 
     /**

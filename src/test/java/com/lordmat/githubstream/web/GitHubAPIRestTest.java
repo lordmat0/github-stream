@@ -180,7 +180,7 @@ public class GitHubAPIRestTest {
         String latestCommitDate = "2014-09-25T20:45:35Z";
         GitHubAPIRest instance = new GitHubAPIRest();
 
-        List<GitHubCommit> result = instance.getNewCommits(new StringBean(latestCommitDate));
+        List<GitHubCommit> result = instance.getNewCommits(latestCommitDate, null);
 
         Date date = DateTimeFormat.parse(latestCommitDate);
 
@@ -196,10 +196,9 @@ public class GitHubAPIRestTest {
     public void testGetNewCommitsNullDate() {
         System.out.println("getNewCommits");
 
-        StringBean nullDate = new StringBean(null);
         GitHubAPIRest instance = new GitHubAPIRest();
 
-        List<GitHubCommit> result = instance.getNewCommits(nullDate);
+        List<GitHubCommit> result = instance.getNewCommits(null, null);
 
         assertTrue(result.isEmpty());
     }
@@ -215,7 +214,7 @@ public class GitHubAPIRestTest {
         String emptyString = "";
         GitHubAPIRest instance = new GitHubAPIRest();
 
-        List<GitHubCommit> result = instance.getNewCommits(new StringBean(emptyString));
+        List<GitHubCommit> result = instance.getNewCommits(emptyString, null);
 
         assertTrue(result.isEmpty());
     }

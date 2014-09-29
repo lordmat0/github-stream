@@ -4,7 +4,7 @@ $(function () {
     if (!$('.commit').length) {
         // Hide loading gif
         $('#img-loading').hide();
-        
+
         return;
     }
 
@@ -100,13 +100,19 @@ $(function () {
     // Check for new Commits
     setInterval(function () {
         var date = $('.commit').first().find('.commit-date strong').text();
-
+        var branchName = getBranchName();
+        
+        var data = {"date": date};
+        
+        if(branchName !== null){
+            data.branch = branchName;
+        }
+        
+                
         $.ajax('rest/githubapi/commit/new', {
             contentType: 'application/json',
-            type: 'POST',
-            data: JSON.stringify({
-                "data": date
-            }),
+            type: 'GET',
+            data: data,
             success: handleNewCommits
         });
 
@@ -147,4 +153,15 @@ function handleOldCommits(data) {
     ajaxCall = false;
 }
 
+/**
+ * Returns the branch name
+ * 
+ * @type Function|Function
+ */
+var getBranchName = (function () {
+    var name = "branch";
+    return function () {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
+    };
+}());
 
