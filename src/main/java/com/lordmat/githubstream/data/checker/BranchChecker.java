@@ -13,8 +13,11 @@ import java.util.logging.Logger;
 
 /**
  * This class extends AbstractChecker to implement the query method. This object
- * will check the GitHubApi every 5 minutes to get an updated branch list. The
- * map passed in is thread-safe
+ * checks the GitHubApi for a branch list, it then creates worker threads that
+ * query GitHubApi with the branch information. The number of branches
+ * corresponds in terms of minutes for this to happen, for example, if there are
+ * 5 branches then this will run every 5 minutes. The map passed in is
+ * thread-safe
  *
  * @author mat
  */
@@ -43,13 +46,6 @@ public class BranchChecker extends AbstractChecker {
         try {
             // Need to perform more than one operation so need to it synchronized
             synchronized (branches) {
-                /**
-                 * TODO make sure that old branches aren't being removed when
-                 * infact they have just been pushed futher since if the SHA
-                 * changes this will mean that we need to re-generate the date
-                 * list which is just stupid as I've tested and you can have a
-                 * branch and test any range of dates on it
-                 */
                 Map<String, GitHubBranch> newBranches = caller.getBranches();
 
                 // Start checking commits in new branches 
@@ -63,10 +59,10 @@ public class BranchChecker extends AbstractChecker {
 
                     branches.put(branchName, branch);
                 }
-                
+
                 branches.clear();
                 branches.putAll(newBranches);
-                
+
                 setQueryTime(newBranches.size());
             }
 

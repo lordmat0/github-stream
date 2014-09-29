@@ -11,10 +11,10 @@ import java.util.NavigableMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+// TODO change this to return a result of gitHubCommits
 /**
- * This class extends AbstractChecker to implement the query method. This object
- * will check the GitHubApi every 30 seconds to get the latest commits. The map
- * passed in is thread-safe
+ * This class checks its branch for new commits and updates it's branch list of
+ * dates and adds the commit details in gitHubCommits
  *
  * @author mat
  */
@@ -26,8 +26,6 @@ public class CommitChecker extends Thread {
     private final NavigableMap<Date, GitHubCommit> gitHubCommits;
     private final GitHubBranch branch;
 
-
-    // TODO change this to return a result of gitHubCommits
     public CommitChecker(NavigableMap<Date, GitHubCommit> gitHubCommits, GitHubBranch branch) {
         this(gitHubCommits, branch, 60000);
     }
