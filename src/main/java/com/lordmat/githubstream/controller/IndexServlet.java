@@ -17,22 +17,24 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author mat
  */
-@WebServlet(urlPatterns = {"/index", "/.", "/index.jsp"}, loadOnStartup = 1)
+@WebServlet(urlPatterns = {"/index.jsp"}, loadOnStartup = 1)
 public class IndexServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String branch = request.getParameter("branch");
 
         List<GitHubCommit> commits = StartManager.data().getTopCommits();
         Map<String, GitHubBranch> branches = StartManager.data().getBranches();
 
         request.setAttribute("commits", commits);
         request.setAttribute("commitsLength", commits.size());
-        
+
         request.setAttribute("project", Path.REPO_NAME);
         request.setAttribute("owner", Path.REPO_OWNER);
         request.setAttribute("projectUrl", Path.REPO_URL);
-        
+
         request.setAttribute("branches", branches);
         request.setAttribute("branchesLength", branches.size());
 

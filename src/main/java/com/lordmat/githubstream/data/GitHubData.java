@@ -31,6 +31,8 @@ public class GitHubData {
     private final NavigableMap<Date, GitHubCommit> gitHubCommits;
     private final Map<String, GitHubBranch> branches;
 
+    private final Map<String, Date> branchToCommit;
+
     private final GitHubCaller caller;
 
     /**
@@ -44,6 +46,8 @@ public class GitHubData {
         gitHubCommits = new ConcurrentSkipListMap<>();
         caller = new GitHubCaller();
         branches = new ConcurrentHashMap<>();
+
+        branchToCommit = new ConcurrentHashMap<>();
 
         new BranchChecker(gitHubCommits, branches).start();
     }
@@ -155,7 +159,8 @@ public class GitHubData {
     public synchronized List<GitHubCommit> getOldCommits(String earlistCommitDate) {
         List<GitHubCommit> newCommits = new ArrayList<>();
 
-        if (earlistCommitDate == null || earlistCommitDate.isEmpty()) {
+        if (earlistCommitDate == null || earlistCommitDate.isEmpty() 
+                || gitHubCommits.isEmpty()) {
             return newCommits;
         }
 
@@ -187,8 +192,8 @@ public class GitHubData {
         return newCommits.subList(0, (newCommitsSize >= 30 ? 30 : newCommitsSize));
     }
 
-    public Map<String, GitHubBranch> getBranches(){
+    public Map<String, GitHubBranch> getBranches() {
         return new HashMap<>(branches);
     }
-    
+
 }
