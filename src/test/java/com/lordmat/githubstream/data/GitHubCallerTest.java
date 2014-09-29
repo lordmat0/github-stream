@@ -155,6 +155,19 @@ public class GitHubCallerTest {
 
         assertTrue(result.isEmpty());
     }
+    
+    @Test
+    public void testGetCommitsFromAnOldBranch(){
+        System.out.println("testGetCommitsFromUnknownBranch");
+        GitHubCaller instance = createInstance();
+
+        String sha = "ecbe528b10fde526d92a03fa0bc8675c9ed58cfa";
+        String since = "2014-09-29T15:40:19Z";
+        
+        Map<Date, GitHubCommit> result = instance.getCommits(since, null, sha);
+        
+        assertTrue(result.size() == 1);
+    }
 
     /**
      * Creates an instance of github caller which is wrapped in a try catch with

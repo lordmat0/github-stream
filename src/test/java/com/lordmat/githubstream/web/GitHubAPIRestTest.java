@@ -184,9 +184,9 @@ public class GitHubAPIRestTest {
 
         Date date = DateTimeFormat.parse(latestCommitDate);
 
-        assertTrue(date.before(result.get(result.size() - 1).getDate()));
-
         assertTrue(!result.isEmpty());
+        
+        assertTrue(date.before(result.get(result.size() - 1).getDate())); 
     }
 
     /**
@@ -227,7 +227,7 @@ public class GitHubAPIRestTest {
         System.out.println("testGetOldCommitsAlreadyCached");
 
         // always has a few commits before of this ID
-        String earlistCommitId = "2014-09-20T19:58:39Z"; // 2014-09-12T19:58:39
+        String earlistCommitId = "2014-09-29T15:13:18Z"; // 2014-09-12T19:58:39
         GitHubAPIRest instance = new GitHubAPIRest();
 
         Collection<GitHubCommit> result = instance.getOldCommits(new StringBean(earlistCommitId));
@@ -266,7 +266,7 @@ public class GitHubAPIRestTest {
         // always has a few commits before of this ID
         String earlistCommitId = "2014-09-01T20:22:36Z";
         GitHubAPIRest instance = new GitHubAPIRest();
-        
+
         Collection<GitHubCommit> result = instance.getOldCommits(new StringBean(earlistCommitId));
         Collection<GitHubCommit> result2 = instance.getOldCommits(new StringBean(earlistCommitId));
         Collection<GitHubCommit> result3 = instance.getOldCommits(new StringBean(earlistCommitId));
