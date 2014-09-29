@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author mat
  */
-public class CommitChecker extends AbstractChecker {
+public class CommitChecker extends Thread {
 
     private final static Logger LOGGER = Logger.getLogger(CommitChecker.class.getName());
 
@@ -26,45 +26,42 @@ public class CommitChecker extends AbstractChecker {
     private final NavigableMap<Date, GitHubCommit> gitHubCommits;
     private final GitHubBranch branch;
 
-    /**
-     * If it is the first query then let it run, fixes when a branch is in the
-     * past before the since field in query
-     */
-    private boolean firstQuery = true;
 
+    // TODO change this to return a result of gitHubCommits
     public CommitChecker(NavigableMap<Date, GitHubCommit> gitHubCommits, GitHubBranch branch) {
         this(gitHubCommits, branch, 60000);
     }
 
     public CommitChecker(NavigableMap<Date, GitHubCommit> gitHubCommits, GitHubBranch branch, int queryTime) {
-        super(queryTime);
         this.gitHubCommits = gitHubCommits;
         caller = new GitHubCaller();
         this.branch = branch;
     }
 
+    @Override
+    public void run() {
+        query();
+    }
+
     /**
      * Handles querying GitHub
      */
-    @Override
     protected void query() {
         try {
             String since = null;
 
             // If it's not empty then we've already have some commits 
             // have some commits , so use the last date to search on
-            if (!firstQuery && !gitHubCommits.isEmpty()) {
+            if (!branch.getCommits().isEmpty()) {
 
                 Calendar cal = Calendar.getInstance();
-                cal.setTime(gitHubCommits.lastKey());
+                cal.setTime(branch.getCommits().last());
 
                 // Add one second otherwise github returns the commit that happened on that date
                 cal.add(Calendar.SECOND, 1);
 
                 since = DateTimeFormat.format(cal.getTime());
             }
-
-            firstQuery = false;
 
             Map<Date, GitHubCommit> data = caller.getCommits(since, null, branch.getSha());
 
