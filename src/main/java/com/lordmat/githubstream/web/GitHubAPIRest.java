@@ -103,10 +103,14 @@ public class GitHubAPIRest {
     public List<GitHubCommit> getNewCommits(@QueryParam("date") String latestCommitDate,
             @QueryParam("branch") String branchName) {
 
-        LOGGER.log(Level.FINE, "Getting new commits latestCommitDate: {0}, BranchName: {1}",
+        LOGGER.log(Level.INFO, "Getting new commits latestCommitDate & BranchName: {0}",
                 Arrays.asList(latestCommitDate, branchName));
 
-        return gitHubData.getNewCommits(latestCommitDate);
+        if (branchName != null) {
+            return gitHubData.getNewCommits(latestCommitDate, branchName);
+        } else {
+            return gitHubData.getNewCommits(latestCommitDate);
+        }
     }
 
     /**
