@@ -1,7 +1,6 @@
 package com.lordmat.githubstream.data;
 
 import com.lordmat.githubstream.bean.GitHubBranch;
-import com.lordmat.githubstream.data.checker.CommitChecker;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.data.checker.BranchChecker;
@@ -14,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.logging.Logger;
@@ -102,14 +102,33 @@ public class GitHubData {
      *
      * @return A list of the newest github commits
      */
-    public List<GitHubCommit> getTopCommits() {
+    public List<GitHubCommit> getTopCommits(String branchName) {
         List<GitHubCommit> commitList = new ArrayList<>(25);
 
-        {
-            Iterator iter = gitHubCommits.descendingMap().values().iterator();
+        GitHubBranch branch = null;
+        if (branchName != null) {
+            branch = branches.get(branchName);
+        }
 
-            for (int i = 0; iter.hasNext() && i < 25; i++) {
-                commitList.add((GitHubCommit) iter.next());
+        if (branch != null) {
+            TreeSet<Date> dates = branch.getCommits();
+
+            {
+                Iterator iter = dates.descendingIterator();
+
+                for (int i = 0; iter.hasNext() && i < 25; i++) {
+                    commitList.add(gitHubCommits.get((Date) iter.next()));
+                }
+
+            }
+
+        } else {
+            {
+                Iterator iter = gitHubCommits.descendingMap().values().iterator();
+
+                for (int i = 0; iter.hasNext() && i < 25; i++) {
+                    commitList.add((GitHubCommit) iter.next());
+                }
             }
         }
 
@@ -159,7 +178,7 @@ public class GitHubData {
     public synchronized List<GitHubCommit> getOldCommits(String earlistCommitDate) {
         List<GitHubCommit> newCommits = new ArrayList<>();
 
-        if (earlistCommitDate == null || earlistCommitDate.isEmpty() 
+        if (earlistCommitDate == null || earlistCommitDate.isEmpty()
                 || gitHubCommits.isEmpty()) {
             return newCommits;
         }

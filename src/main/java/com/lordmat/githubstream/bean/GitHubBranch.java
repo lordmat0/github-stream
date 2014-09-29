@@ -6,7 +6,6 @@
 package com.lordmat.githubstream.bean;
 
 import java.util.Date;
-import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -30,7 +29,7 @@ public class GitHubBranch {
     /**
      * Holds a reference to the commits this branch has done
      */
-    private Set<Date> commits;
+    private TreeSet<Date> commits;
 
     /**
      * Needed for javabean
@@ -60,11 +59,11 @@ public class GitHubBranch {
         this.sha = sha;
     }
 
-    public void setCommits(Set<Date> commits) {
+    public void setCommits(TreeSet<Date> commits) {
         this.commits = commits;
     }
     
-    public Set<Date> getCommits() {
+    public TreeSet<Date> getCommits() {
         return commits;
     }
     

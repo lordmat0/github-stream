@@ -23,9 +23,9 @@ public class IndexServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String branch = request.getParameter("branch");
-
-        List<GitHubCommit> commits = StartManager.data().getTopCommits();
+        String branchName = request.getParameter("branch");
+        
+        List<GitHubCommit> commits = StartManager.data().getTopCommits(branchName);
         Map<String, GitHubBranch> branches = StartManager.data().getBranches();
 
         request.setAttribute("commits", commits);
