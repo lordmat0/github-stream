@@ -38,7 +38,7 @@
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav">
                     <li class="active">
-                        <a href="#">All Commits</a>
+                        <a href="?">All Commits</a>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Branches <b class="caret"></b></a>
@@ -50,7 +50,7 @@
                             </c:if>
                             <c:forEach items="${branches}" var="branches">        
                                 <li>
-                                    <a href="#"><c:out value="${branches.key}"/></a>
+                                    <a href="?branch=<c:out value='${branches.key}' />"><c:out value="${branches.key}"/></a>
                                 </li>
                             </c:forEach>
                         </ul>
