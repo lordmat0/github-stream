@@ -141,10 +141,11 @@ public class GitHubData {
      * Checks for new commits, if the date passed in null or empty then a empty
      * list is returned
      *
-     * @param latestCommitDate The commit ID to check against
+     * @param latestCommitDate The commit date to check against
      * @return An empty list or commits that come after the lastestCommitId
      *
      */
+    // TODO change to a set
     public List<GitHubCommit> getNewCommits(String latestCommitDate) {
         List<GitHubCommit> newCommits = new ArrayList<>();
 
@@ -169,10 +170,20 @@ public class GitHubData {
         return newCommits;
     }
 
+    /**
+     * Checks for new commits, if the date or branch name passed in null/empty
+     * then a empty list is returned
+     *
+     * @param latestCommitDate The commit date to check against
+     * @param branchName The branch to get commits from
+     * @return
+     */
+    //TODO change to a set
     public List<GitHubCommit> getNewCommits(String latestCommitDate, String branchName) {
         List<GitHubCommit> newCommits = new ArrayList<>();
 
-        if (latestCommitDate == null || latestCommitDate.isEmpty() || branchName == null) {
+        if (latestCommitDate == null || latestCommitDate.isEmpty()
+                || branchName == null || branchName.isEmpty()) {
             return newCommits;
         }
 
@@ -196,18 +207,17 @@ public class GitHubData {
 
         if (gitHubCommits.lastKey().equals(date)) {
             // no new commits
-            return newCommits; 
+            return newCommits;
         }
-        
+
         // Get a subset of the list
         Iterator<Date> iter = dateSet.tailSet(date, false).iterator();
-        
+
         // Only add dates in the branch to newCommits
-        while(iter.hasNext()){
+        while (iter.hasNext()) {
             newCommits.add(gitHubCommits.get(iter.next()));
         }
-        
-       
+
         return newCommits;
     }
 
@@ -255,31 +265,38 @@ public class GitHubData {
         int newCommitsSize = newCommits.size();
         return newCommits.subList(0, (newCommitsSize >= 30 ? 30 : newCommitsSize));
     }
-    
-   
+
+    /**
+     * I believe this needs to be synchronized because otherwise two requests
+     * would mean that it could be calling getCommits twice on the same date
+     * wasting bandwidth
+     *
+     * @param earlistCommitDate The earlist commit date
+     * @param branchName The branch to get commits from
+     * @return
+     */
     public synchronized List<GitHubCommit> getOldCommits(String earlistCommitDate, String branchName) {
         List<GitHubCommit> newCommits = new ArrayList<>();
-        
+
         GitHubBranch branch = branches.get(branchName);
 
         if (earlistCommitDate == null || earlistCommitDate.isEmpty()
                 || branch == null) {
             return newCommits;
         }
-        
+
         TreeSet<Date> branchDates = branch.getCommits();
-        
-        if(branchDates.isEmpty()){
+
+        if (branchDates.isEmpty()) {
             LOGGER.info(branchName + " has no commits in getOldCommits");
             return newCommits;
         }
-        
+
         Date date = DateTimeFormat.parse(earlistCommitDate);
 
         if (!branch.getHasLastCommit()
                 && (branchDates.first().equals(date) || !branchDates.contains(date))) {
 
-            
             date = branchDates.first();
 
             // If we don't contain the date assume we need to get more commits,
@@ -293,22 +310,20 @@ public class GitHubData {
 
             // Add the new commits to the branch
             branchDates.addAll(mapCommits.keySet());
-            
+
             gitHubCommits.putAll(mapCommits);
         }
 
         Iterator iter = branchDates.headSet(date, false).descendingIterator();
-                
-        while(iter.hasNext()){
+
+        while (iter.hasNext()) {
             newCommits.add(gitHubCommits.get((Date) iter.next()));
         }
-        
+
         // Limit size to 30
         int newCommitsSize = newCommits.size();
         return newCommits.subList(0, (newCommitsSize >= 30 ? 30 : newCommitsSize));
     }
-    
-    
 
     public Map<String, GitHubBranch> getBranches() {
         return new HashMap<>(branches);
