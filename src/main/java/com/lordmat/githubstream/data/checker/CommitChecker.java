@@ -26,6 +26,12 @@ public class CommitChecker extends AbstractChecker {
     private final NavigableMap<Date, GitHubCommit> gitHubCommits;
     private final GitHubBranch branch;
 
+    /**
+     * If it is the first query then let it run, fixes when a branch is in the
+     * past before the since field in query
+     */
+    private boolean firstQuery = true;
+
     public CommitChecker(NavigableMap<Date, GitHubCommit> gitHubCommits, GitHubBranch branch) {
         this(gitHubCommits, branch, 60000);
     }
@@ -47,7 +53,7 @@ public class CommitChecker extends AbstractChecker {
 
             // If it's not empty then we've already have some commits 
             // have some commits , so use the last date to search on
-            if (!gitHubCommits.isEmpty()) {
+            if (!firstQuery && !gitHubCommits.isEmpty()) {
 
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(gitHubCommits.lastKey());
@@ -57,6 +63,8 @@ public class CommitChecker extends AbstractChecker {
 
                 since = DateTimeFormat.format(cal.getTime());
             }
+
+            firstQuery = false;
 
             Map<Date, GitHubCommit> data = caller.getCommits(since, null, branch.getSha());
 
