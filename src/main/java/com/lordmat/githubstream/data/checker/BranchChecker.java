@@ -63,7 +63,7 @@ public class BranchChecker extends AbstractChecker {
                 branches.clear();
                 branches.putAll(newBranches);
 
-                setQueryTime(newBranches.size());
+                setQueryTime(newBranches.size() * 60);
             }
 
         } catch (Exception ex) {
