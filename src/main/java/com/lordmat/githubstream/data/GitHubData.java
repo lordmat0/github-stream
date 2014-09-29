@@ -100,6 +100,8 @@ public class GitHubData {
      * as the newest commits. If there are less than 25 commits than all the
      * commits will be returned.
      *
+     * @param branchName The branch name to get the commits from, null for all
+     * commits
      * @return A list of the newest github commits
      */
     public List<GitHubCommit> getTopCommits(String branchName) {
@@ -164,6 +166,48 @@ public class GitHubData {
         // get a subset of the list
         newCommits.addAll(gitHubCommits.tailMap(date, false).values());
 
+        return newCommits;
+    }
+
+    public List<GitHubCommit> getNewCommits(String latestCommitDate, String branchName) {
+        List<GitHubCommit> newCommits = new ArrayList<>();
+
+        if (latestCommitDate == null || latestCommitDate.isEmpty() || branchName == null) {
+            return newCommits;
+        }
+
+        Date date = DateTimeFormat.parse(latestCommitDate);
+        TreeSet<Date> dateSet = null;
+
+        GitHubBranch branch = branches.get(branchName);
+
+        if (branch == null) {
+            // Can't find branch
+            LOGGER.warning("Could not find branch " + branchName);
+            return newCommits;
+        } else {
+            dateSet = branch.getCommits();
+        }
+
+        if (dateSet.isEmpty()) {
+            LOGGER.info(branchName + " has no commits");
+            return newCommits;
+        }
+
+        if (gitHubCommits.lastKey().equals(date)) {
+            // no new commits
+            return newCommits; 
+        }
+        
+        // Get a subset of the list
+        Iterator<Date> iter = dateSet.tailSet(date, false).iterator();
+        
+        // Only add dates in the branch to newCommits
+        while(iter.hasNext()){
+            newCommits.add(gitHubCommits.get(iter.next()));
+        }
+        
+       
         return newCommits;
     }
 
