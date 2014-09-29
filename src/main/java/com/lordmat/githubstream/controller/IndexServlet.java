@@ -33,11 +33,6 @@ public class IndexServlet extends HttpServlet {
         request.setAttribute("owner", Path.REPO_OWNER);
         request.setAttribute("projectUrl", Path.REPO_URL);
         
-        // Remove the master from the list
-        GitHubBranch masterBranch = branches.remove("master");
-        
-        // If masterBranch was null than we know it was not in the list
-        request.setAttribute("branchesHasMaster", masterBranch != null);
         request.setAttribute("branches", branches);
         request.setAttribute("branchesLength", branches.size());
 

@@ -37,11 +37,9 @@
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav">
-                    <c:if test="${branchesHasMaster}">
-                        <li class="active">
-                            <a href="#">Master</a>
-                        </li>
-                    </c:if>
+                    <li class="active">
+                        <a href="#">All Commits</a>
+                    </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Branches <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -50,7 +48,6 @@
                                     <a href="#">No Branches found :(</a>
                                 </li>
                             </c:if>
-                                
                             <c:forEach items="${branches}" var="branches">        
                                 <li>
                                     <a href="#"><c:out value="${branches.key}"/></a>
