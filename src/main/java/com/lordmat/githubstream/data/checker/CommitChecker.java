@@ -27,7 +27,7 @@ public class CommitChecker extends AbstractChecker {
     private final GitHubBranch branch;
 
     public CommitChecker(NavigableMap<Date, GitHubCommit> gitHubCommits, GitHubBranch branch) {
-        this(gitHubCommits, branch, 30000);
+        this(gitHubCommits, branch, 60000);
     }
 
     public CommitChecker(NavigableMap<Date, GitHubCommit> gitHubCommits, GitHubBranch branch, int queryTime) {

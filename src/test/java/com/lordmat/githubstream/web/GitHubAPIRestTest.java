@@ -176,7 +176,8 @@ public class GitHubAPIRestTest {
         System.out.println("getNewCommits");
 
         // always has a few commits ahead of this ID
-        String latestCommitDate = "2014-09-12T20:45:35Z";
+        // TODO auto-generate this date
+        String latestCommitDate = "2014-09-25T20:45:35Z";
         GitHubAPIRest instance = new GitHubAPIRest();
 
         List<GitHubCommit> result = instance.getNewCommits(new StringBean(latestCommitDate));
@@ -227,7 +228,7 @@ public class GitHubAPIRestTest {
         System.out.println("testGetOldCommitsAlreadyCached");
 
         // always has a few commits before of this ID
-        String earlistCommitId = "2014-09-12T19:58:39Z"; // 2014-09-12T19:58:39
+        String earlistCommitId = "2014-09-20T19:58:39Z"; // 2014-09-12T19:58:39
         GitHubAPIRest instance = new GitHubAPIRest();
 
         Collection<GitHubCommit> result = instance.getOldCommits(new StringBean(earlistCommitId));
