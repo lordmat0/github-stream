@@ -185,8 +185,8 @@ public class GitHubAPIRestTest {
         Date date = DateTimeFormat.parse(latestCommitDate);
 
         assertTrue(!result.isEmpty());
-        
-        assertTrue(date.before(result.get(result.size() - 1).getDate())); 
+
+        assertTrue(date.before(result.get(result.size() - 1).getDate()));
     }
 
     /**
@@ -230,7 +230,7 @@ public class GitHubAPIRestTest {
         String earlistCommitId = "2014-09-29T15:13:18Z"; // 2014-09-12T19:58:39
         GitHubAPIRest instance = new GitHubAPIRest();
 
-        Collection<GitHubCommit> result = instance.getOldCommits(new StringBean(earlistCommitId));
+        Collection<GitHubCommit> result = instance.getOldCommits(earlistCommitId, null);
 
         assertTrue(result.size() > 0);
     }
@@ -246,7 +246,7 @@ public class GitHubAPIRestTest {
         String earlistCommitId = "2014-09-02T23:12:59Z";
         GitHubAPIRest instance = new GitHubAPIRest();
 
-        Collection<GitHubCommit> result = instance.getOldCommits(new StringBean(earlistCommitId));
+        Collection<GitHubCommit> result = instance.getOldCommits(earlistCommitId, null);
 
         assertTrue(result.size() > 0);
     }
@@ -267,10 +267,10 @@ public class GitHubAPIRestTest {
         String earlistCommitId = "2014-09-01T20:22:36Z";
         GitHubAPIRest instance = new GitHubAPIRest();
 
-        Collection<GitHubCommit> result = instance.getOldCommits(new StringBean(earlistCommitId));
-        Collection<GitHubCommit> result2 = instance.getOldCommits(new StringBean(earlistCommitId));
-        Collection<GitHubCommit> result3 = instance.getOldCommits(new StringBean(earlistCommitId));
-        Collection<GitHubCommit> result4 = instance.getOldCommits(new StringBean(earlistCommitId));
+        Collection<GitHubCommit> result = instance.getOldCommits(earlistCommitId, null);
+        Collection<GitHubCommit> result2 = instance.getOldCommits(earlistCommitId, null);
+        Collection<GitHubCommit> result3 = instance.getOldCommits(earlistCommitId, null);
+        Collection<GitHubCommit> result4 = instance.getOldCommits(earlistCommitId, null);
 
         assertTrue(result4.isEmpty());
     }
