@@ -31,6 +31,8 @@ public class GitHubBranch {
      */
     private TreeSet<Date> commits;
 
+    private boolean hasLastCommit;
+    
     /**
      * Needed for javabean
      */
@@ -65,6 +67,14 @@ public class GitHubBranch {
     
     public TreeSet<Date> getCommits() {
         return commits;
+    }
+    
+    public void setHasLastCommit(boolean hasLastCommit){
+        this.hasLastCommit = hasLastCommit;
+    }
+    
+    public boolean getHasLastCommit(){
+        return hasLastCommit;
     }
     
 }

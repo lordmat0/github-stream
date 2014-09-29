@@ -190,7 +190,7 @@ public class GitHubData {
         }
 
         if (dateSet.isEmpty()) {
-            LOGGER.info(branchName + " has no commits");
+            LOGGER.info(branchName + " has no commits in getNewCommits");
             return newCommits;
         }
 
@@ -219,6 +219,7 @@ public class GitHubData {
      * @param earlistCommitDate The earlist commit date
      * @return
      */
+    //TODO make this get old commits for all branches
     public synchronized List<GitHubCommit> getOldCommits(String earlistCommitDate) {
         List<GitHubCommit> newCommits = new ArrayList<>();
 
@@ -255,37 +256,53 @@ public class GitHubData {
         return newCommits.subList(0, (newCommitsSize >= 30 ? 30 : newCommitsSize));
     }
     
+   
     public synchronized List<GitHubCommit> getOldCommits(String earlistCommitDate, String branchName) {
         List<GitHubCommit> newCommits = new ArrayList<>();
+        
+        GitHubBranch branch = branches.get(branchName);
 
         if (earlistCommitDate == null || earlistCommitDate.isEmpty()
-                || gitHubCommits.isEmpty()) {
+                || branch == null) {
             return newCommits;
         }
-
+        
+        TreeSet<Date> branchDates = branch.getCommits();
+        
+        if(branchDates.isEmpty()){
+            LOGGER.info(branchName + " has no commits in getOldCommits");
+            return newCommits;
+        }
+        
         Date date = DateTimeFormat.parse(earlistCommitDate);
 
-        if (!hasLastCommit
-                && (gitHubCommits.firstKey().equals(date) || !gitHubCommits.containsKey(date))) {
+        if (!branch.getHasLastCommit()
+                && (branchDates.first().equals(date) || !branchDates.contains(date))) {
 
-            date = gitHubCommits.firstKey();
+            
+            date = branchDates.first();
 
             // If we don't contain the date assume we need to get more commits,
             // but don't trust the client date passed in
             NavigableMap<Date, GitHubCommit> mapCommits = caller.getCommits(null,
-                    DateTimeFormat.format(date));
+                    DateTimeFormat.format(date), branch.getSha());
 
             if (mapCommits.firstKey().equals(date)) {
-                hasLastCommit = true;
+                branch.setHasLastCommit(true);
             }
 
+            // Add the new commits to the branch
+            branchDates.addAll(mapCommits.keySet());
+            
             gitHubCommits.putAll(mapCommits);
         }
 
-        // get a subset of the list
-        newCommits.addAll(gitHubCommits.headMap(date).values());
-        Collections.reverse(newCommits);
-
+        Iterator iter = branchDates.headSet(date, false).descendingIterator();
+                
+        while(iter.hasNext()){
+            newCommits.add(gitHubCommits.get((Date) iter.next()));
+        }
+        
         // Limit size to 30
         int newCommitsSize = newCommits.size();
         return newCommits.subList(0, (newCommitsSize >= 30 ? 30 : newCommitsSize));
