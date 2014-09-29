@@ -254,6 +254,44 @@ public class GitHubData {
         int newCommitsSize = newCommits.size();
         return newCommits.subList(0, (newCommitsSize >= 30 ? 30 : newCommitsSize));
     }
+    
+    public synchronized List<GitHubCommit> getOldCommits(String earlistCommitDate, String branchName) {
+        List<GitHubCommit> newCommits = new ArrayList<>();
+
+        if (earlistCommitDate == null || earlistCommitDate.isEmpty()
+                || gitHubCommits.isEmpty()) {
+            return newCommits;
+        }
+
+        Date date = DateTimeFormat.parse(earlistCommitDate);
+
+        if (!hasLastCommit
+                && (gitHubCommits.firstKey().equals(date) || !gitHubCommits.containsKey(date))) {
+
+            date = gitHubCommits.firstKey();
+
+            // If we don't contain the date assume we need to get more commits,
+            // but don't trust the client date passed in
+            NavigableMap<Date, GitHubCommit> mapCommits = caller.getCommits(null,
+                    DateTimeFormat.format(date));
+
+            if (mapCommits.firstKey().equals(date)) {
+                hasLastCommit = true;
+            }
+
+            gitHubCommits.putAll(mapCommits);
+        }
+
+        // get a subset of the list
+        newCommits.addAll(gitHubCommits.headMap(date).values());
+        Collections.reverse(newCommits);
+
+        // Limit size to 30
+        int newCommitsSize = newCommits.size();
+        return newCommits.subList(0, (newCommitsSize >= 30 ? 30 : newCommitsSize));
+    }
+    
+    
 
     public Map<String, GitHubBranch> getBranches() {
         return new HashMap<>(branches);

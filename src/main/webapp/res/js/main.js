@@ -35,13 +35,18 @@ $(function () {
 
                 // Get the date of the last commit
                 var date = $('.commit').last().find('.commit-date strong').text();
+                var branchName = getBranchName();
 
+                var data = {"date": date};
+
+                if (branchName !== null) {
+                    data.branch = branchName;
+                }
+                
                 $.ajax('rest/githubapi/commit/old', {
                     contentType: 'application/json',
-                    type: 'POST',
-                    data: JSON.stringify({
-                        "data": date
-                    }),
+                    type: 'GET',
+                    data: data,
                     success: function (data) {
                         handleOldCommits(data);
 
@@ -101,14 +106,14 @@ $(function () {
     setInterval(function () {
         var date = $('.commit').first().find('.commit-date strong').text();
         var branchName = getBranchName();
-        
+
         var data = {"date": date};
-        
-        if(branchName !== null){
+
+        if (branchName !== null) {
             data.branch = branchName;
         }
-        
-                
+
+
         $.ajax('rest/githubapi/commit/new', {
             contentType: 'application/json',
             type: 'GET',

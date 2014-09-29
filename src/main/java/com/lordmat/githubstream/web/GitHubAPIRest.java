@@ -134,11 +134,19 @@ public class GitHubAPIRest {
      * @return An empty list or commits that come before the earlistCommitId
      */
     @Path("commit/old")
-    @POST
-    public List<GitHubCommit> getOldCommits(StringBean earlistCommitDate) {
-        LOGGER.log(Level.FINE, "Getting old commits earlistCommitDate: {0}", earlistCommitDate.getData());
+    @GET
+    public List<GitHubCommit> getOldCommits(@QueryParam("date") String earlistCommitDate,
+            @QueryParam("branch") String branchName) {
 
-        return gitHubData.getOldCommits(earlistCommitDate.getData());
+        LOGGER.log(Level.FINEST, "Getting old commits earlistCommitDate & BranchName: {0}",
+                Arrays.asList(earlistCommitDate, branchName));
+
+        if (branchName != null) {
+            return gitHubData.getOldCommits(earlistCommitDate, branchName);
+        } else {
+            return gitHubData.getOldCommits(earlistCommitDate);
+
+        }
     }
 
 }
