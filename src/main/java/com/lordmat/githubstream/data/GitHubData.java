@@ -13,6 +13,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -231,39 +233,29 @@ public class GitHubData {
      */
     //TODO make this get old commits for all branches
     public synchronized List<GitHubCommit> getOldCommits(String earlistCommitDate) {
-        List<GitHubCommit> newCommits = new ArrayList<>();
+        Set<GitHubCommit> newCommits = new TreeSet<>();
 
         if (earlistCommitDate == null || earlistCommitDate.isEmpty()
                 || gitHubCommits.isEmpty()) {
-            return newCommits;
+            return new ArrayList<>(newCommits);
         }
 
+        for (String branchName : branches.keySet()) {
+            List<GitHubCommit> commits = getOldCommits(earlistCommitDate, branchName);
+            System.out.println(commits.size());
+
+        }
         Date date = DateTimeFormat.parse(earlistCommitDate);
-
-        if (!hasLastCommit
-                && (gitHubCommits.firstKey().equals(date) || !gitHubCommits.containsKey(date))) {
-
-            date = gitHubCommits.firstKey();
-
-            // If we don't contain the date assume we need to get more commits,
-            // but don't trust the client date passed in
-            NavigableMap<Date, GitHubCommit> mapCommits = caller.getCommits(null,
-                    DateTimeFormat.format(date));
-
-            if (mapCommits.firstKey().equals(date)) {
-                hasLastCommit = true;
-            }
-
-            gitHubCommits.putAll(mapCommits);
-        }
-
+        
         // get a subset of the list
         newCommits.addAll(gitHubCommits.headMap(date).values());
-        Collections.reverse(newCommits);
+
+        List<GitHubCommit> newCommitList = new ArrayList<>(newCommits);
+        Collections.reverse(newCommitList);
 
         // Limit size to 30
-        int newCommitsSize = newCommits.size();
-        return newCommits.subList(0, (newCommitsSize >= 30 ? 30 : newCommitsSize));
+        int newCommitsSize = newCommitList.size();
+        return newCommitList.subList(0, (newCommitsSize >= 30 ? 30 : newCommitsSize));
     }
 
     /**
