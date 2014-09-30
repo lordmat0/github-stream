@@ -121,7 +121,7 @@ $(function () {
             success: handleNewCommits
         });
 
-    }, 5000);
+    }, 60000);
 });
 
 /**
