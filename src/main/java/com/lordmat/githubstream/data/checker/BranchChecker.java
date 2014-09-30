@@ -53,7 +53,14 @@ public class BranchChecker extends AbstractChecker {
                     String branchName = branchEntry.getKey();
 
                     GitHubBranch branch = branchEntry.getValue();
-
+                    
+                    GitHubBranch oldBranch = branches.get(branch.getName());
+                    
+                    // If it already exists set the commit list to the old one
+                    if(oldBranch != null){
+                        branch.setCommits(oldBranch.getCommits());
+                    }
+                    
                     threadHandler
                             .submit(new CommitChecker(gitHubCommits, branch));
 
