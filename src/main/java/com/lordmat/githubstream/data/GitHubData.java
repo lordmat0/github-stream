@@ -285,9 +285,10 @@ public class GitHubData {
         }
 
         Date date = DateTimeFormat.parse(earlistCommitDate);
-
+        
+        
         if (!branch.getHasLastCommit()
-                && (branchDates.first().equals(date) || !branchDates.contains(date))) {
+                && (branchDates.first().equals(date) || branchDates.first().before(date))) {
 
             date = branchDates.first();
 
