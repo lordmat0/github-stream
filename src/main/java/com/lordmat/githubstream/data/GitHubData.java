@@ -246,7 +246,7 @@ public class GitHubData {
 
         }
         Date date = DateTimeFormat.parse(earlistCommitDate);
-        
+
         // get a subset of the list
         newCommits.addAll(gitHubCommits.headMap(date).values());
 
@@ -285,8 +285,7 @@ public class GitHubData {
         }
 
         Date date = DateTimeFormat.parse(earlistCommitDate);
-        
-        
+
         if (!branch.getHasLastCommit()
                 && (branchDates.first().equals(date) || branchDates.first().before(date))) {
 

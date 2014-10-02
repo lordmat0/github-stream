@@ -23,10 +23,20 @@ public class IndexServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String branchName = request.getParameter("branch");
-        
-        List<GitHubCommit> commits = StartManager.data().getTopCommits(branchName);
         Map<String, GitHubBranch> branches = StartManager.data().getBranches();
+
+        String branchName = request.getParameter("branch");
+
+        if (branchName == null) {
+
+            // Check if there is a master branch
+            branchName = branches.containsKey("master") || branches.isEmpty() ? "master" : branches.keySet().iterator().next();
+
+            response.sendRedirect("?branch=" + branchName);
+            return;
+        }
+
+        List<GitHubCommit> commits = StartManager.data().getTopCommits(branchName);
 
         request.setAttribute("commits", commits);
         request.setAttribute("commitsLength", commits.size());
@@ -35,6 +45,7 @@ public class IndexServlet extends HttpServlet {
         request.setAttribute("owner", Path.REPO_OWNER);
         request.setAttribute("projectUrl", Path.REPO_URL);
 
+        request.setAttribute("branchName", branchName);
         request.setAttribute("branches", branches);
         request.setAttribute("branchesLength", branches.size());
 
