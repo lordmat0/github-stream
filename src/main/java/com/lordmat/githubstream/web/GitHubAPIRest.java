@@ -3,7 +3,6 @@ package com.lordmat.githubstream.web;
 import com.lordmat.githubstream.StartManager;
 import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.bean.GitHubCommit;
-import com.lordmat.githubstream.bean.StringBean;
 import com.lordmat.githubstream.bean.UserList;
 import com.lordmat.githubstream.data.GitHubData;
 import java.util.Arrays;
@@ -106,11 +105,7 @@ public class GitHubAPIRest {
         LOGGER.log(Level.FINEST, "Getting new commits latestCommitDate & BranchName: {0}",
                 Arrays.asList(latestCommitDate, branchName));
 
-        if (branchName != null) {
-            return gitHubData.getNewCommits(latestCommitDate, branchName);
-        } else {
-            return gitHubData.getNewCommits(latestCommitDate);
-        }
+        return gitHubData.getNewCommits(latestCommitDate, branchName);
     }
 
     /**
@@ -141,12 +136,7 @@ public class GitHubAPIRest {
         LOGGER.log(Level.FINEST, "Getting old commits earlistCommitDate & BranchName: {0}",
                 Arrays.asList(earlistCommitDate, branchName));
 
-        if (branchName != null) {
-            return gitHubData.getOldCommits(earlistCommitDate, branchName);
-        } else {
-            return gitHubData.getOldCommits(earlistCommitDate);
-
-        }
+        return gitHubData.getOldCommits(earlistCommitDate, branchName);
     }
 
 }
