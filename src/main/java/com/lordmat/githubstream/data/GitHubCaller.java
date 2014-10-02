@@ -1,5 +1,6 @@
 package com.lordmat.githubstream.data;
 
+import com.lordmat.githubstream.bean.GitHubBranch;
 import com.lordmat.githubstream.resource.Path;
 import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.bean.GitHubCommit;
@@ -8,7 +9,6 @@ import com.lordmat.githubstream.resource.MyResourceBundle;
 import com.lordmat.githubstream.resource.ResourceKey;
 import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -73,15 +73,43 @@ public class GitHubCaller {
      * from an API call to the githubAPI
      */
     public NavigableMap<Date, GitHubCommit> getCommits(String since, String until) {
+        return getCommits(since, until, null);
+    }
+
+    /**
+     * Gets a list of commits between two dates with the 
+     *
+     * @param since The start date, can be null (meaning that there is no
+     * restriction)
+     * @param until The end date, can be null (meaning that there is no
+     * restriction)
+     * @param branchSHA The branch SHA that should be found
+     *
+     * @return a JSONArray that contains details on commits which are retrieved
+     * from an API call to the githubAPI
+     */
+    public NavigableMap<Date, GitHubCommit> getCommits(String since, String until, String branchSHA) {
         Map<String, String> queryParam = new HashMap<>();
         queryParam.put("since", since);
         queryParam.put("until", until);
 
-        String data = call(Path.REPO_COMMITS, queryParam);
-        
-        JSONArray commits = new JSONArray(data);
+        if (branchSHA != null) {
+            queryParam.put("sha", branchSHA);
+        }
 
+        String data;
         NavigableMap<Date, GitHubCommit> gitHubCommits = new TreeMap<>();
+
+        try {
+            data = call(Path.REPO_COMMITS, queryParam);
+        } catch (Exception ex) {
+            LOGGER.log(Level.INFO,
+                    "getCommits threw an error branchSha: " + branchSHA, ex);
+
+            return gitHubCommits;
+        }
+
+        JSONArray commits = new JSONArray(data);
 
         // Check results
         if (commits.length() == 0) {
@@ -124,22 +152,20 @@ public class GitHubCaller {
                 //Skip this one and carry on
             }
         }
-        
 
         // Comment out to stop fake commits
         /*
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MILLISECOND, 0);
-        
-        gitHubCommits.put(
-                DateTimeFormat.parse(DateTimeFormat.format(new Date())),
-                new GitHubCommit("1f1d8f711b4258e38825083a2db401862602c14b",
-                        calendar.getTime(),
-                        "Some bogus message that has some weight to it",
-                        null,
-                        new GitHubUser("FakeUser", "#", "#")));
-        */
-        
+         Calendar calendar = Calendar.getInstance();
+         calendar.set(Calendar.MILLISECOND, 0);
+
+         gitHubCommits.put(
+         DateTimeFormat.parse(DateTimeFormat.format(new Date())),
+         new GitHubCommit("1f1d8f711b4258e38825083a2db401862602c14b",
+         calendar.getTime(),
+         "Some bogus message that has some weight to it",
+         null,
+         new GitHubUser("FakeUser", "#", "#")));
+         */
         return gitHubCommits;
     }
 
@@ -162,7 +188,29 @@ public class GitHubCaller {
             LOGGER.log(Level.INFO, "Error getting user", ex);
             return null;
         }
+    }
 
+    /**
+     * Gets the current list of branches the repository has
+     *
+     * @return A map of branches with the key being the branch name
+     */
+    public Map<String, GitHubBranch> getBranches() {
+        Map<String, GitHubBranch> branchList = new HashMap<>();
+        JSONArray branches = new JSONArray(call(Path.REPO_BRANCHS));
+
+        for (int i = 0; i < branches.length(); i++) {
+            JSONObject jsonBranch = branches.getJSONObject(i);
+
+            String name = jsonBranch.getString("name");
+            String sha = jsonBranch.getJSONObject("commit").getString("sha");
+
+            GitHubBranch branch = new GitHubBranch(name, sha);
+
+            branchList.put(name, branch);
+        }
+
+        return branchList;
     }
 
     /**

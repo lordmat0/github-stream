@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title><c:out value="${branchName}"/> Commits</title>
         <!-- jQuery -->
         <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
 
@@ -25,9 +25,37 @@
     </head>
     <body>
 
-        <div class="container">
+        <%-- Nav bar --%>
+        <div class="navbar navbar-default">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><c:out value="${project}"/></a>
+            </div>
+            <div class="navbar-collapse collapse navbar-responsive-collapse">
+                <ul class="nav navbar-nav">
+                    <c:if test="${branchesLength == 0}">
+                        <li>
+                            <a href="#">No Branches found :(</a>
+                        </li>
+                    </c:if>
+                    <c:forEach items="${branches}" var="branches">        
+                        <li>
+                            <a href="?branch=<c:out value='${branches.key}' />"><c:out value="${branches.key}"/></a>
+                        </li>
+                    </c:forEach>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">About</a></li>
+                </ul>
+            </div>
+        </div>
 
-            <h1>Commits for <c:out value="${project}"/> owned by <c:out value="${owner}"/></h1>
+
+        <div class="container">
 
             <c:if test="${commitsLength == 0}">
                 <h3>No commits found - try refreshing the page</h3>
@@ -36,7 +64,7 @@
 
             <section>
                 <c:forEach items="${commits}" var="commits">
-                    <article class="commit alert alert-dismissable alert-success container-fluid row" >
+                    <article class="commit alert alert-dismissable alert-info container-fluid row" >
 
                         <img class="commit-user-avatar col-sm-1 col-md-1 col-lg-1" alt="Missing Avatar" src="<c:out value='${commits.userCommited.avatarUrl}' />" style="max-width: 150px;" >
 
@@ -45,16 +73,22 @@
 
                                 <div class="col-md-3 col-sm-3">
                                     <strong>
-                                        <a class="commit-accounturl" href="<c:out value='${commits.userCommited.accountUrl}' />" ><c:out value="${commits.userCommited.userName}" /></a>
+                                        <a class="commit-accounturl" href="<c:out value='${commits.userCommited.accountUrl}' />" target="_blank" >
+                                            <c:out value="${commits.userCommited.userName}" />
+                                        </a>
                                     </strong>
                                 </div>
 
-                                <div class="commit-id col-md-7 col-sm-7">
-                                    <strong><c:out value="${commits.id}" /></strong>
+                                <div class="col-md-7 col-sm-7">
+                                    <strong>
+                                        <a class="commit-id" href="<c:out value='${commits.idUrl}' />" target="_blank">
+                                            <c:out value="${commits.id}" />
+                                        </a>
+                                    </strong>
                                 </div>
 
                                 <div class="commit-date col-md-2 col-sm-2">
-                                    <strong><fmt:formatDate pattern="yyyy-MM-dd'T'HH:mm:ss'Z'" value="${commits.date}" /></strong>
+                                    <strong><fmt:formatDate pattern="yyyy-MM-dd'T'HH:mm:ss'Z'" value="${commits.date}"/></strong>
                                 </div>
 
                             </div>

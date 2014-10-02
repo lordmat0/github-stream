@@ -41,9 +41,12 @@ public class DateTimeFormat {
         try {
             return dateTime.parse(dateString);
         } catch (ParseException ex) {
-            LOGGER.log(Level.WARNING, "Parse Exception of date", ex);
-            return null;
+            LOGGER.log(Level.WARNING, "Parse Exception of date: " + dateString, ex);
+        } catch (NumberFormatException ex){
+            LOGGER.log(Level.WARNING, "Number Format exception of date " + dateString, ex);
         }
+        
+        return null;
     }
 
     /**

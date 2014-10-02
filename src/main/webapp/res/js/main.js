@@ -4,7 +4,7 @@ $(function () {
     if (!$('.commit').length) {
         // Hide loading gif
         $('#img-loading').hide();
-        
+
         return;
     }
 
@@ -35,13 +35,18 @@ $(function () {
 
                 // Get the date of the last commit
                 var date = $('.commit').last().find('.commit-date strong').text();
+                var branchName = getBranchName();
 
+                var data = {"date": date};
+
+                if (branchName !== null) {
+                    data.branch = branchName;
+                }
+                
                 $.ajax('rest/githubapi/commit/old', {
                     contentType: 'application/json',
-                    type: 'POST',
-                    data: JSON.stringify({
-                        "data": date
-                    }),
+                    type: 'GET',
+                    data: data,
                     success: function (data) {
                         handleOldCommits(data);
 
@@ -80,7 +85,8 @@ $(function () {
             date = date + (date.indexOf("Z") > -1 ? '' : 'Z');
 
             // Change values to new commit
-            $commit.find('.commit-id strong').text(data.id);
+            $commit.find('.commit-id').attr('href', data.idUrl)
+                    .text(data.id);
             $commit.find('.commit-message div').text(data.message);
             $commit.find('.commit-date strong').text(date);
             $commit.find('.commit-accounturl')
@@ -99,13 +105,19 @@ $(function () {
     // Check for new Commits
     setInterval(function () {
         var date = $('.commit').first().find('.commit-date strong').text();
+        var branchName = getBranchName();
+
+        var data = {"date": date};
+
+        if (branchName !== null) {
+            data.branch = branchName;
+        }
+
 
         $.ajax('rest/githubapi/commit/new', {
             contentType: 'application/json',
-            type: 'POST',
-            data: JSON.stringify({
-                "data": date
-            }),
+            type: 'GET',
+            data: data,
             success: handleNewCommits
         });
 
@@ -148,6 +160,17 @@ function handleOldCommits(data) {
     ajaxCall = false;
 }
 
+/**
+ * Returns the branch name
+ * 
+ * @type Function|Function
+ */
+var getBranchName = (function () {
+    var name = "branch";
+    return function () {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
+    };
+}());
 
 /**
  * 

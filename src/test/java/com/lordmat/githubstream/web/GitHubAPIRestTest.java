@@ -8,7 +8,6 @@ package com.lordmat.githubstream.web;
 import com.lordmat.githubstream.StartManager;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.GitHubUser;
-import com.lordmat.githubstream.bean.StringBean;
 import com.lordmat.githubstream.bean.UserList;
 import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.ArrayList;
@@ -176,16 +175,17 @@ public class GitHubAPIRestTest {
         System.out.println("getNewCommits");
 
         // always has a few commits ahead of this ID
-        String latestCommitDate = "2014-09-12T20:45:35Z";
+        // TODO auto-generate this date
+        String latestCommitDate = "2014-09-25T20:45:35Z";
         GitHubAPIRest instance = new GitHubAPIRest();
 
-        List<GitHubCommit> result = instance.getNewCommits(new StringBean(latestCommitDate));
+        List<GitHubCommit> result = instance.getNewCommits(latestCommitDate, null);
 
         Date date = DateTimeFormat.parse(latestCommitDate);
 
-        assertTrue(date.before(result.get(result.size() - 1).getDate()));
-
         assertTrue(!result.isEmpty());
+
+        assertTrue(date.before(result.get(result.size() - 1).getDate()));
     }
 
     /**
@@ -195,10 +195,9 @@ public class GitHubAPIRestTest {
     public void testGetNewCommitsNullDate() {
         System.out.println("getNewCommits");
 
-        StringBean nullDate = new StringBean(null);
         GitHubAPIRest instance = new GitHubAPIRest();
 
-        List<GitHubCommit> result = instance.getNewCommits(nullDate);
+        List<GitHubCommit> result = instance.getNewCommits(null, null);
 
         assertTrue(result.isEmpty());
     }
@@ -214,7 +213,7 @@ public class GitHubAPIRestTest {
         String emptyString = "";
         GitHubAPIRest instance = new GitHubAPIRest();
 
-        List<GitHubCommit> result = instance.getNewCommits(new StringBean(emptyString));
+        List<GitHubCommit> result = instance.getNewCommits(emptyString, null);
 
         assertTrue(result.isEmpty());
     }
@@ -227,10 +226,10 @@ public class GitHubAPIRestTest {
         System.out.println("testGetOldCommitsAlreadyCached");
 
         // always has a few commits before of this ID
-        String earlistCommitId = "2014-09-12T19:58:39Z"; // 2014-09-12T19:58:39
+        String earlistCommitId = "2014-09-29T15:13:18Z"; // 2014-09-12T19:58:39
         GitHubAPIRest instance = new GitHubAPIRest();
 
-        Collection<GitHubCommit> result = instance.getOldCommits(new StringBean(earlistCommitId));
+        Collection<GitHubCommit> result = instance.getOldCommits(earlistCommitId, null);
 
         assertTrue(result.size() > 0);
     }
@@ -246,7 +245,7 @@ public class GitHubAPIRestTest {
         String earlistCommitId = "2014-09-02T23:12:59Z";
         GitHubAPIRest instance = new GitHubAPIRest();
 
-        Collection<GitHubCommit> result = instance.getOldCommits(new StringBean(earlistCommitId));
+        Collection<GitHubCommit> result = instance.getOldCommits(earlistCommitId, null);
 
         assertTrue(result.size() > 0);
     }
@@ -266,11 +265,11 @@ public class GitHubAPIRestTest {
         // always has a few commits before of this ID
         String earlistCommitId = "2014-09-01T20:22:36Z";
         GitHubAPIRest instance = new GitHubAPIRest();
-        
-        Collection<GitHubCommit> result = instance.getOldCommits(new StringBean(earlistCommitId));
-        Collection<GitHubCommit> result2 = instance.getOldCommits(new StringBean(earlistCommitId));
-        Collection<GitHubCommit> result3 = instance.getOldCommits(new StringBean(earlistCommitId));
-        Collection<GitHubCommit> result4 = instance.getOldCommits(new StringBean(earlistCommitId));
+
+        Collection<GitHubCommit> result = instance.getOldCommits(earlistCommitId, null);
+        Collection<GitHubCommit> result2 = instance.getOldCommits(earlistCommitId, null);
+        Collection<GitHubCommit> result3 = instance.getOldCommits(earlistCommitId, null);
+        Collection<GitHubCommit> result4 = instance.getOldCommits(earlistCommitId, null);
 
         assertTrue(result4.isEmpty());
     }

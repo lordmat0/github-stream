@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.lordmat.githubstream.api;
+package com.lordmat.githubstream.data;
 
 import com.lordmat.githubstream.StartManager;
-import com.lordmat.githubstream.data.GitHubCaller;
+import com.lordmat.githubstream.bean.GitHubBranch;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.util.DateTimeFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -88,18 +89,17 @@ public class GitHubCallerTest {
     public void testGetCommits() {
         System.out.println("testGetCommits");
         GitHubCaller instance = createInstance();
-        
+
         Calendar calender = Calendar.getInstance();
         calender.set(Calendar.DATE, calender.getActualMinimum(Calendar.DATE));
-        
+
         String since = DateTimeFormat.format(calender.getTime());
         String until = null;
 
-        Map<Date,GitHubCommit> result = instance.getCommits(since, until);
+        Map<Date, GitHubCommit> result = instance.getCommits(since, until);
 
         assertTrue(result.size() > 0);
-        
-        
+
         assertNotNull(result.values().iterator().next().getDate());
     }
 
@@ -113,6 +113,49 @@ public class GitHubCallerTest {
         assertNotNull(gitHubUser);
     }
 
+    @Test
+    public void testGetBranches() {
+        System.out.println("testGetBranches");
+        GitHubCaller instance = createInstance();
+
+        Map<String, GitHubBranch> branches = instance.getBranches();
+
+        assertTrue(!branches.isEmpty());
+        assertTrue(branches.containsKey("master"));
+    }
+
+    @Test
+    public void testGetCommitsFromBranch() {
+        System.out.println("testGetCommitsFromBranch");
+        GitHubCaller instance = createInstance();
+
+        Map<String, GitHubBranch> branches = instance.getBranches();
+
+        String sha = branches.get("develop").getSha();
+
+        // My project always has a develop branch
+        // but others may not so just get a random branch
+        if (sha == null) {
+            sha = branches.get(new ArrayList<>(branches.keySet()).get(0)).getSha();
+        }
+
+        Map<Date, GitHubCommit> result = instance.getCommits(null, null, sha);
+
+        assertTrue(!result.isEmpty());
+    }
+
+    @Test
+    public void testGetCommitsFromUnknownBranch() {
+        System.out.println("testGetCommitsFromUnknownBranch");
+        GitHubCaller instance = createInstance();
+
+        String sha = "NOPE_BRANCH_LOL";
+
+        Map<Date, GitHubCommit> result = instance.getCommits(null, null, sha);
+
+        assertTrue(result.isEmpty());
+    }
+    
     /**
      * Creates an instance of github caller which is wrapped in a try catch with
      * an extra message if it fails
