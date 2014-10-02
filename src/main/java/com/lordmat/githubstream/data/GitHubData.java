@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -33,23 +32,13 @@ public class GitHubData {
     private final NavigableMap<Date, GitHubCommit> gitHubCommits;
     private final Map<String, GitHubBranch> branches;
 
-    private final Map<String, Date> branchToCommit;
-
     private final GitHubCaller caller;
-
-    /**
-     * Set to true if all the commits from the repo have been cached inside
-     * gitHubCommits, this is used by the getOldCommits method
-     */
-    private boolean hasLastCommit;
 
     public GitHubData() {
         gitHubUsers = new ConcurrentHashMap<>();
         gitHubCommits = new ConcurrentSkipListMap<>();
         caller = new GitHubCaller();
         branches = new ConcurrentHashMap<>();
-
-        branchToCommit = new ConcurrentHashMap<>();
 
         new BranchChecker(gitHubCommits, branches).start();
     }
@@ -126,50 +115,9 @@ public class GitHubData {
 
             }
 
-        } else {
-            {
-                Iterator iter = gitHubCommits.descendingMap().values().iterator();
-
-                for (int i = 0; iter.hasNext() && i < 25; i++) {
-                    commitList.add((GitHubCommit) iter.next());
-                }
-            }
         }
 
         return commitList;
-    }
-
-    /**
-     * Checks for new commits, if the date passed in null or empty then a empty
-     * list is returned
-     *
-     * @param latestCommitDate The commit date to check against
-     * @return An empty list or commits that come after the lastestCommitId
-     *
-     */
-    // TODO change to a set
-    public List<GitHubCommit> getNewCommits(String latestCommitDate) {
-        List<GitHubCommit> newCommits = new ArrayList<>();
-
-        if (latestCommitDate == null || latestCommitDate.isEmpty()) {
-            return newCommits;
-        }
-
-        Date date = DateTimeFormat.parse(latestCommitDate);
-
-        if (gitHubCommits.isEmpty()) {
-            LOGGER.info("Githubcommit list is empty");
-            return newCommits;
-        }
-
-        if (gitHubCommits.lastKey().equals(date)) {
-            return newCommits; // no new commits
-        }
-
-        // get a subset of the list
-        newCommits.addAll(gitHubCommits.tailMap(date, false).values());
-
-        return newCommits;
     }
 
     /**
@@ -221,41 +169,6 @@ public class GitHubData {
         }
 
         return newCommits;
-    }
-
-    /**
-     * I believe this needs to be synchronized because otherwise two requests
-     * would mean that it could be calling getCommits twice on the same date
-     * wasting bandwidth
-     *
-     * @param earlistCommitDate The earlist commit date
-     * @return
-     */
-    //TODO make this get old commits for all branches
-    public synchronized List<GitHubCommit> getOldCommits(String earlistCommitDate) {
-        Set<GitHubCommit> newCommits = new TreeSet<>();
-
-        if (earlistCommitDate == null || earlistCommitDate.isEmpty()
-                || gitHubCommits.isEmpty()) {
-            return new ArrayList<>(newCommits);
-        }
-
-        for (String branchName : branches.keySet()) {
-            List<GitHubCommit> commits = getOldCommits(earlistCommitDate, branchName);
-            System.out.println(commits.size());
-
-        }
-        Date date = DateTimeFormat.parse(earlistCommitDate);
-
-        // get a subset of the list
-        newCommits.addAll(gitHubCommits.headMap(date).values());
-
-        List<GitHubCommit> newCommitList = new ArrayList<>(newCommits);
-        Collections.reverse(newCommitList);
-
-        // Limit size to 30
-        int newCommitsSize = newCommitList.size();
-        return newCommitList.subList(0, (newCommitsSize >= 30 ? 30 : newCommitsSize));
     }
 
     /**
