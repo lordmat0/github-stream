@@ -17,27 +17,35 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author mat
  */
-@WebServlet(urlPatterns = {"/index", "/.", "/index.jsp"}, loadOnStartup = 1)
+@WebServlet(urlPatterns = {"/index.jsp"}, loadOnStartup = 1)
 public class IndexServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        List<GitHubCommit> commits = StartManager.data().getTopCommits();
         Map<String, GitHubBranch> branches = StartManager.data().getBranches();
+
+        String branchName = request.getParameter("branch");
+
+        if (branchName == null || (!branches.isEmpty() && !branches.containsKey(branchName))) {
+
+            // Check if there is a master branch
+            branchName = branches.containsKey("master") || branches.isEmpty() ? "master" : branches.keySet().iterator().next();
+
+            response.sendRedirect("?branch=" + branchName);
+            return;
+        }
+
+        List<GitHubCommit> commits = StartManager.data().getTopCommits(branchName);
 
         request.setAttribute("commits", commits);
         request.setAttribute("commitsLength", commits.size());
-        
+
         request.setAttribute("project", Path.REPO_NAME);
         request.setAttribute("owner", Path.REPO_OWNER);
         request.setAttribute("projectUrl", Path.REPO_URL);
-        
-        // Remove the master from the list
-        GitHubBranch masterBranch = branches.remove("master");
-        
-        // If masterBranch was null than we know it was not in the list
-        request.setAttribute("branchesHasMaster", masterBranch != null);
+
+        request.setAttribute("branchName", branchName);
         request.setAttribute("branches", branches);
         request.setAttribute("branchesLength", branches.size());
 

@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><c:out value="${project}"/> Commits</title>
+        <title><c:out value="${branchName}"/> Commits</title>
         <!-- jQuery -->
         <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
 
@@ -37,33 +37,17 @@
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav">
-                    <c:if test="${branchesHasMaster}">
-                        <li class="active">
-                            <a href="#">Master</a>
+                    <c:if test="${branchesLength == 0}">
+                        <li>
+                            <a href="#">No Branches found :(</a>
                         </li>
                     </c:if>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Branches <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <c:if test="${branchesLength == 0}">
-                                <li>
-                                    <a href="#">No Branches found :(</a>
-                                </li>
-                            </c:if>
-                                
-                            <c:forEach items="${branches}" var="branches">        
-                                <li>
-                                    <a href="#"><c:out value="${branches.key}"/></a>
-                                </li>
-                            </c:forEach>
-                        </ul>
-                    </li>
+                    <c:forEach items="${branches}" var="branches">        
+                        <li>
+                            <a href="?branch=<c:out value='${branches.key}' />"><c:out value="${branches.key}"/></a>
+                        </li>
+                    </c:forEach>
                 </ul>
-                <!--
-                <form class="navbar-form navbar-left">
-                    <input type="text" class="form-control col-lg-8" placeholder="Search">
-                </form>
-                -->
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">About</a></li>
                 </ul>

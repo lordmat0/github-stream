@@ -22,14 +22,14 @@ public abstract class AbstractChecker extends Thread {
     /**
      * How long before checking for new commits
      */
-    private final int QUERY_TIME;
+    private int queryTime;
 
     /**
      *
      * @param queryTime If less than 20 seconds, will be set to 20 seconds
      */
     public AbstractChecker(int queryTime) {
-        QUERY_TIME = queryTime < 20_000 ? 20_000 : queryTime;
+        this.queryTime = queryTime < 20_000 ? 20_000 : queryTime;
     }
 
     @Override
@@ -38,7 +38,7 @@ public abstract class AbstractChecker extends Thread {
             query();
 
             try {
-                sleep(QUERY_TIME);
+                sleep(queryTime);
             } catch (InterruptedException ex) {
                 LOGGER.log(Level.FINE, this.getClass() + " interrupted", ex);
             }
@@ -47,4 +47,13 @@ public abstract class AbstractChecker extends Thread {
     }
 
     protected abstract void query();
+    
+    /**
+     * Sets the query time in seconds
+     * @param queryTime 
+     */
+    public void setQueryTime(int queryTime) {
+        queryTime *= 1000;
+        this.queryTime = queryTime < 20_000 ? 20_000 : queryTime;
+    }
 }

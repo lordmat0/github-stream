@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author mat
  */
-public class GitHubCommit {
+public class GitHubCommit implements Comparable{
 
     private String id;
     private String idUrl;
@@ -92,6 +92,11 @@ public class GitHubCommit {
      */
     public Date getDate() {
         return date;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return date.compareTo(((GitHubCommit)o).getDate());
     }
 
 }

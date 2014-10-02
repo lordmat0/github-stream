@@ -9,11 +9,9 @@ import com.lordmat.githubstream.resource.MyResourceBundle;
 import com.lordmat.githubstream.resource.ResourceKey;
 import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
@@ -75,15 +73,43 @@ public class GitHubCaller {
      * from an API call to the githubAPI
      */
     public NavigableMap<Date, GitHubCommit> getCommits(String since, String until) {
+        return getCommits(since, until, null);
+    }
+
+    /**
+     * Gets a list of commits between two dates with the 
+     *
+     * @param since The start date, can be null (meaning that there is no
+     * restriction)
+     * @param until The end date, can be null (meaning that there is no
+     * restriction)
+     * @param branchSHA The branch SHA that should be found
+     *
+     * @return a JSONArray that contains details on commits which are retrieved
+     * from an API call to the githubAPI
+     */
+    public NavigableMap<Date, GitHubCommit> getCommits(String since, String until, String branchSHA) {
         Map<String, String> queryParam = new HashMap<>();
         queryParam.put("since", since);
         queryParam.put("until", until);
 
-        String data = call(Path.REPO_COMMITS, queryParam);
+        if (branchSHA != null) {
+            queryParam.put("sha", branchSHA);
+        }
+
+        String data;
+        NavigableMap<Date, GitHubCommit> gitHubCommits = new TreeMap<>();
+
+        try {
+            data = call(Path.REPO_COMMITS, queryParam);
+        } catch (Exception ex) {
+            LOGGER.log(Level.INFO,
+                    "getCommits threw an error branchSha: " + branchSHA, ex);
+
+            return gitHubCommits;
+        }
 
         JSONArray commits = new JSONArray(data);
-
-        NavigableMap<Date, GitHubCommit> gitHubCommits = new TreeMap<>();
 
         // Check results
         if (commits.length() == 0) {
@@ -128,17 +154,18 @@ public class GitHubCaller {
         }
 
         // Comment out to stop fake commits
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MILLISECOND, 0);
+        /*
+         Calendar calendar = Calendar.getInstance();
+         calendar.set(Calendar.MILLISECOND, 0);
 
-        gitHubCommits.put(
-                DateTimeFormat.parse(DateTimeFormat.format(new Date())),
-                new GitHubCommit("1f1d8f711b4258e38825083a2db401862602c14b",
-                        calendar.getTime(),
-                        "Some bogus message that has some weight to it",
-                        null,
-                        new GitHubUser("FakeUser", "#", "#")));
-
+         gitHubCommits.put(
+         DateTimeFormat.parse(DateTimeFormat.format(new Date())),
+         new GitHubCommit("1f1d8f711b4258e38825083a2db401862602c14b",
+         calendar.getTime(),
+         "Some bogus message that has some weight to it",
+         null,
+         new GitHubUser("FakeUser", "#", "#")));
+         */
         return gitHubCommits;
     }
 

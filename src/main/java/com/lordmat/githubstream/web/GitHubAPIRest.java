@@ -6,15 +6,18 @@ import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.StringBean;
 import com.lordmat.githubstream.bean.UserList;
 import com.lordmat.githubstream.data.GitHubData;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -96,11 +99,18 @@ public class GitHubAPIRest {
      *
      */
     @Path("commit/new")
-    @POST
-    public List<GitHubCommit> getNewCommits(StringBean latestCommitDate) {
-        LOGGER.log(Level.FINE, "Getting new commits latestCommitDate: {0}", latestCommitDate.getData());
+    @GET
+    public List<GitHubCommit> getNewCommits(@QueryParam("date") String latestCommitDate,
+            @QueryParam("branch") String branchName) {
 
-        return gitHubData.getNewCommits(latestCommitDate.getData());
+        LOGGER.log(Level.FINEST, "Getting new commits latestCommitDate & BranchName: {0}",
+                Arrays.asList(latestCommitDate, branchName));
+
+        if (branchName != null) {
+            return gitHubData.getNewCommits(latestCommitDate, branchName);
+        } else {
+            return gitHubData.getNewCommits(latestCommitDate);
+        }
     }
 
     /**
@@ -124,11 +134,19 @@ public class GitHubAPIRest {
      * @return An empty list or commits that come before the earlistCommitId
      */
     @Path("commit/old")
-    @POST
-    public List<GitHubCommit> getOldCommits(StringBean earlistCommitDate) {
-        LOGGER.log(Level.FINE, "Getting old commits earlistCommitDate: {0}", earlistCommitDate.getData());
+    @GET
+    public List<GitHubCommit> getOldCommits(@QueryParam("date") String earlistCommitDate,
+            @QueryParam("branch") String branchName) {
 
-        return gitHubData.getOldCommits(earlistCommitDate.getData());
+        LOGGER.log(Level.FINEST, "Getting old commits earlistCommitDate & BranchName: {0}",
+                Arrays.asList(earlistCommitDate, branchName));
+
+        if (branchName != null) {
+            return gitHubData.getOldCommits(earlistCommitDate, branchName);
+        } else {
+            return gitHubData.getOldCommits(earlistCommitDate);
+
+        }
     }
 
 }

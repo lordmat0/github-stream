@@ -1,7 +1,6 @@
 package com.lordmat.githubstream.data;
 
 import com.lordmat.githubstream.bean.GitHubBranch;
-import com.lordmat.githubstream.data.checker.CommitChecker;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.data.checker.BranchChecker;
@@ -14,6 +13,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.logging.Logger;
@@ -31,6 +33,8 @@ public class GitHubData {
     private final NavigableMap<Date, GitHubCommit> gitHubCommits;
     private final Map<String, GitHubBranch> branches;
 
+    private final Map<String, Date> branchToCommit;
+
     private final GitHubCaller caller;
 
     /**
@@ -45,8 +49,9 @@ public class GitHubData {
         caller = new GitHubCaller();
         branches = new ConcurrentHashMap<>();
 
-        new CommitChecker(gitHubCommits).start();
-        new BranchChecker(branches).start();
+        branchToCommit = new ConcurrentHashMap<>();
+
+        new BranchChecker(gitHubCommits, branches).start();
     }
 
     /**
@@ -97,16 +102,37 @@ public class GitHubData {
      * as the newest commits. If there are less than 25 commits than all the
      * commits will be returned.
      *
+     * @param branchName The branch name to get the commits from, null for all
+     * commits
      * @return A list of the newest github commits
      */
-    public List<GitHubCommit> getTopCommits() {
+    public List<GitHubCommit> getTopCommits(String branchName) {
         List<GitHubCommit> commitList = new ArrayList<>(25);
 
-        {
-            Iterator iter = gitHubCommits.descendingMap().values().iterator();
+        GitHubBranch branch = null;
+        if (branchName != null) {
+            branch = branches.get(branchName);
+        }
 
-            for (int i = 0; iter.hasNext() && i < 25; i++) {
-                commitList.add((GitHubCommit) iter.next());
+        if (branch != null) {
+            TreeSet<Date> dates = branch.getCommits();
+
+            {
+                Iterator iter = dates.descendingIterator();
+
+                for (int i = 0; iter.hasNext() && i < 25; i++) {
+                    commitList.add(gitHubCommits.get((Date) iter.next()));
+                }
+
+            }
+
+        } else {
+            {
+                Iterator iter = gitHubCommits.descendingMap().values().iterator();
+
+                for (int i = 0; iter.hasNext() && i < 25; i++) {
+                    commitList.add((GitHubCommit) iter.next());
+                }
             }
         }
 
@@ -117,10 +143,11 @@ public class GitHubData {
      * Checks for new commits, if the date passed in null or empty then a empty
      * list is returned
      *
-     * @param latestCommitDate The commit ID to check against
+     * @param latestCommitDate The commit date to check against
      * @return An empty list or commits that come after the lastestCommitId
      *
      */
+    // TODO change to a set
     public List<GitHubCommit> getNewCommits(String latestCommitDate) {
         List<GitHubCommit> newCommits = new ArrayList<>();
 
@@ -146,6 +173,57 @@ public class GitHubData {
     }
 
     /**
+     * Checks for new commits, if the date or branch name passed in null/empty
+     * then a empty list is returned
+     *
+     * @param latestCommitDate The commit date to check against
+     * @param branchName The branch to get commits from
+     * @return
+     */
+    //TODO change to a set
+    public List<GitHubCommit> getNewCommits(String latestCommitDate, String branchName) {
+        List<GitHubCommit> newCommits = new ArrayList<>();
+
+        if (latestCommitDate == null || latestCommitDate.isEmpty()
+                || branchName == null || branchName.isEmpty()) {
+            return newCommits;
+        }
+
+        Date date = DateTimeFormat.parse(latestCommitDate);
+        TreeSet<Date> dateSet = null;
+
+        GitHubBranch branch = branches.get(branchName);
+
+        if (branch == null) {
+            // Can't find branch
+            LOGGER.warning("Could not find branch " + branchName);
+            return newCommits;
+        } else {
+            dateSet = branch.getCommits();
+        }
+
+        if (dateSet.isEmpty()) {
+            LOGGER.info(branchName + " has no commits in getNewCommits");
+            return newCommits;
+        }
+
+        if (gitHubCommits.lastKey().equals(date)) {
+            // no new commits
+            return newCommits;
+        }
+
+        // Get a subset of the list
+        Iterator<Date> iter = dateSet.tailSet(date, false).iterator();
+
+        // Only add dates in the branch to newCommits
+        while (iter.hasNext()) {
+            newCommits.add(gitHubCommits.get(iter.next()));
+        }
+
+        return newCommits;
+    }
+
+    /**
      * I believe this needs to be synchronized because otherwise two requests
      * would mean that it could be calling getCommits twice on the same date
      * wasting bandwidth
@@ -153,43 +231,94 @@ public class GitHubData {
      * @param earlistCommitDate The earlist commit date
      * @return
      */
+    //TODO make this get old commits for all branches
     public synchronized List<GitHubCommit> getOldCommits(String earlistCommitDate) {
+        Set<GitHubCommit> newCommits = new TreeSet<>();
+
+        if (earlistCommitDate == null || earlistCommitDate.isEmpty()
+                || gitHubCommits.isEmpty()) {
+            return new ArrayList<>(newCommits);
+        }
+
+        for (String branchName : branches.keySet()) {
+            List<GitHubCommit> commits = getOldCommits(earlistCommitDate, branchName);
+            System.out.println(commits.size());
+
+        }
+        Date date = DateTimeFormat.parse(earlistCommitDate);
+
+        // get a subset of the list
+        newCommits.addAll(gitHubCommits.headMap(date).values());
+
+        List<GitHubCommit> newCommitList = new ArrayList<>(newCommits);
+        Collections.reverse(newCommitList);
+
+        // Limit size to 30
+        int newCommitsSize = newCommitList.size();
+        return newCommitList.subList(0, (newCommitsSize >= 30 ? 30 : newCommitsSize));
+    }
+
+    /**
+     * I believe this needs to be synchronized because otherwise two requests
+     * would mean that it could be calling getCommits twice on the same date
+     * wasting bandwidth
+     *
+     * @param earlistCommitDate The earlist commit date
+     * @param branchName The branch to get commits from
+     * @return
+     */
+    public synchronized List<GitHubCommit> getOldCommits(String earlistCommitDate, String branchName) {
         List<GitHubCommit> newCommits = new ArrayList<>();
 
-        if (earlistCommitDate == null || earlistCommitDate.isEmpty()) {
+        GitHubBranch branch = branches.get(branchName);
+
+        if (earlistCommitDate == null || earlistCommitDate.isEmpty()
+                || branch == null) {
+            return newCommits;
+        }
+
+        TreeSet<Date> branchDates = branch.getCommits();
+
+        if (branchDates.isEmpty()) {
+            LOGGER.info(branchName + " has no commits in getOldCommits");
             return newCommits;
         }
 
         Date date = DateTimeFormat.parse(earlistCommitDate);
 
-        if (!hasLastCommit
-                && (gitHubCommits.firstKey().equals(date) || !gitHubCommits.containsKey(date))) {
+        if (!branch.getHasLastCommit()
+                && (branchDates.first().equals(date) || branchDates.first().before(date))) {
 
-            date = gitHubCommits.firstKey();
+            date = branchDates.first();
 
             // If we don't contain the date assume we need to get more commits,
             // but don't trust the client date passed in
             NavigableMap<Date, GitHubCommit> mapCommits = caller.getCommits(null,
-                    DateTimeFormat.format(date));
+                    DateTimeFormat.format(date), branch.getSha());
 
             if (mapCommits.firstKey().equals(date)) {
-                hasLastCommit = true;
+                branch.setHasLastCommit(true);
             }
+
+            // Add the new commits to the branch
+            branchDates.addAll(mapCommits.keySet());
 
             gitHubCommits.putAll(mapCommits);
         }
 
-        // get a subset of the list
-        newCommits.addAll(gitHubCommits.headMap(date).values());
-        Collections.reverse(newCommits);
+        Iterator iter = branchDates.headSet(date, false).descendingIterator();
+
+        while (iter.hasNext()) {
+            newCommits.add(gitHubCommits.get((Date) iter.next()));
+        }
 
         // Limit size to 30
         int newCommitsSize = newCommits.size();
         return newCommits.subList(0, (newCommitsSize >= 30 ? 30 : newCommitsSize));
     }
 
-    public Map<String, GitHubBranch> getBranches(){
+    public Map<String, GitHubBranch> getBranches() {
         return new HashMap<>(branches);
     }
-    
+
 }
