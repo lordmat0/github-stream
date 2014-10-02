@@ -27,7 +27,7 @@ public class IndexServlet extends HttpServlet {
 
         String branchName = request.getParameter("branch");
 
-        if (branchName == null) {
+        if (branchName == null || (!branches.isEmpty() && !branches.containsKey(branchName))) {
 
             // Check if there is a master branch
             branchName = branches.containsKey("master") || branches.isEmpty() ? "master" : branches.keySet().iterator().next();
