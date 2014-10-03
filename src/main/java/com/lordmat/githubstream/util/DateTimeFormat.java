@@ -8,6 +8,7 @@ package com.lordmat.githubstream.util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.logging.Level;
@@ -24,9 +25,8 @@ public class DateTimeFormat {
 
     private static final DateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     private static final DateFormat time = new SimpleDateFormat("HH:mm:ss");
-   
-    
-    static{
+
+    static {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
@@ -42,10 +42,10 @@ public class DateTimeFormat {
             return dateTime.parse(dateString);
         } catch (ParseException ex) {
             LOGGER.log(Level.WARNING, "Parse Exception of date: " + dateString, ex);
-        } catch (NumberFormatException ex){
+        } catch (NumberFormatException ex) {
             LOGGER.log(Level.WARNING, "Number Format exception of date " + dateString, ex);
         }
-        
+
         return null;
     }
 
@@ -67,14 +67,56 @@ public class DateTimeFormat {
     }
 
     /**
-     * Formats date object in the string format of HH:mm:ss'Z', returns null if
-     * fails
+     * Formats int's that are in milliseconds to the string format of
+     * HH:mm:ss'Z', returns null if fails
      *
-     * @param date The date to be turned into a string
+     * @param timeStamp The date to be turned into a string
      * @return A date in the format of yyyy-MM-dd'T'HH:mm:ss'Z'
      */
-    public static String getTime(Date date) {
-        return time.format(date);
+    public static String formatTime(int timeStamp) {
+        try {
+            return time.format(parseTime(timeStamp));
+        } catch (Exception ex) {
+            LOGGER.log(Level.WARNING,
+                    "Exception occured trying to format date", ex);
+            return null;
+        }
+    }
+
+    /**
+     * Formats Dates to the string format of HH:mm:ss'Z', returns null if fails
+     *
+     * @param timeStamp The date to be turned into a string
+     * @return A date in the format of yyyy-MM-dd'T'HH:mm:ss'Z'
+     */
+    public static String formatTime(Date timeStamp) {
+        try {
+            return time.format(timeStamp);
+        } catch (Exception ex) {
+            LOGGER.log(Level.WARNING,
+                    "Exception occured trying to format date", ex);
+            return null;
+        }
+    }
+
+    /**
+     * Formats int's that are in milliseconds to the Date format of HH:mm:ss'Z',
+     * returns null if fails
+     *
+     * @param timeStamp The date to be turned into a string
+     * @return A date in the format of yyyy-MM-dd'T'HH:mm:ss'Z'
+     */
+    public static Date parseTime(int timeStamp) {
+        try {
+            Calendar unixtimestamp = Calendar.getInstance();
+            unixtimestamp.setTimeInMillis((long) timeStamp * 1000);
+
+            return unixtimestamp.getTime();
+        } catch (Exception ex) {
+            LOGGER.log(Level.WARNING,
+                    "Exception occured trying to format date", ex);
+            return null;
+        }
     }
 
     /**
