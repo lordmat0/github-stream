@@ -8,6 +8,7 @@ package com.lordmat.githubstream.data;
 import com.lordmat.githubstream.StartManager;
 import com.lordmat.githubstream.bean.GitHubBranch;
 import com.lordmat.githubstream.bean.GitHubCommit;
+import com.lordmat.githubstream.bean.GitHubRateLimit;
 import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.ArrayList;
@@ -73,16 +74,15 @@ public class GitHubCallerTest {
         System.out.println("getRateLimit");
         GitHubCaller instance = createInstance();
 
-        JSONObject result = instance.getRateLimit();
+        GitHubRateLimit result = instance.getRateLimit();
 
-        JSONObject coreTests = result.getJSONObject("resources").getJSONObject("core");
+        assertNotNull(result.getLimit());
+        assertNotNull(result.getRemaining());
+        assertNotNull(result.getReset());
 
-        assertNotNull(coreTests.getInt("limit"));
-        assertNotNull(coreTests.getInt("remaining"));
-        assertNotNull(coreTests.getInt("reset"));
-
-        assertEquals(5000, coreTests.getInt("limit"));
-        assertNotEquals(0, coreTests.getInt("remaining"));
+        // If it fails here then no GitHub requests can be made
+        assertEquals(5000, result.getLimit());
+        assertNotEquals(0, result.getRemaining());
     }
 
     @Test

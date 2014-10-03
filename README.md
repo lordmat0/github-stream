@@ -1,17 +1,15 @@
 Github-stream
 ============
 
-This project is a Java web server that connects to GitHub's API that provides a nice front end for seeing commits. It doesn't use a database to hold data however this may change.
+This project is a Java web server that connects to GitHub's API that provides a nice front end for seeing commits. It will auto check for new commits every so often (depends on number of branches). You can also scroll down and fetch more commits, when they have been retrieved once they're cached.
+
+It doesn't use a database to hold data however this may change.
 
 
 
 Planned features
 ===============
-Ability to Switch branches
-
-Nicer interface
-
-More/better Animation
+* Graphs
 
 
 

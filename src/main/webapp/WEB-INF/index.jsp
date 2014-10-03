@@ -49,7 +49,7 @@
                     </c:forEach>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">About</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#modal-about">About</a></li>
                 </ul>
             </div>
         </div>
@@ -106,5 +106,30 @@
             <img id="img-loading" class="center-block" src="res/img/loader.gif">
 
         </div>
+
+        <div class="modal fade" id="modal-about">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;</button>
+                        <h4 class="modal-title">GitHubStream</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            This project was just a bit of fun to learn Java web services.
+                        </p>
+                        <p>
+                            A link to the project source code can be found 
+                            <a href="https://github.com/lordmat0/github-stream" target="_blank">here</a>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-default" data-dismiss="modal">Close</a>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+
     </body>
 </html>
