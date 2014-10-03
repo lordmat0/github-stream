@@ -4,6 +4,7 @@ import com.lordmat.githubstream.bean.GitHubBranch;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.data.checker.BranchChecker;
+import com.lordmat.githubstream.data.checker.RateLimitChecker;
 import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
-import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -40,7 +40,10 @@ public class GitHubData {
         caller = new GitHubCaller();
         branches = new ConcurrentHashMap<>();
 
+        // Handles checking for branches
         new BranchChecker(gitHubCommits, branches).start();
+        
+        new RateLimitChecker().start();
     }
 
     /**
