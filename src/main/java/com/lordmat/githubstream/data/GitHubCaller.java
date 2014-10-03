@@ -1,5 +1,6 @@
 package com.lordmat.githubstream.data;
 
+import com.lordmat.githubstream.bean.GitHubRateLimit;
 import com.lordmat.githubstream.bean.GitHubBranch;
 import com.lordmat.githubstream.resource.Path;
 import com.lordmat.githubstream.bean.GitHubUser;
@@ -58,8 +59,16 @@ public class GitHubCaller {
      *
      * @return a JSONObject from results from an API call to the githubAPI
      */
-    public JSONObject getRateLimit() {
-        return new JSONObject(call(Path.RATE_LIMIT));
+    public GitHubRateLimit getRateLimit() {
+        JSONObject rateLimit = new JSONObject(call(Path.RATE_LIMIT));
+        
+        rateLimit = rateLimit.getJSONObject("rate");
+        
+        int limit = rateLimit.getInt("limit");
+        int remaining = rateLimit.getInt("remaining");
+        Date reset = DateTimeFormat.parseTime(rateLimit.getInt("reset"));
+        
+        return new GitHubRateLimit(limit, remaining, reset);
     }
 
     /**
