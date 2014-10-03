@@ -88,11 +88,8 @@ public class Path {
             JSONObject jsonRateLimit = new JSONObject(result).getJSONObject("rate");
 
             if (jsonRateLimit.getInt("remaining") == 0) {
-                Calendar unixtimestamp = Calendar.getInstance();
-                unixtimestamp.setTimeInMillis((long) jsonRateLimit.getInt("reset") * 1000);
-
                 LOGGER.severe("Rate_limit is zero, can't make any github requests, wait till: "
-                        + DateTimeFormat.getTime(unixtimestamp.getTime()));
+                        + DateTimeFormat.formatTime(jsonRateLimit.getInt("reset")));
 
                 System.exit(1);
             }
