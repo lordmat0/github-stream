@@ -43,7 +43,7 @@ public class GitHubAPIRest {
      * Created every time the webAPI is hit
      */
     public GitHubAPIRest() {
-        gitHubData = StartManager.data();
+        gitHubData = GitHubData.getInstance();
     }
 
     /**

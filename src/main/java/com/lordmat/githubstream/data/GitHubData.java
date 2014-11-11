@@ -28,13 +28,24 @@ public class GitHubData {
 
     private final static Logger LOGGER = Logger.getLogger(GitHubData.class.getName());
 
+    private static GitHubData gitHubData;
+
+    public static synchronized
+            GitHubData
+            getInstance() {
+        if (gitHubData == null) {
+            gitHubData = new GitHubData();
+        }
+        return gitHubData;
+    }
     private final Map<String, GitHubUser> gitHubUsers;
     private final NavigableMap<Date, GitHubCommit> gitHubCommits;
+
     private final Map<String, GitHubBranch> branches;
 
     private final GitHubCaller caller;
 
-    public GitHubData() {
+    private GitHubData() {
         gitHubUsers = new ConcurrentHashMap<>();
         gitHubCommits = new ConcurrentSkipListMap<>();
         caller = new GitHubCaller();
@@ -42,7 +53,7 @@ public class GitHubData {
 
         // Handles checking for branches
         new BranchChecker(gitHubCommits, branches).start();
-        
+
         new RateLimitChecker().start();
     }
 

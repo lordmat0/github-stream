@@ -128,7 +128,7 @@ public class GitHubCaller {
                     + " list of commits (maybe a 404?)");
         }
 
-        Map<String, GitHubUser> ghUsers = StartManager.data().getUsers();
+        Map<String, GitHubUser> ghUsers = GitHubData.getInstance().getUsers();
         for (int i = commits.length() - 1; i >= 0; i--) {
             try {
                 JSONObject commitDetails = commits.getJSONObject(i);

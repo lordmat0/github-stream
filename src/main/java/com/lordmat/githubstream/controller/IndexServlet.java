@@ -3,6 +3,7 @@ package com.lordmat.githubstream.controller;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.StartManager;
 import com.lordmat.githubstream.bean.GitHubBranch;
+import com.lordmat.githubstream.data.GitHubData;
 import com.lordmat.githubstream.resource.Path;
 import java.io.IOException;
 import java.util.List;
@@ -23,7 +24,7 @@ public class IndexServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        Map<String, GitHubBranch> branches = StartManager.data().getBranches();
+        Map<String, GitHubBranch> branches = GitHubData.getInstance().getBranches();
 
         String branchName = request.getParameter("branch");
 
@@ -36,7 +37,7 @@ public class IndexServlet extends HttpServlet {
             return;
         }
 
-        List<GitHubCommit> commits = StartManager.data().getTopCommits(branchName);
+        List<GitHubCommit> commits = GitHubData.getInstance().getTopCommits(branchName);
 
         request.setAttribute("commits", commits);
         request.setAttribute("commitsLength", commits.size());
