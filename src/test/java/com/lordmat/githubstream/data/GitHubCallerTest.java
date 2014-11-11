@@ -93,7 +93,7 @@ public class GitHubCallerTest {
         Calendar calender = Calendar.getInstance();
         calender.set(Calendar.DATE, calender.getActualMinimum(Calendar.DATE));
 
-        String since = DateTimeFormat.format(calender.getTime());
+        String since = null;
         String until = null;
 
         Map<Date, GitHubCommit> result = instance.getCommits(since, until);

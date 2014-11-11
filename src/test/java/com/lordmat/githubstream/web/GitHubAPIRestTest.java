@@ -9,6 +9,7 @@ import com.lordmat.githubstream.StartManager;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.bean.UserList;
+import com.lordmat.githubstream.data.GitHubData;
 import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,7 +47,7 @@ public class GitHubAPIRestTest {
 
         // Need to have some commits before testing on them
         for (int i = 0; i < 5; i++) {
-            if (!StartManager.data().getCommits().isEmpty()) {
+            if (!GitHubData.getInstance().getCommits().isEmpty()) {
                 break;
             }
             Thread.sleep(1000);
@@ -145,8 +146,12 @@ public class GitHubAPIRestTest {
 
         GitHubUser mat = new GitHubUser("lordmat0", // user name
                 "https://github.com/lordmat0", // account url
-                "https://avatars.githubusercontent.com/u/4976353?v=2"); // avatar url
+                "https://avatars.githubusercontent.com/u/4976353?v=3"); // avatar url
 
+        
+        System.out.println(mat);
+        System.out.println(result.get(0));
+        
         assertEquals(mat, result.get(0));
     }
 
