@@ -5,7 +5,6 @@ import com.lordmat.githubstream.bean.GitHubBranch;
 import com.lordmat.githubstream.resource.Path;
 import com.lordmat.githubstream.bean.GitHubUser;
 import com.lordmat.githubstream.bean.GitHubCommit;
-import com.lordmat.githubstream.StartManager;
 import com.lordmat.githubstream.resource.MyResourceBundle;
 import com.lordmat.githubstream.resource.ResourceKey;
 import com.lordmat.githubstream.util.DateTimeFormat;

@@ -5,14 +5,11 @@
  */
 package com.lordmat.githubstream.data;
 
-import com.lordmat.githubstream.StartManager;
 import com.lordmat.githubstream.bean.GitHubBranch;
 import com.lordmat.githubstream.bean.GitHubCommit;
 import com.lordmat.githubstream.bean.GitHubRateLimit;
 import com.lordmat.githubstream.bean.GitHubUser;
-import com.lordmat.githubstream.util.DateTimeFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import org.json.JSONObject;
@@ -34,8 +31,6 @@ public class GitHubCallerTest {
 
     @BeforeClass
     public static void setUpClass() {
-        // Need to init to create GitHubData
-        new StartManager();
     }
 
     @AfterClass
@@ -89,9 +84,6 @@ public class GitHubCallerTest {
     public void testGetCommits() {
         System.out.println("testGetCommits");
         GitHubCaller instance = createInstance();
-
-        Calendar calender = Calendar.getInstance();
-        calender.set(Calendar.DATE, calender.getActualMinimum(Calendar.DATE));
 
         String since = null;
         String until = null;
@@ -155,7 +147,7 @@ public class GitHubCallerTest {
 
         assertTrue(result.isEmpty());
     }
-    
+
     /**
      * Creates an instance of github caller which is wrapped in a try catch with
      * an extra message if it fails
